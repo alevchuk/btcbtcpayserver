@@ -50,8 +50,8 @@ namespace BTCPayServer.Rating
                
                 for (int i = 3; i < 5; i++)
                 {
-                    var potentialCryptoName = currencyPair.Substring(0, i);
-                    var currency = CurrencyNameTable.Instance.GetCurrencyData(potentialCryptoName, false);
+                    var potentialbitcoinName = currencyPair.Substring(0, i);
+                    var currency = CurrencyNameTable.Instance.GetCurrencyData(potentialbitcoinName, false);
                     if (currency != null)
                     {
                         value = new CurrencyPair(currency.Code, currencyPair.Substring(i));

@@ -52,7 +52,7 @@ namespace BTCPayServer.Controllers.GreenField
                 .Where(summary => summary.Network.ShowSyncSummary)
                 .Select(summary => new ServerInfoSyncStatusData
                 {
-                    CryptoCode = summary.Network.CryptoCode,
+                    bitcoinCode = summary.Network.bitcoinCode,
                     NodeInformation = summary.Status.BitcoinStatus is BitcoinStatus s ? new ServerInfoNodeData()
                     {
                         Headers = s.Headers,

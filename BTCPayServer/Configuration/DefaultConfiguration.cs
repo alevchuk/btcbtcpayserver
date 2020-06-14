@@ -19,7 +19,7 @@ namespace BTCPayServer.Configuration
         protected override CommandLineApplication CreateCommandLineApplicationCore()
         {
             var provider = new BTCPayNetworkProvider(NetworkType.Mainnet);
-            var chains = string.Join(",", provider.GetAll().Select(n => n.CryptoCode.ToLowerInvariant()).ToArray());
+            var chains = string.Join(",", provider.GetAll().Select(n => n.bitcoinCode.ToLowerInvariant()).ToArray());
             CommandLineApplication app = new CommandLineApplication(true)
             {
                 FullName = "BTCPay\r\nOpen source, self-hosted payment processor.",
@@ -50,15 +50,15 @@ namespace BTCPayServer.Configuration
             app.Option("--xforwardedproto", "If specified, set X-Forwarded-Proto to the specified value, this may be useful if your reverse proxy handle https but is not configured to add X-Forwarded-Proto (example: --xforwardedproto https)", CommandOptionType.SingleValue);
             foreach (var network in provider.GetAll().OfType<BTCPayNetwork>())
             {
-                var crypto = network.CryptoCode.ToLowerInvariant();
-                app.Option($"--{crypto}explorerurl", $"URL of the NBXplorer for {network.CryptoCode} (default: {network.NBXplorerNetwork.DefaultSettings.DefaultUrl})", CommandOptionType.SingleValue);
-                app.Option($"--{crypto}explorercookiefile", $"Path to the cookie file (default: {network.NBXplorerNetwork.DefaultSettings.DefaultCookieFile})", CommandOptionType.SingleValue);
-                app.Option($"--{crypto}lightning", $"Easy configuration of lightning for the server administrator: Must be a UNIX socket of c-lightning (lightning-rpc) or URL to a charge server (default: empty)", CommandOptionType.SingleValue);
-                app.Option($"--{crypto}externallndgrpc", $"The LND gRPC configuration BTCPay will expose to easily connect to the internal lnd wallet from an external wallet (default: empty)", CommandOptionType.SingleValue);
-                app.Option($"--{crypto}externallndrest", $"The LND REST configuration BTCPay will expose to easily connect to the internal lnd wallet from an external wallet (default: empty)", CommandOptionType.SingleValue);
-                app.Option($"--{crypto}externalrtl", $"The Ride the Lightning configuration so BTCPay will expose to easily open it in server settings (default: empty)", CommandOptionType.SingleValue);
-                app.Option($"--{crypto}externalspark", $"Show spark information in Server settings / Server. The connection string to spark server (default: empty)", CommandOptionType.SingleValue);
-                app.Option($"--{crypto}externalcharge", $"Show lightning charge information in Server settings/Server. The connection string to charge server (default: empty)", CommandOptionType.SingleValue);
+                var bitcoin = network.bitcoinCode.ToLowerInvariant();
+                app.Option($"--{bitcoin}explorerurl", $"URL of the NBXplorer for {network.bitcoinCode} (default: {network.NBXplorerNetwork.DefaultSettings.DefaultUrl})", CommandOptionType.SingleValue);
+                app.Option($"--{bitcoin}explorercookiefile", $"Path to the cookie file (default: {network.NBXplorerNetwork.DefaultSettings.DefaultCookieFile})", CommandOptionType.SingleValue);
+                app.Option($"--{bitcoin}lightning", $"Easy configuration of lightning for the server administrator: Must be a UNIX socket of c-lightning (lightning-rpc) or URL to a charge server (default: empty)", CommandOptionType.SingleValue);
+                app.Option($"--{bitcoin}externallndgrpc", $"The LND gRPC configuration BTCPay will expose to easily connect to the internal lnd wallet from an external wallet (default: empty)", CommandOptionType.SingleValue);
+                app.Option($"--{bitcoin}externallndrest", $"The LND REST configuration BTCPay will expose to easily connect to the internal lnd wallet from an external wallet (default: empty)", CommandOptionType.SingleValue);
+                app.Option($"--{bitcoin}externalrtl", $"The Ride the Lightning configuration so BTCPay will expose to easily open it in server settings (default: empty)", CommandOptionType.SingleValue);
+                app.Option($"--{bitcoin}externalspark", $"Show spark information in Server settings / Server. The connection string to spark server (default: empty)", CommandOptionType.SingleValue);
+                app.Option($"--{bitcoin}externalcharge", $"Show lightning charge information in Server settings/Server. The connection string to charge server (default: empty)", CommandOptionType.SingleValue);
             }
             return app;
         }
@@ -127,10 +127,10 @@ namespace BTCPayServer.Configuration
             builder.AppendLine("### NBXplorer settings ###");
             foreach (var n in new BTCPayNetworkProvider(networkType).GetAll().OfType<BTCPayNetwork>())
             {
-                builder.AppendLine($"#{n.CryptoCode}.explorer.url={n.NBXplorerNetwork.DefaultSettings.DefaultUrl}");
-                builder.AppendLine($"#{n.CryptoCode}.explorer.cookiefile={ n.NBXplorerNetwork.DefaultSettings.DefaultCookieFile}");
-                builder.AppendLine($"#{n.CryptoCode}.lightning=/root/.lightning/lightning-rpc");
-                builder.AppendLine($"#{n.CryptoCode}.lightning=https://apitoken:API_TOKEN_SECRET@charge.example.com/");
+                builder.AppendLine($"#{n.bitcoinCode}.explorer.url={n.NBXplorerNetwork.DefaultSettings.DefaultUrl}");
+                builder.AppendLine($"#{n.bitcoinCode}.explorer.cookiefile={ n.NBXplorerNetwork.DefaultSettings.DefaultCookieFile}");
+                builder.AppendLine($"#{n.bitcoinCode}.lightning=/root/.lightning/lightning-rpc");
+                builder.AppendLine($"#{n.bitcoinCode}.lightning=https://apitoken:API_TOKEN_SECRET@charge.example.com/");
             }
             return builder.ToString();
         }

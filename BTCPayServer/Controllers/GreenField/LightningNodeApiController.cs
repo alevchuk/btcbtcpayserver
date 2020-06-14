@@ -43,9 +43,9 @@ namespace BTCPayServer.Controllers.GreenField
             _cssThemeManager = cssThemeManager;
         }
 
-        public virtual async Task<IActionResult> GetInfo(string cryptoCode)
+        public virtual async Task<IActionResult> GetInfo(string bitcoinCode)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, true);
+            var lightningClient = await GetLightningClient(bitcoinCode, true);
             if (lightningClient == null)
             {
                 return NotFound();
@@ -58,9 +58,9 @@ namespace BTCPayServer.Controllers.GreenField
             });
         }
 
-        public virtual async Task<IActionResult> ConnectToNode(string cryptoCode, ConnectToNodeRequest request)
+        public virtual async Task<IActionResult> ConnectToNode(string bitcoinCode, ConnectToNodeRequest request)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, true);
+            var lightningClient = await GetLightningClient(bitcoinCode, true);
             if (lightningClient == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace BTCPayServer.Controllers.GreenField
             return Ok();
         }
 
-        public virtual async Task<IActionResult> GetChannels(string cryptoCode)
+        public virtual async Task<IActionResult> GetChannels(string bitcoinCode)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, true);
+            var lightningClient = await GetLightningClient(bitcoinCode, true);
             if (lightningClient == null)
             {
                 return NotFound();
@@ -109,9 +109,9 @@ namespace BTCPayServer.Controllers.GreenField
         }
 
 
-        public virtual async Task<IActionResult> OpenChannel(string cryptoCode, OpenLightningChannelRequest request)
+        public virtual async Task<IActionResult> OpenChannel(string bitcoinCode, OpenLightningChannelRequest request)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, true);
+            var lightningClient = await GetLightningClient(bitcoinCode, true);
             if (lightningClient == null)
             {
                 return NotFound();
@@ -180,9 +180,9 @@ namespace BTCPayServer.Controllers.GreenField
             return this.CreateAPIError(errorCode, errorMessage);
         }
 
-        public virtual async Task<IActionResult> GetDepositAddress(string cryptoCode)
+        public virtual async Task<IActionResult> GetDepositAddress(string bitcoinCode)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, true);
+            var lightningClient = await GetLightningClient(bitcoinCode, true);
             if (lightningClient == null)
             {
                 return NotFound();
@@ -191,10 +191,10 @@ namespace BTCPayServer.Controllers.GreenField
             return Ok(new JValue((await lightningClient.GetDepositAddress()).ToString()));
         }
 
-        public virtual async Task<IActionResult> PayInvoice(string cryptoCode, PayLightningInvoiceRequest lightningInvoice)
+        public virtual async Task<IActionResult> PayInvoice(string bitcoinCode, PayLightningInvoiceRequest lightningInvoice)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, true);
-            var network = _btcPayNetworkProvider.GetNetwork<BTCPayNetwork>(cryptoCode);
+            var lightningClient = await GetLightningClient(bitcoinCode, true);
+            var network = _btcPayNetworkProvider.GetNetwork<BTCPayNetwork>(bitcoinCode);
             if (lightningClient == null || network == null)
             {
                 return NotFound();
@@ -225,9 +225,9 @@ namespace BTCPayServer.Controllers.GreenField
             }
         }
 
-        public virtual async Task<IActionResult> GetInvoice(string cryptoCode, string id)
+        public virtual async Task<IActionResult> GetInvoice(string bitcoinCode, string id)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, false);
+            var lightningClient = await GetLightningClient(bitcoinCode, false);
 
             if (lightningClient == null)
             {
@@ -242,9 +242,9 @@ namespace BTCPayServer.Controllers.GreenField
             return Ok(ToModel(inv));
         }
 
-        public virtual async Task<IActionResult> CreateInvoice(string cryptoCode, CreateLightningInvoiceRequest request)
+        public virtual async Task<IActionResult> CreateInvoice(string bitcoinCode, CreateLightningInvoiceRequest request)
         {
-            var lightningClient = await GetLightningClient(cryptoCode, false);
+            var lightningClient = await GetLightningClient(bitcoinCode, false);
 
             if (lightningClient == null)
             {
@@ -294,6 +294,6 @@ namespace BTCPayServer.Controllers.GreenField
                     (_cssThemeManager.AllowLightningInternalNodeForAll && !doingAdminThings));
         }
 
-        protected abstract Task<ILightningClient> GetLightningClient(string cryptoCode, bool doingAdminThings);
+        protected abstract Task<ILightningClient> GetLightningClient(string bitcoinCode, bool doingAdminThings);
     }
 }

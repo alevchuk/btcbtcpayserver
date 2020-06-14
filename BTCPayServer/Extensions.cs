@@ -110,9 +110,9 @@ namespace BTCPayServer
                    tempData.Peek(WellKnownTempData.ErrorMessage) ??
                    tempData.Peek("StatusMessageModel")) != null;
         }
-        public static PaymentMethodId GetpaymentMethodId(this InvoiceCryptoInfo info)
+        public static PaymentMethodId GetpaymentMethodId(this InvoicebitcoinInfo info)
         {
-            return new PaymentMethodId(info.CryptoCode, PaymentTypes.Parse(info.PaymentType));
+            return new PaymentMethodId(info.bitcoinCode, PaymentTypes.Parse(info.PaymentType));
         }
         public static async Task CloseSocket(this WebSocket webSocket)
         {
@@ -135,7 +135,7 @@ namespace BTCPayServer
         {
             return invoice.GetPayments()
                     .Where(p => p.GetPaymentMethodId().PaymentType == PaymentTypes.BTCLike)
-                    .Select(p => (BitcoinLikePaymentData)p.GetCryptoPaymentData());
+                    .Select(p => (BitcoinLikePaymentData)p.GetbitcoinPaymentData());
         }
 
         public static async Task<Dictionary<uint256, TransactionResult>> GetTransactions(this BTCPayWallet client, uint256[] hashes, bool includeOffchain = false, CancellationToken cts = default(CancellationToken))
@@ -150,7 +150,7 @@ namespace BTCPayServer
         
         public static async Task<PSBT> UpdatePSBT(this ExplorerClientProvider explorerClientProvider, DerivationSchemeSettings derivationSchemeSettings, PSBT psbt)
         {
-            var result = await explorerClientProvider.GetExplorerClient(psbt.Network.NetworkSet.CryptoCode).UpdatePSBTAsync(new UpdatePSBTRequest()
+            var result = await explorerClientProvider.GetExplorerClient(psbt.Network.NetworkSet.bitcoinCode).UpdatePSBTAsync(new UpdatePSBTRequest()
             {
                 PSBT = psbt,
                 DerivationScheme = derivationSchemeSettings.AccountDerivation

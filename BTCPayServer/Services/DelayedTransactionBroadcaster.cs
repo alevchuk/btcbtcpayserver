@@ -49,7 +49,7 @@ namespace BTCPayServer.Services
             {
                 db.PlannedTransactions.Add(new PlannedTransaction()
                 {
-                    Id = $"{network.CryptoCode}-{transaction.GetHash()}",
+                    Id = $"{network.bitcoinCode}-{transaction.GetHash()}",
                     BroadcastAt = broadcastTime,
                     Blob = transaction.ToBytes()
                 });
@@ -91,7 +91,7 @@ namespace BTCPayServer.Services
                     var result = await explorer.BroadcastAsync(record.Transaction, cancellationToken);
                     if (result.Success)
                     {
-                        Logs.PayServer.LogInformation($"{record.Network.CryptoCode}: {record.Transaction.GetHash()} has been successfully broadcasted");
+                        Logs.PayServer.LogInformation($"{record.Network.bitcoinCode}: {record.Transaction.GetHash()} has been successfully broadcasted");
                     }
                     return false;
                 }

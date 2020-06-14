@@ -17,7 +17,7 @@ namespace BTCPayServer.Services.Rates
         public string Code { get; set; }
         public int Divisibility { get; set; }
         public string Symbol { get; set; }
-        public bool Crypto { get; set; }
+        public bool bitcoin { get; set; }
     }
     public class CurrencyNameTable
     {
@@ -81,7 +81,7 @@ namespace BTCPayServer.Services.Rates
                         catch { }
                     }
 
-                    foreach (var curr in _Currencies.Where(pair => pair.Value.Crypto))
+                    foreach (var curr in _Currencies.Where(pair => pair.Value.bitcoin))
                     {
                         AddCurrency(_CurrencyProviders, curr.Key, curr.Value.Divisibility, curr.Value.Symbol?? curr.Value.Code);
                     }
@@ -124,7 +124,7 @@ namespace BTCPayServer.Services.Rates
                 provider.CurrencyDecimalDigits = divisibility;
             }
 
-            if (currencyData.Crypto)
+            if (currencyData.bitcoin)
                 return value.ToString("C", provider);
             else
                 return value.ToString("C", provider) + $" ({currency})";
@@ -156,7 +156,7 @@ namespace BTCPayServer.Services.Rates
                     result = new CurrencyData()
                     {
                         Code = currency,
-                        Crypto = true,
+                        bitcoin = true,
                         Name = currency,
                         Divisibility = usd.Divisibility
                     };

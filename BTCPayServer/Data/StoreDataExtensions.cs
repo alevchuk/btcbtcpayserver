@@ -21,9 +21,9 @@ namespace BTCPayServer.Data
         {
             PaymentMethodId[] paymentMethodIds = storeData.GetEnabledPaymentIds(networks);
 
-            var defaultPaymentId = string.IsNullOrEmpty(storeData.DefaultCrypto) ? null : PaymentMethodId.Parse(storeData.DefaultCrypto);
+            var defaultPaymentId = string.IsNullOrEmpty(storeData.Defaultbitcoin) ? null : PaymentMethodId.Parse(storeData.Defaultbitcoin);
             var chosen = paymentMethodIds.FirstOrDefault(f => f == defaultPaymentId) ??
-                         paymentMethodIds.FirstOrDefault(f => f.CryptoCode == defaultPaymentId?.CryptoCode) ??
+                         paymentMethodIds.FirstOrDefault(f => f.bitcoinCode == defaultPaymentId?.bitcoinCode) ??
                          paymentMethodIds.FirstOrDefault();
             return chosen;
         }
@@ -33,8 +33,8 @@ namespace BTCPayServer.Data
             var excludeFilter = storeData.GetStoreBlob().GetExcludedPaymentMethods();
             var paymentMethodIds = storeData.GetSupportedPaymentMethods(networks).Select(p => p.PaymentId)
                                 .Where(a => !excludeFilter.Match(a))
-                                .OrderByDescending(a => a.CryptoCode == "BTC")
-                                .ThenBy(a => a.CryptoCode)
+                                .OrderByDescending(a => a.bitcoinCode == "BTC")
+                                .ThenBy(a => a.bitcoinCode)
                                 .ThenBy(a => a.PaymentType == PaymentTypes.LightningLike ? 1 : 0)
                                 .ToArray();
             return paymentMethodIds;
@@ -42,7 +42,7 @@ namespace BTCPayServer.Data
 
         public static void SetDefaultPaymentId(this StoreData storeData, PaymentMethodId defaultPaymentId)
         {
-            storeData.DefaultCrypto = defaultPaymentId.ToString();
+            storeData.Defaultbitcoin = defaultPaymentId.ToString();
         }
 #pragma warning restore CS0618
 
@@ -87,7 +87,7 @@ namespace BTCPayServer.Data
                 foreach (var strat in strategies.Properties())
                 {
                     var paymentMethodId = PaymentMethodId.Parse(strat.Name);
-                    var network = networks.GetNetwork<BTCPayNetworkBase>(paymentMethodId.CryptoCode);
+                    var network = networks.GetNetwork<BTCPayNetworkBase>(paymentMethodId.bitcoinCode);
                     if (network != null)
                     {
                         if (network == networks.BTC && paymentMethodId.PaymentType == PaymentTypes.BTCLike && btcReturned)

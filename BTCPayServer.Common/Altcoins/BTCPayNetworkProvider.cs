@@ -22,16 +22,16 @@ namespace BTCPayServer
             }
         }
 
-        BTCPayNetworkProvider(BTCPayNetworkProvider unfiltered, string[] cryptoCodes)
+        BTCPayNetworkProvider(BTCPayNetworkProvider unfiltered, string[] bitcoinCodes)
         {
             UnfilteredNetworks = unfiltered.UnfilteredNetworks ?? unfiltered;
             NetworkType = unfiltered.NetworkType;
             _NBXplorerNetworkProvider = new NBXplorerNetworkProvider(unfiltered.NetworkType);
             _Networks = new Dictionary<string, BTCPayNetworkBase>();
-            cryptoCodes = cryptoCodes.Select(c => c.ToUpperInvariant()).ToArray();
+            bitcoinCodes = bitcoinCodes.Select(c => c.ToUpperInvariant()).ToArray();
             foreach (var network in unfiltered._Networks)
             {
-                if(cryptoCodes.Contains(network.Key))
+                if(bitcoinCodes.Contains(network.Key))
                 {
                     _Networks.Add(network.Key, network.Value);
                 }
@@ -77,19 +77,19 @@ namespace BTCPayServer
                 }
             }
 
-            // Disabled because of https://twitter.com/Cryptopia_NZ/status/1085084168852291586
+            // Disabled because of https://twitter.com/bitcoinpia_NZ/status/1085084168852291586
             //InitBitcoinplus();
             //InitUfo();
         }
 
         /// <summary>
-        /// Keep only the specified crypto
+        /// Keep only the specified bitcoin
         /// </summary>
-        /// <param name="cryptoCodes">Crypto to support</param>
+        /// <param name="bitcoinCodes">bitcoin to support</param>
         /// <returns></returns>
-        public BTCPayNetworkProvider Filter(string[] cryptoCodes)
+        public BTCPayNetworkProvider Filter(string[] bitcoinCodes)
         {
-            return new BTCPayNetworkProvider(this, cryptoCodes);
+            return new BTCPayNetworkProvider(this, bitcoinCodes);
         }
 
         [Obsolete("To use only for legacy stuff")]
@@ -103,7 +103,7 @@ namespace BTCPayServer
         }
         public void Add(BTCPayNetworkBase network)
         {
-            _Networks.Add(network.CryptoCode.ToUpperInvariant(), network);
+            _Networks.Add(network.bitcoinCode.ToUpperInvariant(), network);
         }
 
         public IEnumerable<BTCPayNetworkBase> GetAll()
@@ -111,21 +111,21 @@ namespace BTCPayServer
             return _Networks.Values.ToArray();
         }
 
-        public bool Support(string cryptoCode)
+        public bool Support(string bitcoinCode)
         {
-            return _Networks.ContainsKey(cryptoCode.ToUpperInvariant());
+            return _Networks.ContainsKey(bitcoinCode.ToUpperInvariant());
         }
-        public BTCPayNetworkBase GetNetwork(string cryptoCode)
+        public BTCPayNetworkBase GetNetwork(string bitcoinCode)
         {
-            return GetNetwork<BTCPayNetworkBase>(cryptoCode.ToUpperInvariant());
+            return GetNetwork<BTCPayNetworkBase>(bitcoinCode.ToUpperInvariant());
         }
-        public T GetNetwork<T>(string cryptoCode) where T: BTCPayNetworkBase
+        public T GetNetwork<T>(string bitcoinCode) where T: BTCPayNetworkBase
         {
-            if (cryptoCode == null)
-                throw new ArgumentNullException(nameof(cryptoCode));
-            if(!_Networks.TryGetValue(cryptoCode.ToUpperInvariant(), out BTCPayNetworkBase network))
+            if (bitcoinCode == null)
+                throw new ArgumentNullException(nameof(bitcoinCode));
+            if(!_Networks.TryGetValue(bitcoinCode.ToUpperInvariant(), out BTCPayNetworkBase network))
             {
-                if (cryptoCode == "XBT")
+                if (bitcoinCode == "XBT")
                     return GetNetwork<T>("BTC");
             }
             return network as T;

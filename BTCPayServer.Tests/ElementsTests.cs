@@ -101,7 +101,7 @@ namespace BTCPayServer.Tests
                 //test: register 2 assets on the same elements network and make sure paying an invoice on one does not affect the other in any way
                 var invoice = await user.BitPay.CreateInvoiceAsync(new Invoice(0.1m, "BTC"));
                 Assert.Equal(3, invoice.SupportedTransactionCurrencies.Count);
-                var ci = invoice.CryptoInfo.Single(info => info.CryptoCode.Equals("LBTC"));
+                var ci = invoice.bitcoinInfo.Single(info => info.bitcoinCode.Equals("LBTC"));
                 //1 lbtc = 1 btc
                 Assert.Equal(1, ci.Rate);
                 var star = await tester.LBTCExplorerNode.SendCommandAsync("sendtoaddress", ci.Address,ci.Due, "", "", false, true,
@@ -111,12 +111,12 @@ namespace BTCPayServer.Tests
                 {
                     var localInvoice = user.BitPay.GetInvoice(invoice.Id, Facade.Merchant);
                     Assert.Equal("paid", localInvoice.Status);
-                    Assert.Single(localInvoice.CryptoInfo.Single(info => info.CryptoCode.Equals("LBTC")).Payments);
+                    Assert.Single(localInvoice.bitcoinInfo.Single(info => info.bitcoinCode.Equals("LBTC")).Payments);
                 });
                 
                 invoice = await user.BitPay.CreateInvoiceAsync(new Invoice(0.1m, "BTC"));
                 
-                ci = invoice.CryptoInfo.Single(info => info.CryptoCode.Equals("USDT"));
+                ci = invoice.bitcoinInfo.Single(info => info.bitcoinCode.Equals("USDT"));
                 Assert.Equal(3, invoice.SupportedTransactionCurrencies.Count);
                 star = await tester.LBTCExplorerNode.SendCommandAsync("sendtoaddress", ci.Address, ci.Due, "", "", false, true,
                     1, "UNSET", tether.AssetId);
@@ -125,15 +125,15 @@ namespace BTCPayServer.Tests
                 {
                     var localInvoice = user.BitPay.GetInvoice(invoice.Id, Facade.Merchant);
                     Assert.Equal("paid", localInvoice.Status);
-                    Assert.Single(localInvoice.CryptoInfo.Single(info => info.CryptoCode.Equals("USDT", StringComparison.InvariantCultureIgnoreCase)).Payments);
+                    Assert.Single(localInvoice.bitcoinInfo.Single(info => info.bitcoinCode.Equals("USDT", StringComparison.InvariantCultureIgnoreCase)).Payments);
                 });
 
                 //test precision based on https://github.com/ElementsProject/elements/issues/805#issuecomment-601277606
-                var etbBip21 = new BitcoinUrlBuilder(invoice.CryptoInfo.Single(info => info.CryptoCode == "ETB").PaymentUrls.BIP21.Replace(etb.UriScheme, "bitcoin"), etb.NBitcoinNetwork);
+                var etbBip21 = new BitcoinUrlBuilder(invoice.bitcoinInfo.Single(info => info.bitcoinCode == "ETB").PaymentUrls.BIP21.Replace(etb.UriScheme, "bitcoin"), etb.NBitcoinNetwork);
                 //precision = 2, 1ETB  = 0.00000100
                 Assert.Equal(  100,etbBip21.Amount.Satoshi); 
                 
-                var lbtcBip21 = new BitcoinUrlBuilder(invoice.CryptoInfo.Single(info => info.CryptoCode == "LBTC").PaymentUrls.BIP21.Replace(lbtc.UriScheme, "bitcoin"), lbtc.NBitcoinNetwork);
+                var lbtcBip21 = new BitcoinUrlBuilder(invoice.bitcoinInfo.Single(info => info.bitcoinCode == "LBTC").PaymentUrls.BIP21.Replace(lbtc.UriScheme, "bitcoin"), lbtc.NBitcoinNetwork);
                 //precision = 8, 0.1 = 0.1
                 Assert.Equal(  0.1m,lbtcBip21.Amount.ToDecimal(MoneyUnit.BTC));
             }

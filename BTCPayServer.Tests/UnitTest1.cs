@@ -37,7 +37,7 @@ using BTCPayServer.Models;
 using BTCPayServer.Rating;
 using BTCPayServer.Validation;
 using ExchangeSharp;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.bitcoingraphy.X509Certificates;
 using BTCPayServer.Lightning;
 using BTCPayServer.Models.WalletViewModels;
 using System.Security.Claims;
@@ -199,7 +199,7 @@ namespace BTCPayServer.Tests
 
         [Fact]
         [Trait("Fast", "Fast")]
-        public void CanCalculateCryptoDue2()
+        public void CanCalculatebitcoinDue2()
         {
 #pragma warning disable CS0618
             var dummy = new Key().PubKey.GetAddress(ScriptPubKeyType.Legacy, Network.RegTest).ToString();
@@ -216,13 +216,13 @@ namespace BTCPayServer.Tests
             invoiceEntity.Payments = new System.Collections.Generic.List<PaymentEntity>();
             invoiceEntity.ProductInformation = new ProductInformation() {Price = 100};
             PaymentMethodDictionary paymentMethods = new PaymentMethodDictionary();
-            paymentMethods.Add(new PaymentMethod() {Network = networkBTC, CryptoCode = "BTC", Rate = 10513.44m,}
+            paymentMethods.Add(new PaymentMethod() {Network = networkBTC, bitcoinCode = "BTC", Rate = 10513.44m,}
                 .SetPaymentMethodDetails(
                     new BTCPayServer.Payments.Bitcoin.BitcoinLikeOnChainPaymentMethod()
                     {
                         NextNetworkFee = Money.Coins(0.00000100m), DepositAddress = dummy
                     }));
-            paymentMethods.Add(new PaymentMethod() {Network = networkLTC, CryptoCode = "LTC", Rate = 216.79m}
+            paymentMethods.Add(new PaymentMethod() {Network = networkLTC, bitcoinCode = "LTC", Rate = 216.79m}
                 .SetPaymentMethodDetails(
                     new BTCPayServer.Payments.Bitcoin.BitcoinLikeOnChainPaymentMethod()
                     {
@@ -237,11 +237,11 @@ namespace BTCPayServer.Tests
                 new PaymentEntity()
                     {
                         Accounted = true,
-                        CryptoCode = "BTC",
+                        bitcoinCode = "BTC",
                         NetworkFee = 0.00000100m,
                         Network = networkProvider.GetNetwork("BTC"),
                     }
-                    .SetCryptoPaymentData(new BitcoinLikePaymentData()
+                    .SetbitcoinPaymentData(new BitcoinLikePaymentData()
                     {
                         Network = networkProvider.GetNetwork("BTC"),
                         Output = new TxOut() {Value = Money.Coins(0.00151263m)}
@@ -251,11 +251,11 @@ namespace BTCPayServer.Tests
                 new PaymentEntity()
                     {
                         Accounted = true,
-                        CryptoCode = "BTC",
+                        bitcoinCode = "BTC",
                         NetworkFee = 0.00000100m,
                         Network = networkProvider.GetNetwork("BTC")
                     }
-                    .SetCryptoPaymentData(new BitcoinLikePaymentData()
+                    .SetbitcoinPaymentData(new BitcoinLikePaymentData()
                     {
                         Network = networkProvider.GetNetwork("BTC"), Output = new TxOut() {Value = accounting.Due}
                     }));
@@ -271,7 +271,7 @@ namespace BTCPayServer.Tests
             Assert.True(accounting.DueUncapped < Money.Zero);
 
             var paymentMethod = InvoiceWatcher.GetNearestClearedPayment(paymentMethods, out var accounting2);
-            Assert.Equal(btc.CryptoCode, paymentMethod.CryptoCode);
+            Assert.Equal(btc.bitcoinCode, paymentMethod.bitcoinCode);
 #pragma warning restore CS0618
         }
 
@@ -316,7 +316,7 @@ namespace BTCPayServer.Tests
 
         [Fact]
         [Trait("Fast", "Fast")]
-        public void CanCalculateCryptoDue()
+        public void CanCalculatebitcoinDue()
         {
             var networkProvider = new BTCPayNetworkProvider(NetworkType.Regtest);
             var paymentMethodHandlerDictionary = new PaymentMethodHandlerDictionary(new IPaymentMethodHandler[]
@@ -330,7 +330,7 @@ namespace BTCPayServer.Tests
             entity.Payments = new System.Collections.Generic.List<PaymentEntity>();
             entity.SetPaymentMethod(new PaymentMethod()
             {
-                CryptoCode = "BTC", Rate = 5000, NextNetworkFee = Money.Coins(0.1m)
+                bitcoinCode = "BTC", Rate = 5000, NextNetworkFee = Money.Coins(0.1m)
             });
             entity.ProductInformation = new ProductInformation() {Price = 5000};
 
@@ -379,9 +379,9 @@ namespace BTCPayServer.Tests
             entity.ProductInformation = new ProductInformation() {Price = 5000};
             PaymentMethodDictionary paymentMethods = new PaymentMethodDictionary();
             paymentMethods.Add(
-                new PaymentMethod() {CryptoCode = "BTC", Rate = 1000, NextNetworkFee = Money.Coins(0.1m)});
+                new PaymentMethod() {bitcoinCode = "BTC", Rate = 1000, NextNetworkFee = Money.Coins(0.1m)});
             paymentMethods.Add(
-                new PaymentMethod() {CryptoCode = "LTC", Rate = 500, NextNetworkFee = Money.Coins(0.01m)});
+                new PaymentMethod() {bitcoinCode = "LTC", Rate = 500, NextNetworkFee = Money.Coins(0.01m)});
             entity.SetPaymentMethods(paymentMethods);
             entity.Payments = new List<PaymentEntity>();
             paymentMethod = entity.GetPaymentMethod(new PaymentMethodId("BTC", PaymentTypes.BTCLike));
@@ -395,7 +395,7 @@ namespace BTCPayServer.Tests
 
             entity.Payments.Add(new PaymentEntity()
             {
-                CryptoCode = "BTC",
+                bitcoinCode = "BTC",
                 Output = new TxOut(Money.Coins(1.0m), new Key()),
                 Accounted = true,
                 NetworkFee = 0.1m
@@ -404,7 +404,7 @@ namespace BTCPayServer.Tests
             paymentMethod = entity.GetPaymentMethod(new PaymentMethodId("BTC", PaymentTypes.BTCLike));
             accounting = paymentMethod.Calculate();
             Assert.Equal(Money.Coins(4.2m), accounting.Due);
-            Assert.Equal(Money.Coins(1.0m), accounting.CryptoPaid);
+            Assert.Equal(Money.Coins(1.0m), accounting.bitcoinPaid);
             Assert.Equal(Money.Coins(1.0m), accounting.Paid);
             Assert.Equal(Money.Coins(5.2m), accounting.TotalDue);
             Assert.Equal(2, accounting.TxRequired);
@@ -412,13 +412,13 @@ namespace BTCPayServer.Tests
             paymentMethod = entity.GetPaymentMethod(new PaymentMethodId("LTC", PaymentTypes.BTCLike));
             accounting = paymentMethod.Calculate();
             Assert.Equal(Money.Coins(10.01m + 0.1m * 2 - 2.0m /* 8.21m */), accounting.Due);
-            Assert.Equal(Money.Coins(0.0m), accounting.CryptoPaid);
+            Assert.Equal(Money.Coins(0.0m), accounting.bitcoinPaid);
             Assert.Equal(Money.Coins(2.0m), accounting.Paid);
             Assert.Equal(Money.Coins(10.01m + 0.1m * 2), accounting.TotalDue);
 
             entity.Payments.Add(new PaymentEntity()
             {
-                CryptoCode = "LTC",
+                bitcoinCode = "LTC",
                 Output = new TxOut(Money.Coins(1.0m), new Key()),
                 Accounted = true,
                 NetworkFee = 0.01m
@@ -427,7 +427,7 @@ namespace BTCPayServer.Tests
             paymentMethod = entity.GetPaymentMethod(new PaymentMethodId("BTC", PaymentTypes.BTCLike));
             accounting = paymentMethod.Calculate();
             Assert.Equal(Money.Coins(4.2m - 0.5m + 0.01m / 2), accounting.Due);
-            Assert.Equal(Money.Coins(1.0m), accounting.CryptoPaid);
+            Assert.Equal(Money.Coins(1.0m), accounting.bitcoinPaid);
             Assert.Equal(Money.Coins(1.5m), accounting.Paid);
             Assert.Equal(Money.Coins(5.2m + 0.01m / 2), accounting.TotalDue); // The fee for LTC added
             Assert.Equal(2, accounting.TxRequired);
@@ -435,7 +435,7 @@ namespace BTCPayServer.Tests
             paymentMethod = entity.GetPaymentMethod(new PaymentMethodId("LTC", PaymentTypes.BTCLike));
             accounting = paymentMethod.Calculate();
             Assert.Equal(Money.Coins(8.21m - 1.0m + 0.01m), accounting.Due);
-            Assert.Equal(Money.Coins(1.0m), accounting.CryptoPaid);
+            Assert.Equal(Money.Coins(1.0m), accounting.bitcoinPaid);
             Assert.Equal(Money.Coins(3.0m), accounting.Paid);
             Assert.Equal(Money.Coins(10.01m + 0.1m * 2 + 0.01m), accounting.TotalDue);
             Assert.Equal(2, accounting.TxRequired);
@@ -443,13 +443,13 @@ namespace BTCPayServer.Tests
             var remaining = Money.Coins(4.2m - 0.5m + 0.01m / 2);
             entity.Payments.Add(new PaymentEntity()
             {
-                CryptoCode = "BTC", Output = new TxOut(remaining, new Key()), Accounted = true, NetworkFee = 0.1m
+                bitcoinCode = "BTC", Output = new TxOut(remaining, new Key()), Accounted = true, NetworkFee = 0.1m
             });
 
             paymentMethod = entity.GetPaymentMethod(new PaymentMethodId("BTC", PaymentTypes.BTCLike));
             accounting = paymentMethod.Calculate();
             Assert.Equal(Money.Zero, accounting.Due);
-            Assert.Equal(Money.Coins(1.0m) + remaining, accounting.CryptoPaid);
+            Assert.Equal(Money.Coins(1.0m) + remaining, accounting.bitcoinPaid);
             Assert.Equal(Money.Coins(1.5m) + remaining, accounting.Paid);
             Assert.Equal(Money.Coins(5.2m + 0.01m / 2), accounting.TotalDue);
             Assert.Equal(accounting.Paid, accounting.TotalDue);
@@ -458,7 +458,7 @@ namespace BTCPayServer.Tests
             paymentMethod = entity.GetPaymentMethod(new PaymentMethodId("LTC", PaymentTypes.BTCLike));
             accounting = paymentMethod.Calculate();
             Assert.Equal(Money.Zero, accounting.Due);
-            Assert.Equal(Money.Coins(1.0m), accounting.CryptoPaid);
+            Assert.Equal(Money.Coins(1.0m), accounting.bitcoinPaid);
             Assert.Equal(Money.Coins(3.0m) + remaining * 2, accounting.Paid);
             // Paying 2 BTC fee, LTC fee removed because fully paid
             Assert.Equal(Money.Coins(10.01m + 0.1m * 2 + 0.1m * 2 /* + 0.01m no need to pay this fee anymore */),
@@ -518,7 +518,7 @@ namespace BTCPayServer.Tests
             entity.Payments = new List<PaymentEntity>();
             entity.SetPaymentMethod(new PaymentMethod()
             {
-                CryptoCode = "BTC", Rate = 5000, NextNetworkFee = Money.Coins(0.1m)
+                bitcoinCode = "BTC", Rate = 5000, NextNetworkFee = Money.Coins(0.1m)
             });
             entity.ProductInformation = new ProductInformation() {Price = 5000};
             entity.PaymentTolerance = 0;
@@ -570,7 +570,7 @@ namespace BTCPayServer.Tests
                     }, Facade.Merchant);
 
                 // Pays 75%
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, tester.ExplorerNode.Network);
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, tester.ExplorerNode.Network);
                 tester.ExplorerNode.SendToAddress(invoiceAddress,
                     Money.Satoshis((decimal)invoice.BtcDue.Satoshi * 0.75m));
 
@@ -1167,13 +1167,13 @@ namespace BTCPayServer.Tests
                     }, Facade.Merchant);
 
                 var cashCow = tester.ExplorerNode;
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, cashCow.Network);
-                var firstPayment = invoice.CryptoInfo[0].TotalDue - Money.Satoshis(10);
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, cashCow.Network);
+                var firstPayment = invoice.bitcoinInfo[0].TotalDue - Money.Satoshis(10);
                 cashCow.SendToAddress(invoiceAddress, firstPayment);
                 TestUtils.Eventually(() =>
                 {
                     invoice = acc.BitPay.GetInvoice(invoice.Id);
-                    Assert.Equal(firstPayment, invoice.CryptoInfo[0].Paid);
+                    Assert.Equal(firstPayment, invoice.bitcoinInfo[0].Paid);
                 });
 
 
@@ -1618,7 +1618,7 @@ namespace BTCPayServer.Tests
                     ItemDesc = "Some description",
                     FullNotifications = true
                 }, Facade.Merchant);
-            return invoice2.CryptoInfo[0].Rate;
+            return invoice2.bitcoinInfo[0].Rate;
         }
 
         [Fact(Timeout = TestTimeout)]
@@ -1745,39 +1745,39 @@ namespace BTCPayServer.Tests
                         FullNotifications = true
                     }, Facade.Merchant);
 
-                Assert.Single(invoice.CryptoInfo);
-                Assert.Equal("LTC", invoice.CryptoInfo[0].CryptoCode);
+                Assert.Single(invoice.bitcoinInfo);
+                Assert.Equal("LTC", invoice.bitcoinInfo[0].bitcoinCode);
                 Assert.True(invoice.PaymentCodes.ContainsKey("LTC"));
                 Assert.True(invoice.SupportedTransactionCurrencies.ContainsKey("LTC"));
                 Assert.True(invoice.SupportedTransactionCurrencies["LTC"].Enabled);
                 Assert.True(invoice.PaymentSubtotals.ContainsKey("LTC"));
                 Assert.True(invoice.PaymentTotals.ContainsKey("LTC"));
                 var cashCow = tester.LTCExplorerNode;
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, cashCow.Network);
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, cashCow.Network);
                 var firstPayment = Money.Coins(0.1m);
                 cashCow.SendToAddress(invoiceAddress, firstPayment);
                 TestUtils.Eventually(() =>
                 {
                     invoice = user.BitPay.GetInvoice(invoice.Id);
-                    Assert.Equal(firstPayment, invoice.CryptoInfo[0].Paid);
+                    Assert.Equal(firstPayment, invoice.bitcoinInfo[0].Paid);
                 });
 
-                Assert.Single(invoice.CryptoInfo); // Only BTC should be presented
+                Assert.Single(invoice.bitcoinInfo); // Only BTC should be presented
 
                 var controller = tester.PayTester.GetController<InvoiceController>(null);
                 var checkout =
                     (Models.InvoicingModels.PaymentModel)((JsonResult)controller.GetStatus(invoice.Id, null)
                         .GetAwaiter().GetResult()).Value;
-                Assert.Single(checkout.AvailableCryptos);
-                Assert.Equal("LTC", checkout.CryptoCode);
+                Assert.Single(checkout.Availablebitcoins);
+                Assert.Equal("LTC", checkout.bitcoinCode);
 
                 //////////////////////
 
                 // Despite it is called BitcoinAddress it should be LTC because BTC is not available
                 Assert.Null(invoice.BitcoinAddress);
                 Assert.NotEqual(1.0m, invoice.Rate);
-                Assert.NotEqual(invoice.BtcDue, invoice.CryptoInfo[0].Due); // Should be BTC rate
-                cashCow.SendToAddress(invoiceAddress, invoice.CryptoInfo[0].Due);
+                Assert.NotEqual(invoice.BtcDue, invoice.bitcoinInfo[0].Due); // Should be BTC rate
+                cashCow.SendToAddress(invoiceAddress, invoice.bitcoinInfo[0].Due);
 
                 TestUtils.Eventually(() =>
                 {
@@ -1892,14 +1892,14 @@ namespace BTCPayServer.Tests
                     Assert.True(invoice.BtcPaid == firstPayment);
                 });
 
-                Assert.Single(invoice.CryptoInfo); // Only BTC should be presented
+                Assert.Single(invoice.bitcoinInfo); // Only BTC should be presented
 
                 var controller = tester.PayTester.GetController<InvoiceController>(null);
                 var checkout =
                     (Models.InvoicingModels.PaymentModel)((JsonResult)controller.GetStatus(invoice.Id, null)
                         .GetAwaiter().GetResult()).Value;
-                Assert.Single(checkout.AvailableCryptos);
-                Assert.Equal("BTC", checkout.CryptoCode);
+                Assert.Single(checkout.Availablebitcoins);
+                Assert.Equal("BTC", checkout.bitcoinCode);
 
                 Assert.Single(invoice.PaymentCodes);
                 Assert.Single(invoice.SupportedTransactionCurrencies);
@@ -1938,10 +1938,10 @@ namespace BTCPayServer.Tests
                 });
 
                 cashCow = tester.LTCExplorerNode;
-                var ltcCryptoInfo = invoice.CryptoInfo.FirstOrDefault(c => c.CryptoCode == "LTC");
-                Assert.NotNull(ltcCryptoInfo);
-                invoiceAddress = BitcoinAddress.Create(ltcCryptoInfo.Address, cashCow.Network);
-                var secondPayment = Money.Coins(decimal.Parse(ltcCryptoInfo.Due, CultureInfo.InvariantCulture));
+                var ltcbitcoinInfo = invoice.bitcoinInfo.FirstOrDefault(c => c.bitcoinCode == "LTC");
+                Assert.NotNull(ltcbitcoinInfo);
+                invoiceAddress = BitcoinAddress.Create(ltcbitcoinInfo.Address, cashCow.Network);
+                var secondPayment = Money.Coins(decimal.Parse(ltcbitcoinInfo.Due, CultureInfo.InvariantCulture));
                 cashCow.Generate(4); // LTC is not worth a lot, so just to make sure we have money...
                 cashCow.SendToAddress(invoiceAddress, secondPayment);
                 Logs.Tester.LogInformation("Second payment sent to " + invoiceAddress);
@@ -1949,9 +1949,9 @@ namespace BTCPayServer.Tests
                 {
                     invoice = user.BitPay.GetInvoice(invoice.Id);
                     Assert.Equal(Money.Zero, invoice.BtcDue);
-                    var ltcPaid = invoice.CryptoInfo.First(c => c.CryptoCode == "LTC");
+                    var ltcPaid = invoice.bitcoinInfo.First(c => c.bitcoinCode == "LTC");
                     Assert.Equal(Money.Zero, ltcPaid.Due);
-                    Assert.Equal(secondPayment, ltcPaid.CryptoPaid);
+                    Assert.Equal(secondPayment, ltcPaid.bitcoinPaid);
                     Assert.Equal("paid", invoice.Status);
                     Assert.False((bool)((JValue)invoice.ExceptionStatus).Value);
                 });
@@ -1959,8 +1959,8 @@ namespace BTCPayServer.Tests
                 controller = tester.PayTester.GetController<InvoiceController>(null);
                 checkout = (Models.InvoicingModels.PaymentModel)((JsonResult)controller.GetStatus(invoice.Id, "LTC")
                     .GetAwaiter().GetResult()).Value;
-                Assert.Equal(2, checkout.AvailableCryptos.Count);
-                Assert.Equal("LTC", checkout.CryptoCode);
+                Assert.Equal(2, checkout.Availablebitcoins.Count);
+                Assert.Equal("LTC", checkout.bitcoinCode);
 
 
                 Assert.Equal(2, invoice.PaymentCodes.Count());
@@ -1991,8 +1991,8 @@ namespace BTCPayServer.Tests
                         }
                     }, Facade.Merchant);
 
-                Assert.Single(invoice.CryptoInfo.Where(c => c.CryptoCode == "BTC"));
-                Assert.Empty(invoice.CryptoInfo.Where(c => c.CryptoCode == "LTC"));
+                Assert.Single(invoice.bitcoinInfo.Where(c => c.bitcoinCode == "BTC"));
+                Assert.Empty(invoice.bitcoinInfo.Where(c => c.bitcoinCode == "LTC"));
             }
         }
         
@@ -2003,10 +2003,10 @@ namespace BTCPayServer.Tests
             var btcPayNetworkProvider = new BTCPayNetworkProvider(NetworkType.Regtest);
             foreach (var network in btcPayNetworkProvider.GetAll())
             {
-                var cd = CurrencyNameTable.Instance.GetCurrencyData(network.CryptoCode, false);
+                var cd = CurrencyNameTable.Instance.GetCurrencyData(network.bitcoinCode, false);
                 Assert.NotNull(cd);
                 Assert.Equal(network.Divisibility, cd.Divisibility);
-                Assert.True(cd.Crypto);
+                Assert.True(cd.bitcoin);
             }
         }
 
@@ -2154,7 +2154,7 @@ namespace BTCPayServer.Tests
                         FullNotifications = true
                     }, Facade.Merchant);
 
-                Assert.Equal(3, invoice.CryptoInfo.Length);
+                Assert.Equal(3, invoice.bitcoinInfo.Length);
 
                 var controller = user.GetController<StoresController>();
                 var lightningVM =
@@ -2197,8 +2197,8 @@ namespace BTCPayServer.Tests
                         FullNotifications = true
                     }, Facade.Merchant);
 
-                Assert.Single(invoice.CryptoInfo);
-                Assert.Equal("LTC", invoice.CryptoInfo[0].CryptoCode);
+                Assert.Single(invoice.bitcoinInfo);
+                Assert.Equal("LTC", invoice.bitcoinInfo[0].bitcoinCode);
 
                 // Removing the derivation scheme, should redirect to store page
                 var oldScheme = derivationVM.DerivationScheme;
@@ -2260,7 +2260,7 @@ namespace BTCPayServer.Tests
                     }, Facade.Merchant);
 
                 tester.ExplorerNode.Generate(1);
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo.First(c => c.CryptoCode == "BTC").Address,
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo.First(c => c.bitcoinCode == "BTC").Address,
                     tester.ExplorerNode.Network);
                 tester.ExplorerNode.SendToAddress(invoiceAddress, Money.Coins(1m));
                 TestUtils.Eventually(() =>
@@ -2328,8 +2328,8 @@ namespace BTCPayServer.Tests
                         FullNotifications = true
                     }, Facade.Merchant);
 
-                Assert.Single(invoice.CryptoInfo);
-                Assert.Equal(PaymentTypes.BTCLike.ToString(), invoice.CryptoInfo[0].PaymentType);
+                Assert.Single(invoice.bitcoinInfo);
+                Assert.Equal(PaymentTypes.BTCLike.ToString(), invoice.bitcoinInfo[0].PaymentType);
             }
         }
 
@@ -2363,8 +2363,8 @@ namespace BTCPayServer.Tests
                         FullNotifications = true
                     }, Facade.Merchant);
 
-                Assert.Single(invoice.CryptoInfo);
-                Assert.Equal(PaymentTypes.LightningLike.ToString(), invoice.CryptoInfo[0].PaymentType);
+                Assert.Single(invoice.bitcoinInfo);
+                Assert.Equal(PaymentTypes.LightningLike.ToString(), invoice.bitcoinInfo[0].PaymentType);
             }
         }
 
@@ -2575,17 +2575,17 @@ normal:
                 invoices = user.BitPay.GetInvoices();
                 var normalInvoice = invoices.Single(invoice => invoice.ItemCode == "normal");
                 var btcOnlyInvoice = invoices.Single(invoice => invoice.ItemCode == "btconly");
-                Assert.Single(btcOnlyInvoice.CryptoInfo);
+                Assert.Single(btcOnlyInvoice.bitcoinInfo);
                 Assert.Equal("BTC",
-                    btcOnlyInvoice.CryptoInfo.First().CryptoCode);
+                    btcOnlyInvoice.bitcoinInfo.First().bitcoinCode);
                 Assert.Equal(PaymentTypes.BTCLike.ToString(),
-                    btcOnlyInvoice.CryptoInfo.First().PaymentType);
+                    btcOnlyInvoice.bitcoinInfo.First().PaymentType);
 
-                Assert.Equal(2, normalInvoice.CryptoInfo.Length);
+                Assert.Equal(2, normalInvoice.bitcoinInfo.Length);
                 Assert.Contains(
-                    normalInvoice.CryptoInfo,
+                    normalInvoice.bitcoinInfo,
                     s => PaymentTypes.BTCLike.ToString() == s.PaymentType &&  new[] {"BTC", "LTC"}.Contains(
-                             s.CryptoCode));
+                             s.bitcoinCode));
             }
         }
 
@@ -2799,9 +2799,9 @@ normal:
                 Assert.Equal("[]", result.Content);
 
                 var cashCow = tester.ExplorerNode;
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, cashCow.Network);
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, cashCow.Network);
                 //
-                var firstPayment = invoice.CryptoInfo[0].TotalDue - 3 * networkFee;
+                var firstPayment = invoice.bitcoinInfo[0].TotalDue - 3 * networkFee;
                 cashCow.SendToAddress(invoiceAddress, firstPayment);
                 Thread.Sleep(1000); // prevent race conditions, ordering payments
                 // look if you can reduce thread sleep, this was min value for me
@@ -2885,9 +2885,9 @@ normal:
 
                     var missingMoney = Money.Satoshis(5000).ToDecimal(MoneyUnit.BTC);
                     var cashCow = tester.ExplorerNode;
-                    var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, cashCow.Network);
+                    var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, cashCow.Network);
 
-                    var due = Money.Parse(invoice.CryptoInfo[0].Due);
+                    var due = Money.Parse(invoice.bitcoinInfo[0].Due);
                     var productPartDue = (invoice.Price / invoice.Rate);
                     Logs.Tester.LogInformation(
                         $"Product part due is {productPartDue} and due {due} with network fee {nextNetworkFee}");
@@ -2898,9 +2898,9 @@ normal:
                     await TestUtils.EventuallyAsync(async () =>
                     {
                         invoice = user.BitPay.GetInvoice(invoice.Id);
-                        due = Money.Parse(invoice.CryptoInfo[0].Due);
+                        due = Money.Parse(invoice.bitcoinInfo[0].Due);
                         Logs.Tester.LogInformation($"Remaining due after first payment: {due}");
-                        Assert.Equal(Money.Coins(firstPayment), Money.Parse(invoice.CryptoInfo[0].Paid));
+                        Assert.Equal(Money.Coins(firstPayment), Money.Parse(invoice.bitcoinInfo[0].Paid));
                         nextNetworkFee = (await tester.PayTester.InvoiceRepository.GetInvoice(invoice.Id))
                             .GetPaymentMethods()[btc]
                             .GetPaymentMethodDetails()
@@ -2919,7 +2919,7 @@ normal:
 
                         Assert.Equal(missingMoney + firstPaymentFee + nextNetworkFee, due.ToDecimal(MoneyUnit.BTC));
                         Assert.Equal(firstPayment + missingMoney + firstPaymentFee + nextNetworkFee,
-                            Money.Parse(invoice.CryptoInfo[0].TotalDue).ToDecimal(MoneyUnit.BTC));
+                            Money.Parse(invoice.bitcoinInfo[0].TotalDue).ToDecimal(MoneyUnit.BTC));
                     });
                     cashCow.SendToAddress(invoiceAddress, due);
                     Logs.Tester.LogInformation($"After payment of {due}, the invoice should be paid");
@@ -2955,8 +2955,8 @@ normal:
                     }, Facade.Merchant);
 
                 var cashCow = tester.ExplorerNode;
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, cashCow.Network);
-                var firstPayment = invoice.CryptoInfo[0].TotalDue - Money.Coins(0.001m);
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, cashCow.Network);
+                var firstPayment = invoice.bitcoinInfo[0].TotalDue - Money.Coins(0.001m);
                 cashCow.SendToAddress(invoiceAddress, firstPayment);
                 TestUtils.Eventually(() =>
                 {
@@ -3082,7 +3082,7 @@ normal:
                     }, Facade.Merchant);
                 var repo = tester.PayTester.GetService<InvoiceRepository>();
                 var ctx = tester.PayTester.GetService<ApplicationDbContextFactory>().CreateContext();
-                Assert.Equal(0, invoice.CryptoInfo[0].TxCount);
+                Assert.Equal(0, invoice.bitcoinInfo[0].TxCount);
                 Assert.True(invoice.MinerFees.ContainsKey("BTC"));
                 Assert.Contains(invoice.MinerFees["BTC"].SatoshiPerBytes, new[] {100.0m, 20.0m});
                 TestUtils.Eventually(() =>
@@ -3140,7 +3140,7 @@ normal:
                     Assert.Equal(firstPayment, localInvoice.BtcPaid);
                     txFee = localInvoice.BtcDue - invoice.BtcDue;
                     Assert.Equal("paidPartial", localInvoice.ExceptionStatus.ToString());
-                    Assert.Equal(1, localInvoice.CryptoInfo[0].TxCount);
+                    Assert.Equal(1, localInvoice.bitcoinInfo[0].TxCount);
                     Assert.NotEqual(localInvoice.BitcoinAddress, invoice.BitcoinAddress); //New address
                     Assert.True(IsMapped(invoice, ctx));
                     Assert.True(IsMapped(localInvoice, ctx));
@@ -3163,7 +3163,7 @@ normal:
                 {
                     var localInvoice = user.BitPay.GetInvoice(invoice.Id, Facade.Merchant);
                     Assert.Equal("paid", localInvoice.Status);
-                    Assert.Equal(2, localInvoice.CryptoInfo[0].TxCount);
+                    Assert.Equal(2, localInvoice.bitcoinInfo[0].TxCount);
                     Assert.Equal(firstPayment + secondPayment, localInvoice.BtcPaid);
                     Assert.Equal(Money.Zero, localInvoice.BtcDue);
                     Assert.Equal(localInvoice.BitcoinAddress, invoiceAddress.ToString()); //no new address generated
@@ -3337,14 +3337,14 @@ normal:
 
         [Fact(Timeout = TestTimeout)]
         [Trait("Integration", "Integration")]
-        public void CanGetRateCryptoCurrenciesByDefault()
+        public void CanGetRatebitcoinCurrenciesByDefault()
         {
             var provider = new BTCPayNetworkProvider(NetworkType.Mainnet);
             var factory = CreateBTCPayRateFactory();
             var fetcher = new RateFetcher(factory);
             var pairs =
                 provider.GetAll()
-                    .Select(c => new CurrencyPair(c.CryptoCode, "USD"))
+                    .Select(c => new CurrencyPair(c.bitcoinCode, "USD"))
                     .ToHashSet();
 
             var rules = new StoreBlob().GetDefaultRateRules(provider);

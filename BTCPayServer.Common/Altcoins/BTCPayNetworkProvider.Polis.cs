@@ -11,10 +11,10 @@ namespace BTCPayServer
     {
         public void InitPolis()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("POLIS");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("POLIS");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Polis",
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://blockbook.polispay.org/tx/{0}" : "https://blockbook.polispay.org/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
@@ -24,7 +24,7 @@ namespace BTCPayServer
                                 "POLIS_X = POLIS_BTC * BTC_X",
                                 "POLIS_BTC = polispay(POLIS_BTC)"
                 },
-                CryptoImagePath = "imlegacy/polis.png",
+                bitcoinImagePath = "imlegacy/polis.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("1997'") : new KeyPath("1'")
             });

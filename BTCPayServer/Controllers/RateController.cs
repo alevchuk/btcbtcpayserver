@@ -58,8 +58,8 @@ namespace BTCPayServer.Controllers
         {
             var supportedMethods = CurrentStore.GetSupportedPaymentMethods(_NetworkProvider);
 
-            var currencyCodes = supportedMethods.Where(method => !string.IsNullOrEmpty(method.PaymentId.CryptoCode))
-                .Select(method => method.PaymentId.CryptoCode).Distinct();
+            var currencyCodes = supportedMethods.Where(method => !string.IsNullOrEmpty(method.PaymentId.bitcoinCode))
+                .Select(method => method.PaymentId.bitcoinCode).Distinct();
 
             var currencypairs = BuildCurrencyPairs(currencyCodes, baseCurrency);
 
@@ -140,7 +140,7 @@ namespace BTCPayServer.Controllers
                             .Select(r =>
                             new Rate()
                             {
-                                CryptoCode = r.Pair.Left,
+                                bitcoinCode = r.Pair.Left,
                                 Code = r.Pair.Right,
                                 CurrencyPair = r.Pair.ToString(),
                                 Name = _CurrencyNameTable.GetCurrencyData(r.Pair.Right, true).Name,
@@ -148,7 +148,7 @@ namespace BTCPayServer.Controllers
                             }).Where(n => n.Name != null).ToArray());
         }
 
-        private static string BuildCurrencyPairs(IEnumerable<string> currencyCodes, string baseCrypto)
+        private static string BuildCurrencyPairs(IEnumerable<string> currencyCodes, string basebitcoin)
         {
             StringBuilder currencyPairsBuilder = new StringBuilder();
             bool first = true;
@@ -157,7 +157,7 @@ namespace BTCPayServer.Controllers
                 if (!first)
                     currencyPairsBuilder.Append(",");
                 first = false;
-                currencyPairsBuilder.Append($"{baseCrypto}_{currencyCode}");
+                currencyPairsBuilder.Append($"{basebitcoin}_{currencyCode}");
             }
             return currencyPairsBuilder.ToString();
         }
@@ -171,8 +171,8 @@ namespace BTCPayServer.Controllers
                 get;
                 set;
             }
-            [JsonProperty(PropertyName = "cryptoCode")]
-            public string CryptoCode
+            [JsonProperty(PropertyName = "bitcoinCode")]
+            public string bitcoinCode
             {
                 get;
                 set;

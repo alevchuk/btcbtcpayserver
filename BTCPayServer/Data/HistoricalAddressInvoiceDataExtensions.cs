@@ -10,8 +10,8 @@ namespace BTCPayServer.Data
 #pragma warning disable CS0618
         public static Payments.PaymentMethodId GetPaymentMethodId(this HistoricalAddressInvoiceData historicalAddressInvoiceData)
         {
-            return string.IsNullOrEmpty(historicalAddressInvoiceData.CryptoCode) ? new Payments.PaymentMethodId("BTC", Payments.PaymentTypes.BTCLike)
-                                                    : Payments.PaymentMethodId.Parse(historicalAddressInvoiceData.CryptoCode);
+            return string.IsNullOrEmpty(historicalAddressInvoiceData.bitcoinCode) ? new Payments.PaymentMethodId("BTC", Payments.PaymentTypes.BTCLike)
+                                                    : Payments.PaymentMethodId.Parse(historicalAddressInvoiceData.bitcoinCode);
         }
         public static string GetAddress(this HistoricalAddressInvoiceData historicalAddressInvoiceData)
         {
@@ -22,10 +22,10 @@ namespace BTCPayServer.Data
                 return historicalAddressInvoiceData.Address;
             return historicalAddressInvoiceData.Address.Substring(0, index);
         }
-        public static HistoricalAddressInvoiceData SetAddress(this HistoricalAddressInvoiceData historicalAddressInvoiceData, string depositAddress, string cryptoCode)
+        public static HistoricalAddressInvoiceData SetAddress(this HistoricalAddressInvoiceData historicalAddressInvoiceData, string depositAddress, string bitcoinCode)
         {
-            historicalAddressInvoiceData.Address = depositAddress + "#" + cryptoCode;
-            historicalAddressInvoiceData.CryptoCode = cryptoCode;
+            historicalAddressInvoiceData.Address = depositAddress + "#" + bitcoinCode;
+            historicalAddressInvoiceData.bitcoinCode = bitcoinCode;
             return historicalAddressInvoiceData;
         }
 #pragma warning restore CS0618

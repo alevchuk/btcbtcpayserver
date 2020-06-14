@@ -156,7 +156,7 @@ namespace BTCPayServer.Services.Apps
                 CurrencyData = _Currencies.GetCurrencyData(settings.TargetCurrency, true),
                 CurrencyDataPayments = currentPayments.Select(pair => pair.Key)
                     .Concat(pendingPayments.Select(pair => pair.Key))
-                    .Select(id => _Currencies.GetCurrencyData(id.CryptoCode, true))
+                    .Select(id => _Currencies.GetCurrencyData(id.bitcoinCode, true))
                     .DistinctBy(data => data.Code)
                     .ToDictionary(data => data.Code, data => data),
                 Info = new ViewCrowdfundViewModel.CrowdfundInfo()
@@ -378,7 +378,7 @@ namespace BTCPayServer.Services.Apps
                              {
                                  var paymentMethodContribution = new Contribution();
                                  paymentMethodContribution.PaymentMehtodId = pay.GetPaymentMethodId();
-                                 paymentMethodContribution.Value = pay.GetCryptoPaymentData().GetValue() - pay.NetworkFee;
+                                 paymentMethodContribution.Value = pay.GetbitcoinPaymentData().GetValue() - pay.NetworkFee;
                                  var rate = p.GetPaymentMethod(paymentMethodContribution.PaymentMehtodId).Rate;
                                  paymentMethodContribution.CurrencyValue =  rate * paymentMethodContribution.Value;
                                  return paymentMethodContribution;

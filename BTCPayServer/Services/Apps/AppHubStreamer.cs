@@ -51,11 +51,11 @@ namespace BTCPayServer.Services.Apps
                 {
                     if (invoiceEvent.Name == InvoiceEvent.ReceivedPayment)
                     {
-                        var data = invoiceEvent.Payment.GetCryptoPaymentData();
+                        var data = invoiceEvent.Payment.GetbitcoinPaymentData();
                         await _HubContext.Clients.Group(appId).SendCoreAsync(AppHub.PaymentReceived, new object[]
                             {
                         data.GetValue(),
-                        invoiceEvent.Payment.GetCryptoCode(),
+                        invoiceEvent.Payment.GetbitcoinCode(),
                         invoiceEvent.Payment.GetPaymentMethodId().PaymentType.ToString()
                             }, cancellationToken);
                     }

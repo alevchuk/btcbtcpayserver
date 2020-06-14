@@ -51,7 +51,7 @@ namespace BTCPayServer.Payments.Bitcoin
             }
         }
         public bool PayjoinEnabled { get; set; }
-        // Those properties are JsonIgnore because their data is inside CryptoData class for legacy reason
+        // Those properties are JsonIgnore because their data is inside bitcoinData class for legacy reason
         [JsonIgnore]
         public FeeRate FeeRate { get; set; }
         [JsonIgnore]

@@ -8,7 +8,7 @@ namespace BTCPayServer
 {
     public class ElementsBTCPayNetwork : BTCPayNetwork
     {
-        public string NetworkCryptoCode { get; set; }
+        public string NetworkbitcoinCode { get; set; }
         public uint256 AssetId { get; set; }
         public override bool ReadonlyWallet { get; set; } = true;
 
@@ -48,13 +48,13 @@ namespace BTCPayServer
         }
 
 
-        public override string GenerateBIP21(string cryptoInfoAddress, Money cryptoInfoDue)
+        public override string GenerateBIP21(string bitcoinInfoAddress, Money bitcoinInfoDue)
         {
             //precision 0: 10 = 0.00000010
             //precision 2: 10 = 0.00001000
             //precision 8: 10 = 10
-            var money = new Money(cryptoInfoDue.ToDecimal(MoneyUnit.BTC) / decimal.Parse("1".PadRight(1 + 8 - Divisibility, '0')), MoneyUnit.BTC);
-            return $"{base.GenerateBIP21(cryptoInfoAddress, money)}&assetid={AssetId}";
+            var money = new Money(bitcoinInfoDue.ToDecimal(MoneyUnit.BTC) / decimal.Parse("1".PadRight(1 + 8 - Divisibility, '0')), MoneyUnit.BTC);
+            return $"{base.GenerateBIP21(bitcoinInfoAddress, money)}&assetid={AssetId}";
         }
     }
 }

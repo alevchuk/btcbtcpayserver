@@ -86,7 +86,7 @@ namespace BTCPayServer.SSH
                 throw new ArgumentNullException(nameof(hostKey));
             if (_ShortFingerprint != null)
                 return Utils.ArrayEqual(shortFingerprint, _ShortFingerprint);
-            return Utils.ArrayEqual(_FullHash, NBitcoin.Crypto.Hashes.SHA256(hostKey));
+            return Utils.ArrayEqual(_FullHash, NBitcoin.bitcoin.Hashes.SHA256(hostKey));
         }
 
         string _Original;

@@ -1,6 +1,6 @@
 {
     "paths": {
-        "/api/v1/server/lightning/{cryptoCode}/info": {
+        "/api/v1/server/lightning/{bitcoinCode}/info": {
             "get": {
                 "tags": [
                     "Lightning (Internal Node)"
@@ -8,10 +8,10 @@
                 "summary": "Get node information",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -47,7 +47,7 @@
                 ]
             }
         },
-        "/api/v1/server/lightning/{cryptoCode}/connect": {
+        "/api/v1/server/lightning/{bitcoinCode}/connect": {
             "post": {
                 "tags": [
                     "Lightning (Internal Node)"
@@ -55,10 +55,10 @@
                 "summary": "Connect to lightning node",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -117,7 +117,7 @@
                 ]
             }
         },
-        "/api/v1/server/lightning/{cryptoCode}/channels": {
+        "/api/v1/server/lightning/{bitcoinCode}/channels": {
             "get": {
                 "tags": [
                     "Lightning (Internal Node)"
@@ -125,10 +125,10 @@
                 "summary": "Get channels",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -170,10 +170,10 @@
                 "summary": "Open channel",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -229,7 +229,7 @@
                 ]
             }
         },
-        "/api/v1/server/lightning/{cryptoCode}/address": {
+        "/api/v1/server/lightning/{bitcoinCode}/address": {
             "post": {
                 "tags": [
                     "Lightning (Internal Node)"
@@ -237,10 +237,10 @@
                 "summary": "Get deposit address",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -278,7 +278,7 @@
             }
         },
 
-        "/api/v1/server/lightning/{cryptoCode}/invoices/{id}": {
+        "/api/v1/server/lightning/{bitcoinCode}/invoices/{id}": {
             "get": {
                 "tags": [
                     "Lightning (Internal Node)"
@@ -286,10 +286,10 @@
                 "summary": "Get invoice",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -333,7 +333,7 @@
                 ]
             }
         },
-        "/api/v1/server/lightning/{cryptoCode}/invoices/pay": {
+        "/api/v1/server/lightning/{bitcoinCode}/invoices/pay": {
             "post": {
                 "tags": [
                     "Lightning (Internal Node)"
@@ -341,10 +341,10 @@
                 "summary": "Pay Lightning Invoice",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -403,7 +403,7 @@
                 ]
             }
         },
-        "/api/v1/server/lightning/{cryptoCode}/invoices": {
+        "/api/v1/server/lightning/{bitcoinCode}/invoices": {
             "post": {
                 "tags": [
                     "Lightning (Internal Node)"
@@ -411,10 +411,10 @@
                 "summary": "Create lightning invoice",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }

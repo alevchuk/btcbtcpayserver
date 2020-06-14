@@ -1,6 +1,6 @@
 {
     "paths": {
-        "/api/v1/stores/{storeId}/lightning/{cryptoCode}/info": {
+        "/api/v1/stores/{storeId}/lightning/{bitcoinCode}/info": {
             "get": {
                 "tags": [
                     "Lightning (Store)"
@@ -8,10 +8,10 @@
                 "summary": "Get node information",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -56,7 +56,7 @@
                 ]
             }
         },
-        "/api/v1/stores/{storeId}/lightning/{cryptoCode}/connect": {
+        "/api/v1/stores/{storeId}/lightning/{bitcoinCode}/connect": {
             "post": {
                 "tags": [
                     "Lightning (Store)"
@@ -64,10 +64,10 @@
                 "summary": "Connect to lightning node",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -135,7 +135,7 @@
                 ]
             }
         },
-        "/api/v1/stores/{storeId}/lightning/{cryptoCode}/channels": {
+        "/api/v1/stores/{storeId}/lightning/{bitcoinCode}/channels": {
             "get": {
                 "tags": [
                     "Lightning (Store)"
@@ -143,10 +143,10 @@
                 "summary": "Get channels",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -197,10 +197,10 @@
                 "summary": "Open channel",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -268,7 +268,7 @@
                 ]
             }
         },
-        "/api/v1/stores/{storeId}/lightning/{cryptoCode}/address": {
+        "/api/v1/stores/{storeId}/lightning/{bitcoinCode}/address": {
             "post": {
                 "tags": [
                     "Lightning (Store)"
@@ -276,10 +276,10 @@
                 "summary": "Get deposit address",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string",
                             "description": "A bitcoin address belonging to the lightning node"
@@ -326,7 +326,7 @@
             }
         },
 
-        "/api/v1/stores/{storeId}/lightning/{cryptoCode}/invoices/{id}": {
+        "/api/v1/stores/{storeId}/lightning/{bitcoinCode}/invoices/{id}": {
             "get": {
                 "tags": [
                     "Lightning (Store)"
@@ -334,10 +334,10 @@
                 "summary": "Get invoice",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -391,7 +391,7 @@
                 ]
             }
         },
-        "/api/v1/stores/{storeId}/lightning/{cryptoCode}/invoices/pay": {
+        "/api/v1/stores/{storeId}/lightning/{bitcoinCode}/invoices/pay": {
             "post": {
                 "tags": [
                     "Lightning (Store)"
@@ -399,10 +399,10 @@
                 "summary": "Pay Lightning Invoice",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }
@@ -470,7 +470,7 @@
                 ]
             }
         },
-        "/api/v1/stores/{storeId}/lightning/{cryptoCode}/invoices": {
+        "/api/v1/stores/{storeId}/lightning/{bitcoinCode}/invoices": {
             "post": {
                 "tags": [
                     "Lightning (Store)"
@@ -478,10 +478,10 @@
                 "summary": "Create lightning invoice",
                 "parameters": [
                     {
-                        "name": "cryptoCode",
+                        "name": "bitcoinCode",
                         "in": "path",
                         "required": true,
-                        "description": "The cryptoCode of the lightning-node to query",
+                        "description": "The bitcoinCode of the lightning-node to query",
                         "schema": {
                             "type": "string"
                         }

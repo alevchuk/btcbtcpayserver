@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using BTCPayServer.Payments.Changelly.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SshNet.Security.Cryptography;
+using SshNet.Security.bitcoingraphy;
 
 namespace BTCPayServer.Payments.Changelly
 {

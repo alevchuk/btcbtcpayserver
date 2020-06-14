@@ -11,10 +11,10 @@ namespace BTCPayServer
     {
         public void InitLitecoin()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("LTC");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("LTC");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Litecoin",
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet
                     ? "https://live.blockcypher.com/ltc/tx/{0}/"
@@ -26,7 +26,7 @@ namespace BTCPayServer
                     "LTC_X = LTC_BTC * BTC_X",
                     "LTC_BTC = coingecko(LTC_BTC)"
                 },
-                CryptoImagePath = "imlegacy/litecoin.svg",
+                bitcoinImagePath = "imlegacy/litecoin.svg",
                 LightningImagePath = "imlegacy/litecoin-lightning.svg",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("2'") : new KeyPath("1'"),

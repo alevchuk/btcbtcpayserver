@@ -11,12 +11,12 @@ namespace BTCPayServer
     {
         public void InitUfo()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("UFO");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("UFO");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Ufo",
-                BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://chainz.cryptoid.info/ufo/tx.dws?{0}" : "https://chainz.cryptoid.info/ufo/tx.dws?{0}",
+                BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://chainz.bitcoinid.info/ufo/tx.dws?{0}" : "https://chainz.bitcoinid.info/ufo/tx.dws?{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
                 UriScheme = "ufo",
                 DefaultRateRules = new[] 
@@ -24,7 +24,7 @@ namespace BTCPayServer
                                 "UFO_X = UFO_BTC * BTC_X",
                                 "UFO_BTC = coinexchange(UFO_BTC)"
                 },
-                CryptoImagePath = "imlegacy/ufo.png",
+                bitcoinImagePath = "imlegacy/ufo.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("202'") : new KeyPath("1'")
             });

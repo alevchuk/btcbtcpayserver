@@ -9,7 +9,7 @@
 
 ## Introduction
 
-BTCPay Server is a free and open-source cryptocurrency payment processor which allows you to receive payments in Bitcoin and altcoins directly, with no fees, transaction cost or a middleman.
+BTCPay Server is a free and open-source bitcoin payment processor which allows you to receive payments in Bitcoin and altcoins directly, with no fees, transaction cost or a middleman.
 
 BTCPay Server is a non-custodial invoicing system which eliminates the involvement of a third-party. Payments with BTCPay Server go directly to your wallet, which increases the privacy and security. Your private keys are never uploaded to the server. There is no address re-use, since each invoice generates a new address deriving from your xpubkey.
 
@@ -154,10 +154,10 @@ The BTCPay Server Project is proudly supported by these entities through the [BT
   <tbody>
     <tr>
       <td align="center" valign="middle">
-        <a href="https://twitter.com/sqcrypto" target="_blank">
-          <img  src="BTCPayServer/wwwroot/img/squarecrypto.svg" alt="Square Crypto" height=100>
+        <a href="https://twitter.com/sqbitcoin" target="_blank">
+          <img  src="BTCPayServer/wwwroot/img/squarebitcoin.svg" alt="Square bitcoin" height=100>
           <br/>
-          <span>Square Crypto</span>
+          <span>Square bitcoin</span>
         </a>
       </td>
       <td align="center" valign="middle">

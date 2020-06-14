@@ -166,7 +166,7 @@ retry:
                 foreach (var paymentMethod in invoice.GetPaymentMethods())
                 {
                     if (paymentMethod.Network == null)
-                        throw new InvalidOperationException("CryptoCode unsupported");
+                        throw new InvalidOperationException("bitcoinCode unsupported");
                     var paymentDestination = paymentMethod.GetPaymentMethodDetails().GetPaymentDestination();
 
                     string address = GetDestination(paymentMethod);
@@ -270,7 +270,7 @@ retry:
                 {
                     InvoiceDataId = invoiceId,
                     Assigned = DateTimeOffset.UtcNow
-                }.SetAddress(paymentMethod.GetPaymentDestination(), network.CryptoCode));
+                }.SetAddress(paymentMethod.GetPaymentDestination(), network.bitcoinCode));
 
                 await context.SaveChangesAsync();
                 AddToTextSearch(invoice.Id, paymentMethod.GetPaymentDestination());
@@ -462,8 +462,8 @@ retry:
             entity.Payments = invoice.Payments.Select(p =>
             {
                 var unziped = ZipUtils.Unzip(p.Blob);
-                var cryptoCode = GetCryptoCode(unziped);
-                var network = _Networks.GetNetwork<BTCPayNetworkBase>(cryptoCode);
+                var bitcoinCode = GetbitcoinCode(unziped);
+                var network = _Networks.GetNetwork<BTCPayNetworkBase>(bitcoinCode);
                 PaymentEntity paymentEntity = null;
                 if (network == null)
                 {
@@ -516,9 +516,9 @@ retry:
             return entity;
         }
 
-        private string GetCryptoCode(string json)
+        private string GetbitcoinCode(string json)
         {
-            if (JObject.Parse(json).TryGetValue("cryptoCode", out var v) && v.Type == JTokenType.String)
+            if (JObject.Parse(json).TryGetValue("bitcoinCode", out var v) && v.Type == JTokenType.String)
                 return v.Value<string>();
             return "BTC";
         }
@@ -687,10 +687,10 @@ retry:
         /// <param name="invoiceId"></param>
         /// <param name="date"></param>
         /// <param name="paymentData"></param>
-        /// <param name="cryptoCode"></param>
+        /// <param name="bitcoinCode"></param>
         /// <param name="accounted"></param>
         /// <returns>The PaymentEntity or null if already added</returns>
-        public async Task<PaymentEntity> AddPayment(string invoiceId, DateTimeOffset date, CryptoPaymentData paymentData, BTCPayNetworkBase network, bool accounted = false)
+        public async Task<PaymentEntity> AddPayment(string invoiceId, DateTimeOffset date, bitcoinPaymentData paymentData, BTCPayNetworkBase network, bool accounted = false)
         {
             using (var context = _ContextFactory.CreateContext())
             {
@@ -698,20 +698,20 @@ retry:
                 if (invoice == null)
                     return null;
                 InvoiceEntity invoiceEntity = ToObject(invoice.Blob);
-                PaymentMethod paymentMethod = invoiceEntity.GetPaymentMethod(new PaymentMethodId(network.CryptoCode, paymentData.GetPaymentType()));
+                PaymentMethod paymentMethod = invoiceEntity.GetPaymentMethod(new PaymentMethodId(network.bitcoinCode, paymentData.GetPaymentType()));
                 IPaymentMethodDetails paymentMethodDetails = paymentMethod.GetPaymentMethodDetails();
                 PaymentEntity entity = new PaymentEntity
                 {
                     Version = 1,
 #pragma warning disable CS0618
-                    CryptoCode = network.CryptoCode,
+                    bitcoinCode = network.bitcoinCode,
 #pragma warning restore CS0618
                     ReceivedTime = date.UtcDateTime,
                     Accounted = accounted,
                     NetworkFee = paymentMethodDetails.GetNextNetworkFee(),
                     Network = network
                 };
-                entity.SetCryptoPaymentData(paymentData);
+                entity.SetbitcoinPaymentData(paymentData);
                 //TODO: abstract
                 if (paymentMethodDetails is Payments.Bitcoin.BitcoinLikeOnChainPaymentMethod bitcoinPaymentMethod &&
                     bitcoinPaymentMethod.NetworkFeeMode == NetworkFeeMode.MultiplePaymentsOnly &&
@@ -750,7 +750,7 @@ retry:
             {
                 foreach (var payment in payments)
                 {
-                    var paymentData = payment.GetCryptoPaymentData();
+                    var paymentData = payment.GetbitcoinPaymentData();
                     var data = new PaymentData();
                     data.Id = paymentData.GetPaymentId();
                     data.Accounted = payment.Accounted;

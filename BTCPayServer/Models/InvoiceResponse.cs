@@ -66,7 +66,7 @@ namespace BTCPayServer.Models
         }
         //"btcPrice":"0.001157"
         [JsonProperty("btcPrice")]
-        [Obsolete("Use CryptoInfo.Price instead")]
+        [Obsolete("Use bitcoinInfo.Price instead")]
         public string BTCPrice
         {
             get; set;
@@ -74,14 +74,14 @@ namespace BTCPayServer.Models
 
         //"btcDue":"0.001160"
         [JsonProperty("btcDue")]
-        [Obsolete("Use CryptoInfo.Due instead")]
+        [Obsolete("Use bitcoinInfo.Due instead")]
         public string BTCDue
         {
             get; set;
         }
 
-        [JsonProperty("cryptoInfo")]
-        public List<NBitpayClient.InvoiceCryptoInfo> CryptoInfo { get; set; }
+        [JsonProperty("bitcoinInfo")]
+        public List<NBitpayClient.InvoicebitcoinInfo> bitcoinInfo { get; set; }
 
         //"price":5
         [JsonProperty("price")]
@@ -105,7 +105,7 @@ namespace BTCPayServer.Models
 
         //"exRates":{"USD":4320.02}
         [JsonProperty("exRates")]
-        [Obsolete("Use CryptoInfo.ExRates instead")]
+        [Obsolete("Use bitcoinInfo.ExRates instead")]
         public Dictionary<string, decimal> ExRates
         {
             get; set;
@@ -181,7 +181,7 @@ namespace BTCPayServer.Models
 
         //"btcPaid":"0.000000"
         [JsonProperty("btcPaid")]
-        [Obsolete("Use CryptoInfo.Paid instead")]
+        [Obsolete("Use bitcoinInfo.Paid instead")]
         public string BTCPaid
         {
             get; set;
@@ -189,7 +189,7 @@ namespace BTCPayServer.Models
 
         //"rate":4320.02
         [JsonProperty("rate")]
-        [Obsolete("Use CryptoInfo.Rate instead")]
+        [Obsolete("Use bitcoinInfo.Rate instead")]
         public decimal Rate
         {
             get; set;
@@ -205,7 +205,7 @@ namespace BTCPayServer.Models
 
         //"paymentUrls":{"BIP21":"bitcoin:muFQCEbfRJohcds3bkfv1sRFj8uVTfv2wv?amount=0.001160","BIP72":"bitcoin:muFQCEbfRJohcds3bkfv1sRFj8uVTfv2wv?amount=0.001160&r=https://test.bitpay.com/i/9saCHtp1zyPcNoi3rDdBu8","BIP72b":"bitcoin:?r=https://test.bitpay.com/i/9saCHtp1zyPcNoi3rDdBu8","BIP73":"https://test.bitpay.com/i/9saCHtp1zyPcNoi3rDdBu8"}
         [JsonProperty("paymentUrls")]
-        [Obsolete("Use CryptoInfo.PaymentsUrls instead")]
+        [Obsolete("Use bitcoinInfo.PaymentsUrls instead")]
         public NBitpayClient.InvoicePaymentUrls PaymentUrls
         {
             get; set;
@@ -225,7 +225,7 @@ namespace BTCPayServer.Models
 
         //"bitcoinAddress":"muFQCEbfRJohcds3bkfv1sRFj8uVTfv2wv"
         [JsonProperty("bitcoinAddress")]
-        [Obsolete("Use CryptoInfo.Address instead")]
+        [Obsolete("Use bitcoinInfo.Address instead")]
         public string BitcoinAddress
         {
             get; set;

@@ -33,11 +33,11 @@ namespace BTCPayServer.Services.Wallets
             _walletReceiveState.AddOrReplace(walletId, information);
         }
 
-        public IEnumerable<KeyValuePair<WalletId, KeyPathInformation>> GetByDerivation(string cryptoCode,
+        public IEnumerable<KeyValuePair<WalletId, KeyPathInformation>> GetByDerivation(string bitcoinCode,
             DerivationStrategyBase derivationStrategyBase)
         {
             return _walletReceiveState.Where(pair =>
-                pair.Key.CryptoCode.Equals(cryptoCode, StringComparison.InvariantCulture) &&
+                pair.Key.bitcoinCode.Equals(bitcoinCode, StringComparison.InvariantCulture) &&
                 pair.Value.DerivationStrategy == derivationStrategyBase);
         }
     }

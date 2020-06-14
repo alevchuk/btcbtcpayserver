@@ -68,26 +68,26 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
             });
         }
 
-        private Task<GetAccountsResponse> GetAccounts(string cryptoCode)
+        private Task<GetAccountsResponse> GetAccounts(string bitcoinCode)
         {
             try
             {
-                if (_MoneroRpcProvider.Summaries.TryGetValue(cryptoCode, out var summary) && summary.WalletAvailable)
+                if (_MoneroRpcProvider.Summaries.TryGetValue(bitcoinCode, out var summary) && summary.WalletAvailable)
                 {
                     
-                    return _MoneroRpcProvider.WalletRpcClients[cryptoCode].SendCommandAsync<GetAccountsRequest, GetAccountsResponse>("get_accounts",new GetAccountsRequest());
+                    return _MoneroRpcProvider.WalletRpcClients[bitcoinCode].SendCommandAsync<GetAccountsRequest, GetAccountsResponse>("get_accounts",new GetAccountsRequest());
                 }
             }catch{}
             return Task.FromResult<GetAccountsResponse>(null);
         }
 
         private MoneroLikePaymentMethodViewModel GetMoneroLikePaymentMethodViewModel(
-            IEnumerable<MoneroSupportedPaymentMethod> monero, string cryptoCode,
+            IEnumerable<MoneroSupportedPaymentMethod> monero, string bitcoinCode,
             IPaymentFilter excludeFilters, GetAccountsResponse accountsResponse)
         {
-            var settings = monero.SingleOrDefault(method => method.CryptoCode == cryptoCode);
-            _MoneroRpcProvider.Summaries.TryGetValue(cryptoCode, out var summary);
-            _MoneroLikeConfiguration.MoneroLikeConfigurationItems.TryGetValue(cryptoCode,
+            var settings = monero.SingleOrDefault(method => method.bitcoinCode == bitcoinCode);
+            _MoneroRpcProvider.Summaries.TryGetValue(bitcoinCode, out var summary);
+            _MoneroLikeConfiguration.MoneroLikeConfigurationItems.TryGetValue(bitcoinCode,
                 out var configurationItem);
             var fileAddress = Path.Combine(configurationItem.WalletDirectory, "wallet");
             var accounts = accountsResponse?.SubaddressAccounts?.Select(account =>
@@ -99,35 +99,35 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
                 WalletFileFound = System.IO.File.Exists(fileAddress),
                 Enabled =
                     settings != null &&
-                    !excludeFilters.Match(new PaymentMethodId(cryptoCode, MoneroPaymentType.Instance)),
+                    !excludeFilters.Match(new PaymentMethodId(bitcoinCode, MoneroPaymentType.Instance)),
                 Summary = summary,
-                CryptoCode = cryptoCode,
+                bitcoinCode = bitcoinCode,
                 AccountIndex = settings?.AccountIndex ?? accountsResponse?.SubaddressAccounts?.FirstOrDefault()?.AccountIndex?? (long)0,
                 Accounts = accounts == null? null : new SelectList(accounts, nameof(SelectListItem.Value),
                     nameof(SelectListItem.Text))
             };
         }
 
-        [HttpGet("{cryptoCode}")]
-        public async Task<IActionResult> GetStoreMoneroLikePaymentMethod(string cryptoCode)
+        [HttpGet("{bitcoinCode}")]
+        public async Task<IActionResult> GetStoreMoneroLikePaymentMethod(string bitcoinCode)
         {
-            cryptoCode = cryptoCode.ToUpperInvariant();
-            if (!_MoneroLikeConfiguration.MoneroLikeConfigurationItems.ContainsKey(cryptoCode))
+            bitcoinCode = bitcoinCode.ToUpperInvariant();
+            if (!_MoneroLikeConfiguration.MoneroLikeConfigurationItems.ContainsKey(bitcoinCode))
             {
                 return NotFound();
             }
 
             var vm = GetMoneroLikePaymentMethodViewModel(StoreData.GetSupportedPaymentMethods(_BtcPayNetworkProvider)
-                    .OfType<MoneroSupportedPaymentMethod>(), cryptoCode,
-                StoreData.GetStoreBlob().GetExcludedPaymentMethods(), await GetAccounts(cryptoCode));
+                    .OfType<MoneroSupportedPaymentMethod>(), bitcoinCode,
+                StoreData.GetStoreBlob().GetExcludedPaymentMethods(), await GetAccounts(bitcoinCode));
             return View(nameof(GetStoreMoneroLikePaymentMethod), vm);
         }
 
-        [HttpPost("{cryptoCode}")]
-        public async Task<IActionResult> GetStoreMoneroLikePaymentMethod(MoneroLikePaymentMethodViewModel viewModel, string command, string cryptoCode)
+        [HttpPost("{bitcoinCode}")]
+        public async Task<IActionResult> GetStoreMoneroLikePaymentMethod(MoneroLikePaymentMethodViewModel viewModel, string command, string bitcoinCode)
         {
-            cryptoCode = cryptoCode.ToUpperInvariant();
-            if (!_MoneroLikeConfiguration.MoneroLikeConfigurationItems.TryGetValue(cryptoCode,
+            bitcoinCode = bitcoinCode.ToUpperInvariant();
+            if (!_MoneroLikeConfiguration.MoneroLikeConfigurationItems.TryGetValue(bitcoinCode,
                 out var configurationItem))
             {
                 return NotFound();
@@ -137,7 +137,7 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
             {
                 try
                 {
-                    var newAccount = await _MoneroRpcProvider.WalletRpcClients[cryptoCode].SendCommandAsync<CreateAccountRequest, CreateAccountResponse>("create_account",new CreateAccountRequest()
+                    var newAccount = await _MoneroRpcProvider.WalletRpcClients[bitcoinCode].SendCommandAsync<CreateAccountRequest, CreateAccountResponse>("create_account",new CreateAccountRequest()
                     {
                         Label = viewModel.NewAccountLabel
                     });
@@ -164,17 +164,17 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
                 
                 if(valid)
                 {
-                    if(_MoneroRpcProvider.Summaries.TryGetValue(cryptoCode, out var summary))
+                    if(_MoneroRpcProvider.Summaries.TryGetValue(bitcoinCode, out var summary))
                     {
                         if (summary.WalletAvailable)
                         {
                             TempData.SetStatusMessageModel(new StatusMessageModel()
                             {
                                 Severity = StatusMessageModel.StatusSeverity.Error,
-                                Message = $"There is already an active wallet configured for {cryptoCode}. Replacing it would break any existing invoices"
+                                Message = $"There is already an active wallet configured for {bitcoinCode}. Replacing it would break any existing invoices"
                             });
                             return RedirectToAction(nameof(GetStoreMoneroLikePaymentMethod),
-                                new { cryptoCode });
+                                new { bitcoinCode });
                         }
                     }
 
@@ -218,7 +218,7 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
                     
                     return RedirectToAction(nameof(GetStoreMoneroLikePaymentMethod), new
                     {
-                        cryptoCode,
+                        bitcoinCode,
                         StatusMessage ="Wallet files uploaded. If it was valid, the wallet will become available soon"
                     
                     });
@@ -230,8 +230,8 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
                 
                 var vm = GetMoneroLikePaymentMethodViewModel(StoreData
                         .GetSupportedPaymentMethods(_BtcPayNetworkProvider)
-                        .OfType<MoneroSupportedPaymentMethod>(), cryptoCode,
-                    StoreData.GetStoreBlob().GetExcludedPaymentMethods(), await GetAccounts(cryptoCode));
+                        .OfType<MoneroSupportedPaymentMethod>(), bitcoinCode,
+                    StoreData.GetStoreBlob().GetExcludedPaymentMethods(), await GetAccounts(bitcoinCode));
 
                 vm.Enabled = viewModel.Enabled;
                 vm.NewAccountLabel = viewModel.NewAccountLabel;
@@ -244,14 +244,14 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
             storeData.SetSupportedPaymentMethod(new MoneroSupportedPaymentMethod()
             {
                 AccountIndex = viewModel.AccountIndex,
-                CryptoCode = viewModel.CryptoCode
+                bitcoinCode = viewModel.bitcoinCode
             });
             
-            blob.SetExcluded(new PaymentMethodId(viewModel.CryptoCode, MoneroPaymentType.Instance), !viewModel.Enabled);
+            blob.SetExcluded(new PaymentMethodId(viewModel.bitcoinCode, MoneroPaymentType.Instance), !viewModel.Enabled);
             storeData.SetStoreBlob(blob);
             await _StoreRepository.UpdateStore(storeData);
             return RedirectToAction("GetStoreMoneroLikePaymentMethods",
-                new {StatusMessage = $"{cryptoCode} settings updated successfully", storeId = StoreData.Id});
+                new {StatusMessage = $"{bitcoinCode} settings updated successfully", storeId = StoreData.Id});
         }
         
         private void Exec(string cmd)
@@ -284,7 +284,7 @@ namespace BTCPayServer.Services.Altcoins.Monero.UI
         public class MoneroLikePaymentMethodViewModel
         {
             public MoneroRPCProvider.MoneroLikeSummary Summary { get; set; }
-            public string CryptoCode { get; set; }
+            public string bitcoinCode { get; set; }
             public string NewAccountLabel { get; set; }
             public long AccountIndex { get; set; }
             public bool Enabled { get; set; }

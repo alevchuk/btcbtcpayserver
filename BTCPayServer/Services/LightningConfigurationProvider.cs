@@ -47,7 +47,7 @@ namespace BTCPayServer.Services
     {
         public string ChainType { get; set; }
         public string Type { get; set; }
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
         public string CertificateThumbprint { get; set; }
         public string Macaroon { get; set; }
         public string AdminMacaroon { get; set; }

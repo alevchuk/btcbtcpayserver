@@ -319,7 +319,7 @@
                     this.changingCurrencies = false;
                 }
                 // displaying satoshis for lightning payments
-                jsonData.cryptoCodeSrv = jsonData.cryptoCode;
+                jsonData.bitcoinCodeSrv = jsonData.bitcoinCode;
                 // expand line items to show details on amount due for multi-transaction payment
                 if (this.srvModel.txCount === 1 && jsonData.txCount > 1) {
                     this.onlyExpandLineItems();

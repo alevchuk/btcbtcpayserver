@@ -10,16 +10,16 @@ namespace BTCPayServer.Filters
 {
     public class OnlyIfSupportAttribute : Attribute, IAsyncActionFilter
     {
-        private readonly string _cryptoCode;
+        private readonly string _bitcoinCode;
 
-        public OnlyIfSupportAttribute(string cryptoCode)
+        public OnlyIfSupportAttribute(string bitcoinCode)
         {
-            _cryptoCode = cryptoCode;
+            _bitcoinCode = bitcoinCode;
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var options = context.HttpContext.RequestServices.GetService(typeof(BTCPayServerOptions)) as BTCPayServerOptions;
-            if (options.NetworkProvider.GetNetwork(_cryptoCode) == null)
+            if (options.NetworkProvider.GetNetwork(_bitcoinCode) == null)
             {
                 context.Result = new NotFoundResult();
                 return;

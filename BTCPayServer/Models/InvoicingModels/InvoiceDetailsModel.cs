@@ -13,7 +13,7 @@ namespace BTCPayServer.Models.InvoicingModels
 {
     public class OnchainPaymentViewModel
     {
-        public string Crypto { get; set; }
+        public string bitcoin { get; set; }
         public string Confirmations { get; set; }
         public BitcoinAddress DepositAddress { get; set; }
         public string Amount { get; set; }
@@ -22,19 +22,19 @@ namespace BTCPayServer.Models.InvoicingModels
         public string TransactionLink { get; set; }
 
         public bool Replaced { get; set; }
-        public BitcoinLikePaymentData CryptoPaymentData { get; set; }
+        public BitcoinLikePaymentData bitcoinPaymentData { get; set; }
         public string AdditionalInformation { get; set; }
     }
 
     public class OffChainPaymentViewModel
     {
-        public string Crypto { get; set; }
+        public string bitcoin { get; set; }
         public string BOLT11 { get; set; }
     }
     
     public class InvoiceDetailsModel
     {
-        public class CryptoPayment
+        public class bitcoinPayment
         {
             public string PaymentMethod { get; set; }
             public string Due { get; set; }
@@ -57,10 +57,10 @@ namespace BTCPayServer.Models.InvoicingModels
             get; set;
         }
 
-        public List<CryptoPayment> CryptoPayments
+        public List<bitcoinPayment> bitcoinPayments
         {
             get; set;
-        } = new List<CryptoPayment>();
+        } = new List<bitcoinPayment>();
 
         public string State
         {

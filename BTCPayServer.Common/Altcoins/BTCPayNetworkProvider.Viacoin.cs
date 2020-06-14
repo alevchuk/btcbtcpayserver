@@ -11,10 +11,10 @@ namespace BTCPayServer
     {
         public void InitViacoin()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("VIA");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("VIA");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Viacoin",
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://explorer.viacoin.org/tx/{0}" : "https://explorer.viacoin.org/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
@@ -24,7 +24,7 @@ namespace BTCPayServer
                                 "VIA_X = VIA_BTC * BTC_X",
                                 "VIA_BTC = bittrex(VIA_BTC)"
                 },
-                CryptoImagePath = "imlegacy/viacoin.png",
+                bitcoinImagePath = "imlegacy/viacoin.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("14'") : new KeyPath("1'")
             });

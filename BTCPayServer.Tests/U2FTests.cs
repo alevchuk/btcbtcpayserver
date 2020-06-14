@@ -107,7 +107,7 @@ namespace BTCPayServer.Tests
 
             protected override StartedRegistration StartDeviceRegistrationCore(string appId)
             {
-                return global::U2F.Core.Crypto.U2F.StartRegistration(appId);
+                return global::U2F.Core.bitcoin.U2F.StartRegistration(appId);
             }
 
             protected override DeviceRegistration FinishRegistrationCore(StartedRegistration startedRegistration,

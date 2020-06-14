@@ -151,15 +151,15 @@ namespace BTCPayServer.Controllers
 
             foreach (var network in store.GetSupportedPaymentMethods(_NetworkProvider)
                                                 .Where(s => !excludeFilter.Match(s.PaymentId))
-                                                .Select(c => _NetworkProvider.GetNetwork<BTCPayNetworkBase>(c.PaymentId.CryptoCode))
+                                                .Select(c => _NetworkProvider.GetNetwork<BTCPayNetworkBase>(c.PaymentId.bitcoinCode))
                                                 .Where(c => c != null))
             {
-                currencyPairsToFetch.Add(new CurrencyPair(network.CryptoCode, invoice.Currency));
+                currencyPairsToFetch.Add(new CurrencyPair(network.bitcoinCode, invoice.Currency));
                 //TODO: abstract
                 if (storeBlob.LightningMaxValue != null)
-                    currencyPairsToFetch.Add(new CurrencyPair(network.CryptoCode, storeBlob.LightningMaxValue.Currency));
+                    currencyPairsToFetch.Add(new CurrencyPair(network.bitcoinCode, storeBlob.LightningMaxValue.Currency));
                 if (storeBlob.OnChainMinValue != null)
-                    currencyPairsToFetch.Add(new CurrencyPair(network.CryptoCode, storeBlob.OnChainMinValue.Currency));
+                    currencyPairsToFetch.Add(new CurrencyPair(network.bitcoinCode, storeBlob.OnChainMinValue.Currency));
             }
 
             var rateRules = storeBlob.GetRateRules(_NetworkProvider);
@@ -171,7 +171,7 @@ namespace BTCPayServer.Controllers
                                                .Select(c =>
                                                 (Handler: _paymentMethodHandlerDictionary[c.PaymentId],
                                                 SupportedPaymentMethod: c,
-                                                Network: _NetworkProvider.GetNetwork<BTCPayNetworkBase>(c.PaymentId.CryptoCode)))
+                                                Network: _NetworkProvider.GetNetwork<BTCPayNetworkBase>(c.PaymentId.bitcoinCode)))
                                                 .Where(c => c.Network != null)
                                                 .Select(o =>
                                                     (SupportedPaymentMethod: o.SupportedPaymentMethod,
@@ -256,7 +256,7 @@ namespace BTCPayServer.Controllers
                 var logPrefix = $"{supportedPaymentMethod.PaymentId.ToPrettyString()}:";
                 var storeBlob = store.GetStoreBlob();
                 var preparePayment = handler.PreparePayment(supportedPaymentMethod, store, network);
-                var rate = await fetchingByCurrencyPair[new CurrencyPair(network.CryptoCode, entity.ProductInformation.Currency)];
+                var rate = await fetchingByCurrencyPair[new CurrencyPair(network.bitcoinCode, entity.ProductInformation.Currency)];
                 if (rate.BidAsk == null)
                 {
                     return null;
@@ -297,11 +297,11 @@ namespace BTCPayServer.Controllers
             }
             catch (PaymentMethodUnavailableException ex)
             {
-                logs.Write($"{supportedPaymentMethod.PaymentId.CryptoCode}: Payment method unavailable ({ex.Message})");
+                logs.Write($"{supportedPaymentMethod.PaymentId.bitcoinCode}: Payment method unavailable ({ex.Message})");
             }
             catch (Exception ex)
             {
-                logs.Write($"{supportedPaymentMethod.PaymentId.CryptoCode}: Unexpected exception ({ex.ToString()})");
+                logs.Write($"{supportedPaymentMethod.PaymentId.bitcoinCode}: Unexpected exception ({ex.ToString()})");
             }
             return null;
         }

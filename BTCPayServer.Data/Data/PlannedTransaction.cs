@@ -7,7 +7,7 @@ namespace BTCPayServer.Data
     {
         [Key]
         [MaxLength(100)]
-        // Id in the format [cryptocode]-[txid]
+        // Id in the format [bitcoincode]-[txid]
         public string Id { get; set; }
         public DateTimeOffset BroadcastAt { get; set; }
         public byte[] Blob { get; set; }

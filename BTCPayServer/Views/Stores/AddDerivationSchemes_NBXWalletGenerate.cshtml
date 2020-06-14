@@ -5,7 +5,7 @@
         <form id="generate-wallet-form" class="modal-content" form method="post" onsubmit="return validatePassphraseConf();" 
               asp-action="GenerateNBXWallet" 
               asp-route-storeId="@this.Context.GetRouteValue("storeId")"
-              asp-route-cryptoCode="@this.Context.GetRouteValue("cryptoCode")"
+              asp-route-bitcoinCode="@this.Context.GetRouteValue("bitcoinCode")"
               enctype="multipart/form-data">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Generate a wallet with a seed</h5>

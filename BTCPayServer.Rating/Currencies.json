@@ -4,1273 +4,1273 @@
       "code":"AFN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Bitcoin",
       "code":"BTC",
       "divisibility":8,
       "symbol":"₿",
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"Euro",
       "code":"EUR",
       "divisibility":2,
       "symbol":"€",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Lek",
       "code":"ALL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Algerian Dinar",
       "code":"DZD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"US Dollar",
       "code":"USD",
       "divisibility":2,
       "symbol":"$",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Kwanza",
       "code":"AOA",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"East Caribbean Dollar",
       "code":"XCD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Argentine Peso",
       "code":"ARS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Armenian Dram",
       "code":"AMD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Aruban Florin",
       "code":"AWG",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Australian Dollar",
       "code":"AUD",
       "divisibility":2,
       "symbol":"A$",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Azerbaijanian Manat",
       "code":"AZN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Bahamian Dollar",
       "code":"BSD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Bahraini Dinar",
       "code":"BHD",
       "divisibility":3,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Taka",
       "code":"BDT",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Barbados Dollar",
       "code":"BBD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Belarusian Ruble",
       "code":"BYN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Belarusian Ruble",
       "code":"BYR",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Belize Dollar",
       "code":"BZD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"CFA Franc BCEAO",
       "code":"XOF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Bermudian Dollar",
       "code":"BMD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Indian Rupee",
       "code":"INR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Ngultrum",
       "code":"BTN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Boliviano",
       "code":"BOB",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Mvdol",
       "code":"BOV",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Convertible Mark",
       "code":"BAM",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Pula",
       "code":"BWP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Norwegian Krone",
       "code":"NOK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Brazilian Real",
       "code":"BRL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Brunei Dollar",
       "code":"BND",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Bulgarian Lev",
       "code":"BGN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Burundi Franc",
       "code":"BIF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Cabo Verde Escudo",
       "code":"CVE",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Riel",
       "code":"KHR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"CFA Franc BEAC",
       "code":"XAF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Canadian Dollar",
       "code":"CAD",
       "divisibility":2,
       "symbol":"CA$",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Cayman Islands Dollar",
       "code":"KYD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Chilean Peso",
       "code":"CLP",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Unidad de Fomento",
       "code":"CLF",
       "divisibility":4,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Yuan Renminbi",
       "code":"CNY",
       "divisibility":2,
       "symbol":"CN¥",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Colombian Peso",
       "code":"COP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Unidad de Valor Real",
       "code":"COU",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Comoro Franc",
       "code":"KMF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Congolese Franc",
       "code":"CDF",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"New Zealand Dollar",
       "code":"NZD",
       "divisibility":2,
       "symbol":"NZ$",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Costa Rican Colon",
       "code":"CRC",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Kuna",
       "code":"HRK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Cuban Peso",
       "code":"CUP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Peso Convertible",
       "code":"CUC",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Netherlands Antillean Guilder",
       "code":"ANG",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Czech Koruna",
       "code":"CZK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Danish Krone",
       "code":"DKK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Djibouti Franc",
       "code":"DJF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Dominican Peso",
       "code":"DOP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Egyptian Pound",
       "code":"EGP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"El Salvador Colon",
       "code":"SVC",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Nakfa",
       "code":"ERN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Ethiopian Birr",
       "code":"ETB",
       "divisibility":2,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"Falkland Islands Pound",
       "code":"FKP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Fiji Dollar",
       "code":"FJD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"CFP Franc",
       "code":"XPF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Dalasi",
       "code":"GMD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Lari",
       "code":"GEL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Ghana Cedi",
       "code":"GHS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Gibraltar Pound",
       "code":"GIP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Quetzal",
       "code":"GTQ",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Pound Sterling",
       "code":"GBP",
       "divisibility":2,
       "symbol":"£",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Guinea Franc",
       "code":"GNF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Guyana Dollar",
       "code":"GYD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Gourde",
       "code":"HTG",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Lempira",
       "code":"HNL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Hong Kong Dollar",
       "code":"HKD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Forint",
       "code":"HUF",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Iceland Krona",
       "code":"ISK",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Rupiah",
       "code":"IDR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Iranian Rial",
       "code":"IRR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Iraqi Dinar",
       "code":"IQD",
       "divisibility":3,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"New Israeli Sheqel",
       "code":"ILS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Jamaican Dollar",
       "code":"JMD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Yen",
       "code":"JPY",
       "divisibility":0,
       "symbol":"¥",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Jordanian Dinar",
       "code":"JOD",
       "divisibility":3,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Tenge",
       "code":"KZT",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Kenyan Shilling",
       "code":"KES",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"North Korean Won",
       "code":"KPW",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Won",
       "code":"KRW",
       "divisibility":0,
       "symbol":"₩",
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Kuwaiti Dinar",
       "code":"KWD",
       "divisibility":3,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Som",
       "code":"KGS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Kip",
       "code":"LAK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Lebanese Pound",
       "code":"LBP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Loti",
       "code":"LSL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Rand",
       "code":"ZAR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Liberian Dollar",
       "code":"LRD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Libyan Dinar",
       "code":"LYD",
       "divisibility":3,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Swiss Franc",
       "code":"CHF",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Pataca",
       "code":"MOP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Denar",
       "code":"MKD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Malagasy Ariary",
       "code":"MGA",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Malawi Kwacha",
       "code":"MWK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Malaysian Ringgit",
       "code":"MYR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Rufiyaa",
       "code":"MVR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Ouguiya",
       "code":"MRO",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Mauritius Rupee",
       "code":"MUR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Mexican Peso",
       "code":"MXN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Mexican Unidad de Inversion (UDI)",
       "code":"MXV",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Moldovan Leu",
       "code":"MDL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Tugrik",
       "code":"MNT",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Moroccan Dirham",
       "code":"MAD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Mozambique Metical",
       "code":"MZN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Kyat",
       "code":"MMK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Namibia Dollar",
       "code":"NAD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Nepalese Rupee",
       "code":"NPR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Cordoba Oro",
       "code":"NIO",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Naira",
       "code":"NGN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Rial Omani",
       "code":"OMR",
       "divisibility":3,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Pakistan Rupee",
       "code":"PKR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Balboa",
       "code":"PAB",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Kina",
       "code":"PGK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Guarani",
       "code":"PYG",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Sol",
       "code":"PEN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Philippine Peso",
       "code":"PHP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Zloty",
       "code":"PLN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Qatari Rial",
       "code":"QAR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Romanian Leu",
       "code":"RON",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Russian Ruble",
       "code":"RUB",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Rwanda Franc",
       "code":"RWF",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Saint Helena Pound",
       "code":"SHP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Tala",
       "code":"WST",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Dobra",
       "code":"STD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Saudi Riyal",
       "code":"SAR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Serbian Dinar",
       "code":"RSD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Seychelles Rupee",
       "code":"SCR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Leone",
       "code":"SLL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Singapore Dollar",
       "code":"SGD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Solomon Islands Dollar",
       "code":"SBD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Somali Shilling",
       "code":"SOS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"South Sudanese Pound",
       "code":"SSP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Sri Lanka Rupee",
       "code":"LKR",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Sudanese Pound",
       "code":"SDG",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Surinam Dollar",
       "code":"SRD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Lilangeni",
       "code":"SZL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Swedish Krona",
       "code":"SEK",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"WIR Euro",
       "code":"CHE",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"WIR Franc",
       "code":"CHW",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Syrian Pound",
       "code":"SYP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"New Taiwan Dollar",
       "code":"TWD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Somoni",
       "code":"TJS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Tanzanian Shilling",
       "code":"TZS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Baht",
       "code":"THB",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Pa’anga",
       "code":"TOP",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Trinidad and Tobago Dollar",
       "code":"TTD",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Tunisian Dinar",
       "code":"TND",
       "divisibility":3,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Turkish Lira",
       "code":"TRY",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Turkmenistan New Manat",
       "code":"TMT",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Uganda Shilling",
       "code":"UGX",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Hryvnia",
       "code":"UAH",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"UAE Dirham",
       "code":"AED",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"US Dollar (Next day)",
       "code":"USN",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Peso Uruguayo",
       "code":"UYU",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Uruguay Peso en Unidades Indexadas (URUIURUI)",
       "code":"UYI",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Uzbekistan Sum",
       "code":"UZS",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Vatu",
       "code":"VUV",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Bolívar",
       "code":"VEF",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Dong",
       "code":"VND",
       "divisibility":0,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Yemeni Rial",
       "code":"YER",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Zambian Kwacha",
       "code":"ZMW",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"Zimbabwe Dollar",
       "code":"ZWL",
       "divisibility":2,
       "symbol":null,
-      "crypto":false
+      "bitcoin":false
    },
    {
       "name":"LBTC",
       "code":"LBTC",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"USDt",
       "code":"USDT",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"LCAD",
       "code":"LCAD",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"LTC",
       "code":"LTC",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"BTX",
       "code":"BTX",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"DOGE",
       "code":"DOGE",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"BTG",
       "code":"BTG",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"MONA",
       "code":"MONA",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"DASH",
       "code":"DASH",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"FTC",
       "code":"FTC",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"GRS",
       "code":"GRS",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"VIA",
       "code":"VIA",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"XMR",
       "code":"XMR",
       "divisibility":12,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"POLIS",
       "code":"POLIS",
       "divisibility":8,
       "symbol":null,
-      "crypto":true
+      "bitcoin":true
    },
    {
       "name":"Satoshis",
       "code":"SATS",
       "divisibility":0,
       "symbol":"Sats",
-      "crypto":true
+      "bitcoin":true
    }
 ]

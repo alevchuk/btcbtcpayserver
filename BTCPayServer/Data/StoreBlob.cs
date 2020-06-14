@@ -148,7 +148,7 @@ namespace BTCPayServer.Data
             {
                 if (network.DefaultRateRules.Length != 0)
                 {
-                    builder.AppendLine($"// Default rate rules for {network.CryptoCode}");
+                    builder.AppendLine($"// Default rate rules for {network.bitcoinCode}");
                     foreach (var line in network.DefaultRateRules)
                     {
                         builder.AppendLine(line);

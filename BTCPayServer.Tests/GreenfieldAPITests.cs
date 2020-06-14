@@ -379,7 +379,7 @@ namespace BTCPayServer.Tests
                 Assert.Contains("BTC", serverInfoData.SupportedPaymentMethods);
                 Assert.Contains("BTC_LightningLike", serverInfoData.SupportedPaymentMethods);
                 Assert.NotNull(serverInfoData.SyncStatus);
-                Assert.Single(serverInfoData.SyncStatus.Select(s => s.CryptoCode == "BTC"));
+                Assert.Single(serverInfoData.SyncStatus.Select(s => s.bitcoinCode == "BTC"));
             }
         }
 

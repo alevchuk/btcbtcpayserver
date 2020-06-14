@@ -14,7 +14,7 @@ namespace BTCPayServer.Migrations
         {
             int? maxLength = this.IsMySql(migrationBuilder.ActiveProvider) ? (int?)255 : null;
             migrationBuilder.AddColumn<string>(
-                name: "CryptoCode",
+                name: "bitcoinCode",
                 table: "HistoricalAddressInvoices",
                 nullable: true);
         }
@@ -22,7 +22,7 @@ namespace BTCPayServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "CryptoCode",
+                name: "bitcoinCode",
                 table: "HistoricalAddressInvoices");
         }
     }

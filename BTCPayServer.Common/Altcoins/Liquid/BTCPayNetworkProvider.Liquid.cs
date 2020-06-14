@@ -13,12 +13,12 @@ namespace BTCPayServer
     {
         public void InitLiquid()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("LBTC");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("LBTC");
             Add(new ElementsBTCPayNetwork()
             {
                 AssetId = NetworkType == NetworkType.Mainnet ? ElementsParams<Liquid>.PeggedAssetId: ElementsParams<Liquid.LiquidRegtest>.PeggedAssetId,
-                CryptoCode = "LBTC",
-                NetworkCryptoCode = "LBTC",
+                bitcoinCode = "LBTC",
+                NetworkbitcoinCode = "LBTC",
                 DisplayName = "Liquid Bitcoin",
                 DefaultRateRules = new[]
                 {
@@ -28,7 +28,7 @@ namespace BTCPayServer
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://blockstream.info/liquid/tx/{0}" : "https://blockstream.info/testnet/liquid/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
                 UriScheme = "liquidnetwork",
-                CryptoImagePath = "imlegacy/liquid.png",
+                bitcoinImagePath = "imlegacy/liquid.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("1776'") : new KeyPath("1'"),
                 SupportRBF = true

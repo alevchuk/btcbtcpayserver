@@ -49,30 +49,30 @@ namespace BTCPayServer.Payments.Bitcoin
         public override void PreparePaymentModel(PaymentModel model, InvoiceResponse invoiceResponse,
             StoreBlob storeBlob)
         {
-            var paymentMethodId = new PaymentMethodId(model.CryptoCode, PaymentTypes.BTCLike);
+            var paymentMethodId = new PaymentMethodId(model.bitcoinCode, PaymentTypes.BTCLike);
 
-            var cryptoInfo = invoiceResponse.CryptoInfo.First(o => o.GetpaymentMethodId() == paymentMethodId);
-            var network = _networkProvider.GetNetwork<BTCPayNetwork>(model.CryptoCode);
+            var bitcoinInfo = invoiceResponse.bitcoinInfo.First(o => o.GetpaymentMethodId() == paymentMethodId);
+            var network = _networkProvider.GetNetwork<BTCPayNetwork>(model.bitcoinCode);
             model.IsLightning = false;
             model.PaymentMethodName = GetPaymentMethodName(network);
-            model.InvoiceBitcoinUrl = cryptoInfo.PaymentUrls.BIP21;
-            model.InvoiceBitcoinUrlQR = cryptoInfo.PaymentUrls.BIP21;
+            model.InvoiceBitcoinUrl = bitcoinInfo.PaymentUrls.BIP21;
+            model.InvoiceBitcoinUrlQR = bitcoinInfo.PaymentUrls.BIP21;
         }
 
-        public override string GetCryptoImage(PaymentMethodId paymentMethodId)
+        public override string GetbitcoinImage(PaymentMethodId paymentMethodId)
         {
-            var network = _networkProvider.GetNetwork<BTCPayNetwork>(paymentMethodId.CryptoCode);
-            return GetCryptoImage(network);
+            var network = _networkProvider.GetNetwork<BTCPayNetwork>(paymentMethodId.bitcoinCode);
+            return GetbitcoinImage(network);
         }
 
-        private string GetCryptoImage(BTCPayNetworkBase network)
+        private string GetbitcoinImage(BTCPayNetworkBase network)
         {
-            return network.CryptoImagePath;
+            return network.bitcoinImagePath;
         }
 
         public override string GetPaymentMethodName(PaymentMethodId paymentMethodId)
         {
-            var network = _networkProvider.GetNetwork<BTCPayNetwork>(paymentMethodId.CryptoCode);
+            var network = _networkProvider.GetNetwork<BTCPayNetwork>(paymentMethodId.bitcoinCode);
             return GetPaymentMethodName(network);
         }
 
@@ -81,13 +81,13 @@ namespace BTCPayServer.Payments.Bitcoin
         {
             if (storeBlob.OnChainMinValue != null)
             {
-                var currentRateToCrypto =
-                    await rate[new CurrencyPair(paymentMethodId.CryptoCode, storeBlob.OnChainMinValue.Currency)];
-                if (currentRateToCrypto?.BidAsk != null)
+                var currentRateTobitcoin =
+                    await rate[new CurrencyPair(paymentMethodId.bitcoinCode, storeBlob.OnChainMinValue.Currency)];
+                if (currentRateTobitcoin?.BidAsk != null)
                 {
-                    var limitValueCrypto =
-                        Money.Coins(storeBlob.OnChainMinValue.Value / currentRateToCrypto.BidAsk.Bid);
-                    if (amount < limitValueCrypto)
+                    var limitValuebitcoin =
+                        Money.Coins(storeBlob.OnChainMinValue.Value / currentRateTobitcoin.BidAsk.Bid);
+                    if (amount < limitValuebitcoin)
                     {
                         return "The amount of the invoice is too low to be paid on chain";
                     }
@@ -102,7 +102,7 @@ namespace BTCPayServer.Payments.Bitcoin
             return _networkProvider
                 .GetAll()
                 .OfType<BTCPayNetwork>()
-                .Select(network => new PaymentMethodId(network.CryptoCode, PaymentTypes.BTCLike));
+                .Select(network => new PaymentMethodId(network.bitcoinCode, PaymentTypes.BTCLike));
         }
 
         private string GetPaymentMethodName(BTCPayNetworkBase network)
@@ -167,7 +167,7 @@ namespace BTCPayServer.Payments.Bitcoin
             if (onchainMethod.PayjoinEnabled)
             {
                 var prefix = $"{supportedPaymentMethod.PaymentId.ToPrettyString()}:";
-                var nodeSupport = _dashboard?.Get(network.CryptoCode)?.Status?.BitcoinStatus?.Capabilities
+                var nodeSupport = _dashboard?.Get(network.bitcoinCode)?.Status?.BitcoinStatus?.Capabilities
                     ?.CanSupportTransactionCheck is true;
                 onchainMethod.PayjoinEnabled &= supportedPaymentMethod.IsHotWallet && nodeSupport;
                 if (!supportedPaymentMethod.IsHotWallet)

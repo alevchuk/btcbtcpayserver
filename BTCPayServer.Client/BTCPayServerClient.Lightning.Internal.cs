@@ -9,81 +9,81 @@ namespace BTCPayServer.Client
 {
     public partial class BTCPayServerClient
     {
-        public async Task<LightningNodeInformationData> GetLightningNodeInfo(string cryptoCode,
+        public async Task<LightningNodeInformationData> GetLightningNodeInfo(string bitcoinCode,
             CancellationToken token = default)
         {
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/info",
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/info",
                     method: HttpMethod.Get), token);
             return await HandleResponse<LightningNodeInformationData>(response);
         }
 
-        public async Task ConnectToLightningNode(string cryptoCode, ConnectToNodeRequest request,
+        public async Task ConnectToLightningNode(string bitcoinCode, ConnectToNodeRequest request,
             CancellationToken token = default)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/connect", bodyPayload: request,
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/connect", bodyPayload: request,
                     method: HttpMethod.Post), token);
             await HandleResponse(response);
         }
 
-        public async Task<IEnumerable<LightningChannelData>> GetLightningNodeChannels(string cryptoCode,
+        public async Task<IEnumerable<LightningChannelData>> GetLightningNodeChannels(string bitcoinCode,
             CancellationToken token = default)
         {
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/channels",
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/channels",
                     method: HttpMethod.Get), token);
             return await HandleResponse<IEnumerable<LightningChannelData>>(response);
         }
 
-        public async Task<string> OpenLightningChannel(string cryptoCode, OpenLightningChannelRequest request,
+        public async Task<string> OpenLightningChannel(string bitcoinCode, OpenLightningChannelRequest request,
             CancellationToken token = default)
         {
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/channels", bodyPayload: request,
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/channels", bodyPayload: request,
                     method: HttpMethod.Post), token);
             return await HandleResponse<string>(response);
         }
 
-        public async Task<string> GetLightningDepositAddress(string cryptoCode, CancellationToken token = default)
+        public async Task<string> GetLightningDepositAddress(string bitcoinCode, CancellationToken token = default)
         {
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/address", method: HttpMethod.Post), token);
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/address", method: HttpMethod.Post), token);
             return await HandleResponse<string>(response);
         }
 
 
-        public async Task PayLightningInvoice(string cryptoCode, PayLightningInvoiceRequest request,
+        public async Task PayLightningInvoice(string bitcoinCode, PayLightningInvoiceRequest request,
             CancellationToken token = default)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/invoices/pay", bodyPayload: request,
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/invoices/pay", bodyPayload: request,
                     method: HttpMethod.Post), token);
             await HandleResponse(response);
         }
 
-        public async Task<LightningInvoiceData> GetLightningInvoice(string cryptoCode,
+        public async Task<LightningInvoiceData> GetLightningInvoice(string bitcoinCode,
             string invoiceId, CancellationToken token = default)
         {
             if (invoiceId == null)
                 throw new ArgumentNullException(nameof(invoiceId));
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/invoices/{invoiceId}",
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/invoices/{invoiceId}",
                     method: HttpMethod.Get), token);
             return await HandleResponse<LightningInvoiceData>(response);
         }
 
-        public async Task<LightningInvoiceData> CreateLightningInvoice(string cryptoCode, CreateLightningInvoiceRequest request,
+        public async Task<LightningInvoiceData> CreateLightningInvoice(string bitcoinCode, CreateLightningInvoiceRequest request,
             CancellationToken token = default)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
             var response = await _httpClient.SendAsync(
-                CreateHttpRequest($"api/v1/server/lightning/{cryptoCode}/invoices", bodyPayload: request,
+                CreateHttpRequest($"api/v1/server/lightning/{bitcoinCode}/invoices", bodyPayload: request,
                     method: HttpMethod.Post), token);
             return await HandleResponse<LightningInvoiceData>(response);
         }

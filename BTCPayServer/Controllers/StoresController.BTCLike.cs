@@ -31,38 +31,38 @@ namespace BTCPayServer.Controllers
     public partial class StoresController
     {
         [HttpGet]
-        [Route("{storeId}/derivations/{cryptoCode}")]
-        public async Task<IActionResult> AddDerivationScheme(string storeId, string cryptoCode)
+        [Route("{storeId}/derivations/{bitcoinCode}")]
+        public async Task<IActionResult> AddDerivationScheme(string storeId, string bitcoinCode)
         {
             var store = HttpContext.GetStoreData();
             if (store == null)
                 return NotFound();
-            var network = cryptoCode == null ? null : _ExplorerProvider.GetNetwork(cryptoCode);
+            var network = bitcoinCode == null ? null : _ExplorerProvider.GetNetwork(bitcoinCode);
             if (network == null)
             {
                 return NotFound();
             }
 
             DerivationSchemeViewModel vm = new DerivationSchemeViewModel();
-            vm.CryptoCode = cryptoCode;
+            vm.bitcoinCode = bitcoinCode;
             vm.RootKeyPath = network.GetRootKeyPath();
             vm.Network = network;
-            var derivation = GetExistingDerivationStrategy(vm.CryptoCode, store);
+            var derivation = GetExistingDerivationStrategy(vm.bitcoinCode, store);
             if (derivation != null)
             {
                 vm.DerivationScheme = derivation.AccountDerivation.ToString();
                 vm.Config = derivation.ToJson();
             }
-            vm.Enabled = !store.GetStoreBlob().IsExcluded(new PaymentMethodId(vm.CryptoCode, PaymentTypes.BTCLike));
+            vm.Enabled = !store.GetStoreBlob().IsExcluded(new PaymentMethodId(vm.bitcoinCode, PaymentTypes.BTCLike));
             var hotWallet = await CanUseHotWallet();
             vm.CanUseHotWallet = hotWallet.HotWallet;
             vm.CanUseRPCImport = hotWallet.RPCImport;
             return View(vm);
         }
 
-        private DerivationSchemeSettings GetExistingDerivationStrategy(string cryptoCode, StoreData store)
+        private DerivationSchemeSettings GetExistingDerivationStrategy(string bitcoinCode, StoreData store)
         {
-            var id = new PaymentMethodId(cryptoCode, PaymentTypes.BTCLike);
+            var id = new PaymentMethodId(bitcoinCode, PaymentTypes.BTCLike);
             var existing = store.GetSupportedPaymentMethods(_NetworkProvider)
                 .OfType<DerivationSchemeSettings>()
                 .FirstOrDefault(d => d.PaymentId == id);
@@ -70,17 +70,17 @@ namespace BTCPayServer.Controllers
         }
 
         [HttpPost]
-        [Route("{storeId}/derivations/{cryptoCode}")]        
+        [Route("{storeId}/derivations/{bitcoinCode}")]        
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> AddDerivationScheme(string storeId, [FromForm] DerivationSchemeViewModel vm,
-            string cryptoCode)
+            string bitcoinCode)
         {
-            vm.CryptoCode = cryptoCode;
+            vm.bitcoinCode = bitcoinCode;
             var store = HttpContext.GetStoreData();
             if (store == null)
                 return NotFound();
 
-            var network = cryptoCode == null ? null : _ExplorerProvider.GetNetwork(cryptoCode);
+            var network = bitcoinCode == null ? null : _ExplorerProvider.GetNetwork(bitcoinCode);
             if (network == null)
             {
                 return NotFound();
@@ -163,7 +163,7 @@ namespace BTCPayServer.Controllers
             var oldConfig = vm.Config;
             vm.Config = strategy == null ? null : strategy.ToJson();
 
-            PaymentMethodId paymentMethodId = new PaymentMethodId(network.CryptoCode, PaymentTypes.BTCLike);
+            PaymentMethodId paymentMethodId = new PaymentMethodId(network.bitcoinCode, PaymentTypes.BTCLike);
             var exisingStrategy = store.GetSupportedPaymentMethods(_NetworkProvider)
                 .Where(c => c.PaymentId == paymentMethodId)
                 .OfType<DerivationSchemeSettings>()
@@ -200,17 +200,17 @@ namespace BTCPayServer.Controllers
                 await _Repo.UpdateStore(store);
                 _EventAggregator.Publish(new WalletChangedEvent()
                 {
-                    WalletId = new WalletId(storeId, cryptoCode)
+                    WalletId = new WalletId(storeId, bitcoinCode)
                 });
                     
                 if (willBeExcluded != wasExcluded)
                 {
                     var label = willBeExcluded ? "disabled" : "enabled";
-                    TempData[WellKnownTempData.SuccessMessage] = $"On-Chain payments for {network.CryptoCode} has been {label}.";
+                    TempData[WellKnownTempData.SuccessMessage] = $"On-Chain payments for {network.bitcoinCode} has been {label}.";
                 }
                 else
                 {
-                    TempData[WellKnownTempData.SuccessMessage] = $"Derivation settings for {network.CryptoCode} has been modified.";
+                    TempData[WellKnownTempData.SuccessMessage] = $"Derivation settings for {network.bitcoinCode} has been modified.";
                 }
                 return RedirectToAction(nameof(UpdateStore), new { storeId = storeId });
             }
@@ -253,8 +253,8 @@ namespace BTCPayServer.Controllers
         }
 
         [HttpPost]
-        [Route("{storeId}/derivations/{cryptoCode}/generatenbxwallet")]
-        public async Task<IActionResult> GenerateNBXWallet(string storeId, string cryptoCode,
+        [Route("{storeId}/derivations/{bitcoinCode}/generatenbxwallet")]
+        public async Task<IActionResult> GenerateNBXWallet(string storeId, string bitcoinCode,
             GenerateWalletRequest request)
         {
             var hotWallet = await CanUseHotWallet();
@@ -263,8 +263,8 @@ namespace BTCPayServer.Controllers
                 return NotFound();
             }
 
-            var network = _NetworkProvider.GetNetwork<BTCPayNetwork>(cryptoCode);
-            var client = _ExplorerProvider.GetExplorerClient(cryptoCode);
+            var network = _NetworkProvider.GetNetwork<BTCPayNetwork>(bitcoinCode);
+            var client = _ExplorerProvider.GetExplorerClient(bitcoinCode);
             GenerateWalletResponse response;
             try
             {
@@ -277,7 +277,7 @@ namespace BTCPayServer.Controllers
                     Severity = StatusMessageModel.StatusSeverity.Error,
                     Html = $"There was an error generating your wallet: {e.Message}"
                 });
-                return RedirectToAction(nameof(AddDerivationScheme), new {storeId, cryptoCode});
+                return RedirectToAction(nameof(AddDerivationScheme), new {storeId, bitcoinCode});
             }
             
             if (response == null)
@@ -287,7 +287,7 @@ namespace BTCPayServer.Controllers
                     Severity = StatusMessageModel.StatusSeverity.Error,
                     Html = "There was an error generating your wallet. Is your node available?"
                 });
-                return RedirectToAction(nameof(AddDerivationScheme), new {storeId, cryptoCode});
+                return RedirectToAction(nameof(AddDerivationScheme), new {storeId, bitcoinCode});
             }
 
             var store = HttpContext.GetStoreData();
@@ -298,15 +298,15 @@ namespace BTCPayServer.Controllers
                     Network = network,
                     RootFingerprint = response.AccountKeyPath.MasterFingerprint.ToString(),
                     RootKeyPath = network.GetRootKeyPath(),
-                    CryptoCode = cryptoCode,
+                    bitcoinCode = bitcoinCode,
                     DerivationScheme = response.DerivationScheme.ToString(),
                     Source = "NBXplorer",
                     AccountKey = response.AccountHDKey.Neuter().ToWif(),
                     DerivationSchemeFormat = "BTCPay",
                     KeyPath = response.AccountKeyPath.KeyPath.ToString(),
                     Enabled = !store.GetStoreBlob()
-                        .IsExcluded(new PaymentMethodId(cryptoCode, PaymentTypes.BTCLike))
-                }, cryptoCode);
+                        .IsExcluded(new PaymentMethodId(bitcoinCode, PaymentTypes.BTCLike))
+                }, bitcoinCode);
             if (!ModelState.IsValid || !(result is RedirectToActionResult))
                 return result;
             TempData.Clear();

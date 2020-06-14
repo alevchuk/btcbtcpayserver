@@ -477,9 +477,9 @@ namespace BTCPayServer.Tests
                     var store = await s.Server.PayTester.StoreRepository.FindStore(storeId);
                     var x = store.GetSupportedPaymentMethods(s.Server.NetworkProvider)
                         .OfType<DerivationSchemeSettings>()
-                        .Single(settings => settings.PaymentId.CryptoCode == walletId.CryptoCode);
+                        .Single(settings => settings.PaymentId.bitcoinCode == walletId.bitcoinCode);
                     Assert.Contains(
-                        await s.Server.PayTester.GetService<BTCPayWalletProvider>().GetWallet(walletId.CryptoCode)
+                        await s.Server.PayTester.GetService<BTCPayWalletProvider>().GetWallet(walletId.bitcoinCode)
                             .GetUnspentCoins(x.AccountDerivation),
                         coin => coin.OutPoint == spentOutpoint);
                 });
@@ -652,7 +652,7 @@ namespace BTCPayServer.Tests
                 s.Driver.FindElement(By.CssSelector("button[value=broadcast]")).ForceClick();
                 Assert.Equal(walletTransactionLink, s.Driver.Url);
                 
-                var bip21 = invoice.EntityToDTO().CryptoInfo.First().PaymentUrls.BIP21;
+                var bip21 = invoice.EntityToDTO().bitcoinInfo.First().PaymentUrls.BIP21;
                 //let's make bip21 more interesting
                 bip21 += "&label=Solid Snake&message=Snake? Snake? SNAAAAKE!";
                 var parsedBip21 = new BitcoinUrlBuilder(bip21, Network.RegTest);

@@ -11,20 +11,20 @@ namespace BTCPayServer
     {
         public void InitBitcoinplus()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("XBC");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("XBC");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Bitcoinplus",
-                BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://chainz.cryptoid.info/xbc/tx.dws?{0}" : "https://chainz.cryptoid.info/xbc/tx.dws?{0}",
+                BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://chainz.bitcoinid.info/xbc/tx.dws?{0}" : "https://chainz.bitcoinid.info/xbc/tx.dws?{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
                 UriScheme = "bitcoinplus",
                 DefaultRateRules = new[]
                 {
                                 "XBC_X = XBC_BTC * BTC_X",
-                                "XBC_BTC = cryptopia(XBC_BTC)"
+                                "XBC_BTC = bitcoinpia(XBC_BTC)"
                 },
-                CryptoImagePath = "imlegacy/bitcoinplus.png",
+                bitcoinImagePath = "imlegacy/bitcoinplus.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("65'") : new KeyPath("1'")
             });

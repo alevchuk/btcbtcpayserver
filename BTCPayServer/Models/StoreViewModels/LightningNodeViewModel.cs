@@ -16,7 +16,7 @@ namespace BTCPayServer.Models.StoreViewModels
             set;
         }
 
-        public string CryptoCode
+        public string bitcoinCode
         {
             get;
             set;

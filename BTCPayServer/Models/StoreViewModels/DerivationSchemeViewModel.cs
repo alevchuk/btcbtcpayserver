@@ -25,7 +25,7 @@ namespace BTCPayServer.Models.StoreViewModels
             get; set;
         } = new List<(string KeyPath, string Address, RootedKeyPath RootedKeyPath)>();
 
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
         public string KeyPath { get; set; }
         public string RootFingerprint { get; set; }
         [Display(Name = "Hint address")]

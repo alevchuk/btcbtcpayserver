@@ -8,7 +8,7 @@ namespace BTCPayServer
         {
             Add(new MoneroLikeSpecificBtcPayNetwork()
             {
-                CryptoCode = "XMR",
+                bitcoinCode = "XMR",
                 DisplayName = "Monero",
                 Divisibility = 12,
                 BlockExplorerLink =
@@ -20,7 +20,7 @@ namespace BTCPayServer
                     "XMR_X = XMR_BTC * BTC_X",
                     "XMR_BTC = kraken(XMR_BTC)"
                 },
-                CryptoImagePath = "/imlegacy/monero.svg"
+                bitcoinImagePath = "/imlegacy/monero.svg"
             });
         }
     }

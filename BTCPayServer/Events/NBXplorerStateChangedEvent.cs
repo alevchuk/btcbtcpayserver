@@ -21,7 +21,7 @@ namespace BTCPayServer.Events
 
         public override string ToString()
         {
-            return $"NBXplorer {Network.CryptoCode}: {OldState} => {NewState}";
+            return $"NBXplorer {Network.bitcoinCode}: {OldState} => {NewState}";
         }
     }
 }

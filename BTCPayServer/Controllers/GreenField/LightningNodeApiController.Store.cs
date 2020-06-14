@@ -36,72 +36,72 @@ namespace BTCPayServer.Controllers.GreenField
         }
         [Authorize(Policy = Policies.CanUseLightningNodeInStore,
             AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpGet("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/info")]
-        public override Task<IActionResult> GetInfo(string cryptoCode)
+        [HttpGet("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/info")]
+        public override Task<IActionResult> GetInfo(string bitcoinCode)
         {
-            return base.GetInfo(cryptoCode);
+            return base.GetInfo(bitcoinCode);
         }
 
         [Authorize(Policy = Policies.CanUseLightningNodeInStore,
             AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpPost("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/connect")]
-        public override Task<IActionResult> ConnectToNode(string cryptoCode, ConnectToNodeRequest request)
+        [HttpPost("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/connect")]
+        public override Task<IActionResult> ConnectToNode(string bitcoinCode, ConnectToNodeRequest request)
         {
-            return base.ConnectToNode(cryptoCode, request);
+            return base.ConnectToNode(bitcoinCode, request);
         }
         [Authorize(Policy = Policies.CanUseLightningNodeInStore,
             AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpGet("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/channels")]
-        public override Task<IActionResult> GetChannels(string cryptoCode)
+        [HttpGet("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/channels")]
+        public override Task<IActionResult> GetChannels(string bitcoinCode)
         {
-            return base.GetChannels(cryptoCode);
+            return base.GetChannels(bitcoinCode);
         }
         [Authorize(Policy = Policies.CanUseLightningNodeInStore,
             AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpPost("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/channels")]
-        public override Task<IActionResult> OpenChannel(string cryptoCode, OpenLightningChannelRequest request)
+        [HttpPost("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/channels")]
+        public override Task<IActionResult> OpenChannel(string bitcoinCode, OpenLightningChannelRequest request)
         {
-            return base.OpenChannel(cryptoCode, request);
-        }
-
-        [Authorize(Policy = Policies.CanUseLightningNodeInStore,
-            AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpPost("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/address")]
-        public override Task<IActionResult> GetDepositAddress(string cryptoCode)
-        {
-            return base.GetDepositAddress(cryptoCode);
+            return base.OpenChannel(bitcoinCode, request);
         }
 
         [Authorize(Policy = Policies.CanUseLightningNodeInStore,
             AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpPost("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/invoices/pay")]
-        public override Task<IActionResult> PayInvoice(string cryptoCode, PayLightningInvoiceRequest lightningInvoice)
+        [HttpPost("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/address")]
+        public override Task<IActionResult> GetDepositAddress(string bitcoinCode)
         {
-            return base.PayInvoice(cryptoCode, lightningInvoice);
+            return base.GetDepositAddress(bitcoinCode);
         }
 
         [Authorize(Policy = Policies.CanUseLightningNodeInStore,
             AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpGet("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/invoices/{id}")]
-        public override Task<IActionResult> GetInvoice(string cryptoCode, string id)
+        [HttpPost("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/invoices/pay")]
+        public override Task<IActionResult> PayInvoice(string bitcoinCode, PayLightningInvoiceRequest lightningInvoice)
         {
-            return base.GetInvoice(cryptoCode, id);
+            return base.PayInvoice(bitcoinCode, lightningInvoice);
+        }
+
+        [Authorize(Policy = Policies.CanUseLightningNodeInStore,
+            AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
+        [HttpGet("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/invoices/{id}")]
+        public override Task<IActionResult> GetInvoice(string bitcoinCode, string id)
+        {
+            return base.GetInvoice(bitcoinCode, id);
         }
 
         [Authorize(Policy = Policies.CanCreateLightningInvoiceInStore,
             AuthenticationSchemes = AuthenticationSchemes.Greenfield)]
-        [HttpPost("~/api/v1/stores/{storeId}/lightning/{cryptoCode}/invoices")]
-        public override Task<IActionResult> CreateInvoice(string cryptoCode, CreateLightningInvoiceRequest request)
+        [HttpPost("~/api/v1/stores/{storeId}/lightning/{bitcoinCode}/invoices")]
+        public override Task<IActionResult> CreateInvoice(string bitcoinCode, CreateLightningInvoiceRequest request)
         {
-            return base.CreateInvoice(cryptoCode, request);
+            return base.CreateInvoice(bitcoinCode, request);
         }
 
-        protected override Task<ILightningClient> GetLightningClient(string cryptoCode,
+        protected override Task<ILightningClient> GetLightningClient(string bitcoinCode,
             bool doingAdminThings)
         {
-            _btcPayServerOptions.InternalLightningByCryptoCode.TryGetValue(cryptoCode,
+            _btcPayServerOptions.InternalLightningBybitcoinCode.TryGetValue(bitcoinCode,
                 out var internalLightningNode);
-            var network = _btcPayNetworkProvider.GetNetwork<BTCPayNetwork>(cryptoCode);
+            var network = _btcPayNetworkProvider.GetNetwork<BTCPayNetwork>(bitcoinCode);
 
             var store = HttpContext.GetStoreData();
             if (network == null || store == null)
@@ -109,7 +109,7 @@ namespace BTCPayServer.Controllers.GreenField
                 return null;
             }
 
-            var id = new PaymentMethodId(cryptoCode, PaymentTypes.LightningLike);
+            var id = new PaymentMethodId(bitcoinCode, PaymentTypes.LightningLike);
             var existing = store.GetSupportedPaymentMethods(_btcPayNetworkProvider)
                 .OfType<LightningSupportedPaymentMethod>()
                 .FirstOrDefault(d => d.PaymentId == id);

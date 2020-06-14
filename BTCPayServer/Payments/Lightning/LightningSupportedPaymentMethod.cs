@@ -9,15 +9,15 @@ namespace BTCPayServer.Payments.Lightning
 {
     public class LightningSupportedPaymentMethod : ISupportedPaymentMethod
     {
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
 
         [Obsolete("Use Get/SetLightningUrl")]
         public string Username { get; set; }
         [Obsolete("Use Get/SetLightningUrl")]
         public string Password { get; set; }
 
-        // This property MUST be after CryptoCode or else JSON serialization fails
-        public PaymentMethodId PaymentId => new PaymentMethodId(CryptoCode, PaymentTypes.LightningLike);
+        // This property MUST be after bitcoinCode or else JSON serialization fails
+        public PaymentMethodId PaymentId => new PaymentMethodId(bitcoinCode, PaymentTypes.LightningLike);
 
         [Obsolete("Use Get/SetLightningUrl")]
         public string LightningChargeUrl { get; set; }

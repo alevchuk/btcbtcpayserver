@@ -6,11 +6,11 @@ namespace BTCPayServer
     {
         public void InitLiquidAssets()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("LBTC");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("LBTC");
             Add(new ElementsBTCPayNetwork()
             {
-                CryptoCode = "USDt",
-                NetworkCryptoCode = "LBTC",
+                bitcoinCode = "USDt",
+                NetworkbitcoinCode = "LBTC",
                 ShowSyncSummary = false,
                 DefaultRateRules = new[]
                 {
@@ -23,7 +23,7 @@ namespace BTCPayServer
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://blockstream.info/liquid/tx/{0}" : "https://blockstream.info/testnet/liquid/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
                 UriScheme = "liquidnetwork",
-                CryptoImagePath = "imlegacy/liquid-tether.svg",
+                bitcoinImagePath = "imlegacy/liquid-tether.svg",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("1776'") : new KeyPath("1'"),
                 SupportRBF = true,
@@ -32,8 +32,8 @@ namespace BTCPayServer
             
             Add(new ElementsBTCPayNetwork()
             {
-                CryptoCode = "ETB",
-                NetworkCryptoCode = "LBTC",
+                bitcoinCode = "ETB",
+                NetworkbitcoinCode = "LBTC",
                 ShowSyncSummary = false,
                 DefaultRateRules = new[]
                 {
@@ -47,7 +47,7 @@ namespace BTCPayServer
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://blockstream.info/liquid/tx/{0}" : "https://blockstream.info/testnet/liquid/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
                 UriScheme = "liquidnetwork",
-                CryptoImagePath = "imlegacy/etb.png",
+                bitcoinImagePath = "imlegacy/etb.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("1776'") : new KeyPath("1'"),
                 SupportRBF = true,
@@ -56,8 +56,8 @@ namespace BTCPayServer
             
               Add(new ElementsBTCPayNetwork()
             {
-                CryptoCode = "LCAD",
-                NetworkCryptoCode = "LBTC",
+                bitcoinCode = "LCAD",
+                NetworkbitcoinCode = "LBTC",
                 ShowSyncSummary = false,
                 DefaultRateRules = new[]
                 {
@@ -70,7 +70,7 @@ namespace BTCPayServer
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://blockstream.info/liquid/tx/{0}" : "https://blockstream.info/testnet/liquid/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
                 UriScheme = "liquidnetwork",
-                CryptoImagePath = "imlegacy/lcad.png",
+                bitcoinImagePath = "imlegacy/lcad.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("1776'") : new KeyPath("1'"),
                 SupportRBF = true,

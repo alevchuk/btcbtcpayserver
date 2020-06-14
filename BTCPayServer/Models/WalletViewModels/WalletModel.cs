@@ -10,7 +10,7 @@ namespace BTCPayServer.Models.WalletViewModels
     public class WalletModel
     {
         public string ServerUrl { get; set; }
-        public string CryptoCurrency
+        public string bitcoin
         {
             get;
             set;

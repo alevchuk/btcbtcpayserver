@@ -502,7 +502,7 @@ namespace BTCPayServer.Controllers
             {
                 externalService = new ExternalService()
                 {
-                    CryptoCode = torService.Network.CryptoCode,
+                    bitcoinCode = torService.Network.bitcoinCode,
                     DisplayName = "Full node P2P",
                     Type = ExternalServiceTypes.P2P,
                     ConnectionString = new ExternalConnectionString(new Uri($"bitcoin-p2p://{torService.OnionHost}:{torService.VirtualPort}", UriKind.Absolute)),
@@ -513,7 +513,7 @@ namespace BTCPayServer.Controllers
             {
                 externalService = new ExternalService()
                 {
-                    CryptoCode = torService.Network.CryptoCode,
+                    bitcoinCode = torService.Network.bitcoinCode,
                     DisplayName = "Full node RPC",
                     Type = ExternalServiceTypes.RPC,
                     ConnectionString = new ExternalConnectionString(new Uri($"btcrpc://btcrpc:btcpayserver4ever@{torService.OnionHost}:{torService.VirtualPort}?label=BTCPayNode", UriKind.Absolute)),
@@ -523,9 +523,9 @@ namespace BTCPayServer.Controllers
             return externalService != null;
         }
 
-        private ExternalService GetService(string serviceName, string cryptoCode)
+        private ExternalService GetService(string serviceName, string bitcoinCode)
         {
-            var result = _Options.ExternalServices.GetService(serviceName, cryptoCode);
+            var result = _Options.ExternalServices.GetService(serviceName, bitcoinCode);
             if (result != null)
                 return result;
             foreach (var torService in _torServices.Services)
@@ -539,15 +539,15 @@ namespace BTCPayServer.Controllers
 
 
         
-        [Route("server/services/{serviceName}/{cryptoCode?}")]
-        public async Task<IActionResult> Service(string serviceName, string cryptoCode, bool showQR = false, uint? nonce = null)
+        [Route("server/services/{serviceName}/{bitcoinCode?}")]
+        public async Task<IActionResult> Service(string serviceName, string bitcoinCode, bool showQR = false, uint? nonce = null)
         {
-            if (!string.IsNullOrEmpty(cryptoCode) && !_dashBoard.IsFullySynched(cryptoCode, out _))
+            if (!string.IsNullOrEmpty(bitcoinCode) && !_dashBoard.IsFullySynched(bitcoinCode, out _))
             {
-                TempData[WellKnownTempData.ErrorMessage] = $"{cryptoCode} is not fully synched";
+                TempData[WellKnownTempData.ErrorMessage] = $"{bitcoinCode} is not fully synched";
                 return RedirectToAction(nameof(Services));
             }
-            var service = GetService(serviceName, cryptoCode);
+            var service = GetService(serviceName, bitcoinCode);
             if (service == null)
                 return NotFound();
 
@@ -633,8 +633,8 @@ namespace BTCPayServer.Controllers
         }
 
         [HttpGet]
-        [Route("server/services/{serviceName}/{cryptoCode}/removelndseed")]
-        public IActionResult RemoveLndSeed(string serviceName, string cryptoCode)
+        [Route("server/services/{serviceName}/{bitcoinCode}/removelndseed")]
+        public IActionResult RemoveLndSeed(string serviceName, string bitcoinCode)
         {
             return View("Confirm", new ConfirmModel()
             {
@@ -645,10 +645,10 @@ namespace BTCPayServer.Controllers
         }
 
         [HttpPost]
-        [Route("server/services/{serviceName}/{cryptoCode}/removelndseed")]
-        public async Task<IActionResult> RemoveLndSeedPost(string serviceName, string cryptoCode)
+        [Route("server/services/{serviceName}/{bitcoinCode}/removelndseed")]
+        public async Task<IActionResult> RemoveLndSeedPost(string serviceName, string bitcoinCode)
         {
-            var service = GetService(serviceName, cryptoCode);
+            var service = GetService(serviceName, bitcoinCode);
             if (service == null)
                 return NotFound();
 
@@ -668,7 +668,7 @@ namespace BTCPayServer.Controllers
             if (await model.RemoveSeedAndWrite(service.ConnectionString.CookieFilePath))
             {
                 TempData[WellKnownTempData.SuccessMessage] = $"Seed successfully removed";
-                return RedirectToAction(nameof(Service), new { serviceName, cryptoCode });
+                return RedirectToAction(nameof(Service), new { serviceName, bitcoinCode });
             }
             else
             {
@@ -719,7 +719,7 @@ namespace BTCPayServer.Controllers
 
             if (nonce != null)
             {
-                var configKey = GetConfigKey("lnd", service.ServiceName, service.CryptoCode, nonce.Value);
+                var configKey = GetConfigKey("lnd", service.ServiceName, service.bitcoinCode, nonce.Value);
                 var lnConfig = _LnConfigProvider.GetConfig(configKey);
                 if (lnConfig != null)
                 {
@@ -731,9 +731,9 @@ namespace BTCPayServer.Controllers
             return View(view, model);
         }
 
-        private static uint GetConfigKey(string type, string serviceName, string cryptoCode, uint nonce)
+        private static uint GetConfigKey(string type, string serviceName, string bitcoinCode, uint nonce)
         {
-            return (uint)HashCode.Combine(type, serviceName, cryptoCode, nonce);
+            return (uint)HashCode.Combine(type, serviceName, bitcoinCode, nonce);
         }
 
         [Route("lnd-config/{configKey}/lnd.config")]
@@ -746,16 +746,16 @@ namespace BTCPayServer.Controllers
             return Json(conf);
         }
 
-        [Route("server/services/{serviceName}/{cryptoCode}")]
+        [Route("server/services/{serviceName}/{bitcoinCode}")]
         [HttpPost]
-        public async Task<IActionResult> ServicePost(string serviceName, string cryptoCode)
+        public async Task<IActionResult> ServicePost(string serviceName, string bitcoinCode)
         {
-            if (!_dashBoard.IsFullySynched(cryptoCode, out var unusud))
+            if (!_dashBoard.IsFullySynched(bitcoinCode, out var unusud))
             {
-                TempData[WellKnownTempData.ErrorMessage] = $"{cryptoCode} is not fully synched";
+                TempData[WellKnownTempData.ErrorMessage] = $"{bitcoinCode} is not fully synched";
                 return RedirectToAction(nameof(Services));
             }
-            var service = GetService(serviceName, cryptoCode);
+            var service = GetService(serviceName, bitcoinCode);
             if (service == null)
                 return NotFound();
 
@@ -791,7 +791,7 @@ namespace BTCPayServer.Controllers
                 throw new NotSupportedException(service.Type.ToString());
             var commonConf = (LNDConfiguration)confs.Configurations[confs.Configurations.Count - 1];
             commonConf.ChainType = _Options.NetworkType.ToString();
-            commonConf.CryptoCode = cryptoCode;
+            commonConf.bitcoinCode = bitcoinCode;
             commonConf.Macaroon = connectionString.Macaroon == null ? null : Encoders.Hex.EncodeData(connectionString.Macaroon);
             commonConf.CertificateThumbprint = connectionString.CertificateThumbprint == null ? null : connectionString.CertificateThumbprint;
             commonConf.AdminMacaroon = connectionString.Macaroons?.AdminMacaroon?.Hex;
@@ -799,9 +799,9 @@ namespace BTCPayServer.Controllers
             commonConf.InvoiceMacaroon = connectionString.Macaroons?.InvoiceMacaroon?.Hex;
 
             var nonce = RandomUtils.GetUInt32();
-            var configKey = GetConfigKey("lnd", serviceName, cryptoCode, nonce);
+            var configKey = GetConfigKey("lnd", serviceName, bitcoinCode, nonce);
             _LnConfigProvider.KeepConfig(configKey, confs);
-            return RedirectToAction(nameof(Service), new { cryptoCode = cryptoCode, serviceName = serviceName, nonce = nonce });
+            return RedirectToAction(nameof(Service), new { bitcoinCode = bitcoinCode, serviceName = serviceName, nonce = nonce });
         }
 
         [Route("server/services/dynamic-dns")]

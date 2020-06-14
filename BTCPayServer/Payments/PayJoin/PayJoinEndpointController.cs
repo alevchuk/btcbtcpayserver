@@ -25,11 +25,11 @@ using BTCPayServer.Data;
 using NBitcoin.DataEncoders;
 using Amazon.S3.Model;
 using BTCPayServer.Logging;
-using NBitcoin.Crypto;
+using NBitcoin.bitcoin;
 
 namespace BTCPayServer.Payments.PayJoin
 {
-    [Route("{cryptoCode}/" + PayjoinClient.BIP21EndpointKey)]
+    [Route("{bitcoinCode}/" + PayjoinClient.BIP21EndpointKey)]
     public class PayJoinEndpointController : ControllerBase
     {
         /// <summary>
@@ -121,13 +121,13 @@ namespace BTCPayServer.Payments.PayJoin
         [EnableCors(CorsPolicies.All)]
         [MediaTypeConstraint("text/plain")]
         [RateLimitsFilter(ZoneLimits.PayJoin, Scope = RateLimitsScope.RemoteAddress)]
-        public async Task<IActionResult> Submit(string cryptoCode,
+        public async Task<IActionResult> Submit(string bitcoinCode,
             long maxadditionalfeecontribution = -1,
             int additionalfeeoutputindex = -1,
             decimal minfeerate = -1.0m,
             int v = 1)
         {
-            var network = _btcPayNetworkProvider.GetNetwork<BTCPayNetwork>(cryptoCode);
+            var network = _btcPayNetworkProvider.GetNetwork<BTCPayNetwork>(bitcoinCode);
             if (network == null)
                 return NotFound();
 
@@ -235,7 +235,7 @@ namespace BTCPayServer.Payments.PayJoin
                     $"Provided transaction isn't mempool eligible {mempool.RPCCodeMessage}"));
             }
             var enforcedLowR = ctx.OriginalTransaction.Inputs.All(IsLowR);
-            var paymentMethodId = new PaymentMethodId(network.CryptoCode, PaymentTypes.BTCLike);
+            var paymentMethodId = new PaymentMethodId(network.bitcoinCode, PaymentTypes.BTCLike);
             bool paidSomething = false;
             Money due = null;
             Dictionary<OutPoint, UTXO> selectedUTXOs = new Dictionary<OutPoint, UTXO>();
@@ -245,7 +245,7 @@ namespace BTCPayServer.Payments.PayJoin
             DerivationSchemeSettings derivationSchemeSettings = null;
             foreach (var output in psbt.Outputs)
             {
-                var key = output.ScriptPubKey.Hash + "#" + network.CryptoCode.ToUpperInvariant();
+                var key = output.ScriptPubKey.Hash + "#" + network.bitcoinCode.ToUpperInvariant();
                 invoice = (await _invoiceRepository.GetInvoicesFromAddresses(new[] { key })).FirstOrDefault();
                 if (invoice is null)
                     continue;
@@ -354,7 +354,7 @@ namespace BTCPayServer.Payments.PayJoin
                 newInput.Sequence = newTx.Inputs[rand.Next(0, senderInputCount)].Sequence;
             }
             ourNewOutput.Value += contributedAmount;
-            var minRelayTxFee = this._dashboard.Get(network.CryptoCode).Status.BitcoinStatus?.MinRelayTxFee ??
+            var minRelayTxFee = this._dashboard.Get(network.bitcoinCode).Status.BitcoinStatus?.MinRelayTxFee ??
                                 new FeeRate(1.0m);
             // Probably receiving some spare change, let's add an output to make
             // it looks more like a normal transaction
@@ -392,7 +392,7 @@ namespace BTCPayServer.Payments.PayJoin
                         ourNewOutput.Value -= fakeChange.Value;
                         newTx.Outputs.Add(fakeChange);
                         isOurOutput.Add(fakeChange);
-                        ctx.Logs.Write($"Added a fake change output of {fakeChange.Value} {network.CryptoCode} in the payjoin proposal");
+                        ctx.Logs.Write($"Added a fake change output of {fakeChange.Value} {network.bitcoinCode} in the payjoin proposal");
                     }
                 }
             }
@@ -504,7 +504,7 @@ namespace BTCPayServer.Payments.PayJoin
             _eventAggregator.Publish(new InvoiceEvent(invoice, 1002, InvoiceEvent.ReceivedPayment) { Payment = payment });
             _eventAggregator.Publish(new UpdateTransactionLabel()
             {
-                WalletId = new WalletId(invoice.StoreId, network.CryptoCode),
+                WalletId = new WalletId(invoice.StoreId, network.bitcoinCode),
                 TransactionLabels = selectedUTXOs.GroupBy(pair => pair.Key.Hash).Select(utxo =>
                        new KeyValuePair<uint256, List<(string color, string label)>>(utxo.Key,
                            new List<(string color, string label)>()

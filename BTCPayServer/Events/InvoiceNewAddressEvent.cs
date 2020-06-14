@@ -19,7 +19,7 @@ namespace BTCPayServer.Events
         public BTCPayNetworkBase Network { get; set; }
         public override string ToString()
         {
-            return $"{Network.CryptoCode}: New address {Address} for invoice {InvoiceId}";
+            return $"{Network.bitcoinCode}: New address {Address} for invoice {InvoiceId}";
         }
     }
 }

@@ -10,41 +10,41 @@ namespace BTCPayServer.Configuration
 {
     public class ExternalServices : List<ExternalService>
     {
-        public void Load(string cryptoCode, IConfiguration configuration)
+        public void Load(string bitcoinCode, IConfiguration configuration)
         {
-            Load(configuration, cryptoCode, "lndgrpc", ExternalServiceTypes.LNDGRPC, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "lndgrpc", ExternalServiceTypes.LNDGRPC, "Invalid setting {0}, " + Environment.NewLine +
                                 "lnd server: 'server=https://lnd.example.com;macaroon=abf239...;certthumbprint=2abdf302...'" + Environment.NewLine +
                                 "lnd server: 'server=https://lnd.example.com;macaroonfilepath=/root/.lnd/admin.macaroon;certthumbprint=2abdf302...'" + Environment.NewLine +
                                 "lnd server: 'server=https://lnd.example.com;macaroondirectorypath=/root/.lnd;certthumbprint=2abdf302...'" + Environment.NewLine +
                                 "Error: {1}",
                                 "LND (gRPC server)");
-            Load(configuration, cryptoCode, "lndrest", ExternalServiceTypes.LNDRest, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "lndrest", ExternalServiceTypes.LNDRest, "Invalid setting {0}, " + Environment.NewLine +
                                 "lnd server: 'server=https://lnd.example.com;macaroon=abf239...;certthumbprint=2abdf302...'" + Environment.NewLine +
                                 "lnd server: 'server=https://lnd.example.com;macaroonfilepath=/root/.lnd/admin.macaroon;certthumbprint=2abdf302...'" + Environment.NewLine +
                                 "lnd server: 'server=https://lnd.example.com;macaroondirectorypath=/root/.lnd;certthumbprint=2abdf302...'" + Environment.NewLine +
                                 "Error: {1}",
                                 "LND (REST server)");
-            Load(configuration, cryptoCode, "lndseedbackup", ExternalServiceTypes.LNDSeedBackup, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "lndseedbackup", ExternalServiceTypes.LNDSeedBackup, "Invalid setting {0}, " + Environment.NewLine +
                                 "lnd seed backup: /etc/merchant_lnd/data/chain/bitcoin/regtest/walletunlock.json'" + Environment.NewLine +
                                 "Error: {1}",
                                 "LND Seed Backup");
-            Load(configuration, cryptoCode, "spark", ExternalServiceTypes.Spark, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "spark", ExternalServiceTypes.Spark, "Invalid setting {0}, " + Environment.NewLine +
                                 $"Valid example: 'server=https://btcpay.example.com/spark/btc/;cookiefile=/etc/clightning_bitcoin_spark/.cookie'" + Environment.NewLine +
                                 "Error: {1}",
                                 "C-Lightning (Spark server)");
-            Load(configuration, cryptoCode, "rtl", ExternalServiceTypes.RTL, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "rtl", ExternalServiceTypes.RTL, "Invalid setting {0}, " + Environment.NewLine +
                                 $"Valid example: 'server=https://btcpay.example.com/rtl/btc/;cookiefile=/etc/clightning_bitcoin_rtl/.cookie'" + Environment.NewLine +
                                 "Error: {1}",
                                 "Ride the Lightning server");
-            Load(configuration, cryptoCode, "thunderhub", ExternalServiceTypes.ThunderHub, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "thunderhub", ExternalServiceTypes.ThunderHub, "Invalid setting {0}, " + Environment.NewLine +
                                 $"Valid example: 'server=https://btcpay.example.com/thub/;cookiefile=/etc/clightning_bitcoin_rtl/.cookie'" + Environment.NewLine +
                                 "Error: {1}",
                                 "ThunderHub");
-            Load(configuration, cryptoCode, "clightningrest", ExternalServiceTypes.CLightningRest, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "clightningrest", ExternalServiceTypes.CLightningRest, "Invalid setting {0}, " + Environment.NewLine +
                                 $"Valid example: 'server=https://btcpay.example.com/clightning-rest/btc/;cookiefile=/etc/clightning_bitcoin_rtl/.cookie'" + Environment.NewLine +
                                 "Error: {1}",
                                 "C-Lightning REST");
-            Load(configuration, cryptoCode, "charge", ExternalServiceTypes.Charge, "Invalid setting {0}, " + Environment.NewLine +
+            Load(configuration, bitcoinCode, "charge", ExternalServiceTypes.Charge, "Invalid setting {0}, " + Environment.NewLine +
                                 $"lightning charge server: 'type=charge;server=https://charge.example.com;api-token=2abdf302...'" + Environment.NewLine +
                                 $"lightning charge server: 'type=charge;server=https://charge.example.com;cookiefilepath=/root/.charge/.cookie'" + Environment.NewLine +
                                 "Error: {1}",
@@ -52,7 +52,7 @@ namespace BTCPayServer.Configuration
             
         }
 
-        public void LoadNonCryptoServices(IConfiguration configuration)
+        public void LoadNonbitcoinServices(IConfiguration configuration)
         {
             Load(configuration, null, "configurator", ExternalServiceTypes.Configurator, "Invalid setting {0}, " + Environment.NewLine +
                                                                                    $"configurator: 'cookiefilepathfile=/etc/configurator/cookie'" + Environment.NewLine +
@@ -60,9 +60,9 @@ namespace BTCPayServer.Configuration
                 "Configurator");
         }
 
-        void Load(IConfiguration configuration, string cryptoCode, string serviceName, ExternalServiceTypes type, string errorMessage, string displayName)
+        void Load(IConfiguration configuration, string bitcoinCode, string serviceName, ExternalServiceTypes type, string errorMessage, string displayName)
         {
-            var setting = $"{(!string.IsNullOrEmpty(cryptoCode)? $"{cryptoCode}.": string.Empty)}external.{serviceName}";
+            var setting = $"{(!string.IsNullOrEmpty(bitcoinCode)? $"{bitcoinCode}.": string.Empty)}external.{serviceName}";
             var connStr = configuration.GetOrDefault<string>(setting, string.Empty);
             if (connStr.Length != 0)
             {
@@ -76,15 +76,15 @@ namespace BTCPayServer.Configuration
                 {
                     throw new ConfigException(string.Format(CultureInfo.InvariantCulture, errorMessage, setting, error));
                 }
-                this.Add(new ExternalService() { Type = type, ConnectionString = serviceConnection, CryptoCode = cryptoCode, DisplayName = displayName, ServiceName = serviceName });
+                this.Add(new ExternalService() { Type = type, ConnectionString = serviceConnection, bitcoinCode = bitcoinCode, DisplayName = displayName, ServiceName = serviceName });
             }
         }
 
-        public ExternalService GetService(string serviceName, string cryptoCode)
+        public ExternalService GetService(string serviceName, string bitcoinCode)
         {
             return this.FirstOrDefault(o =>
-                (cryptoCode == null && o.CryptoCode == null) ||
-                (o.CryptoCode != null && o.CryptoCode.Equals(cryptoCode, StringComparison.OrdinalIgnoreCase))
+                (bitcoinCode == null && o.bitcoinCode == null) ||
+                (o.bitcoinCode != null && o.bitcoinCode.Equals(bitcoinCode, StringComparison.OrdinalIgnoreCase))
                 &&
                 o.ServiceName.Equals(serviceName, StringComparison.OrdinalIgnoreCase));
         }
@@ -95,7 +95,7 @@ namespace BTCPayServer.Configuration
         public string DisplayName { get; set; }
         public ExternalServiceTypes Type { get; set; }
         public ExternalConnectionString ConnectionString { get; set; }
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
         public string ServiceName { get; set; }
     }
 

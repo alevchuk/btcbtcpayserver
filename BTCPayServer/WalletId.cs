@@ -19,7 +19,7 @@ namespace BTCPayServer
             if (!match.Success)
                 return false;
             w.StoreId = match.Groups[1].Value;
-            w.CryptoCode = match.Groups[2].Value.ToUpperInvariant();
+            w.bitcoinCode = match.Groups[2].Value.ToUpperInvariant();
             walletId = w;
             return true;
         }
@@ -27,13 +27,13 @@ namespace BTCPayServer
         {
 
         }
-        public WalletId(string storeId, string cryptoCode)
+        public WalletId(string storeId, string bitcoinCode)
         {
             StoreId = storeId;
-            CryptoCode = cryptoCode;
+            bitcoinCode = bitcoinCode;
         }
         public string StoreId { get; set; }
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
 
 
         public override bool Equals(object obj)
@@ -71,9 +71,9 @@ namespace BTCPayServer
         }
         public override string ToString()
         {
-            if (StoreId == null || CryptoCode == null)
+            if (StoreId == null || bitcoinCode == null)
                 return "";
-            return $"S-{StoreId}-{CryptoCode.ToUpperInvariant()}";
+            return $"S-{StoreId}-{bitcoinCode.ToUpperInvariant()}";
         }
     }
 }

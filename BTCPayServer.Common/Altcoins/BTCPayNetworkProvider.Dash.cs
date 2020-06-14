@@ -7,10 +7,10 @@ namespace BTCPayServer
         public void InitDash()
         {
             //not needed: NBitcoin.Altcoins.Dash.Instance.EnsureRegistered();
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("DASH");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("DASH");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Dash",
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet
                     ? "https://insight.dash.org/insight/tx/{0}"
@@ -22,7 +22,7 @@ namespace BTCPayServer
                         "DASH_X = DASH_BTC * BTC_X",
                         "DASH_BTC = bittrex(DASH_BTC)"
                     },
-                CryptoImagePath = "imlegacy/dash.png",
+                bitcoinImagePath = "imlegacy/dash.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 //https://github.com/satoshilabs/slips/blob/master/slip-0044.md
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("5'")

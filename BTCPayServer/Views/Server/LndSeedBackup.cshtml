@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="form-group collapse">
-                    <form method="get" asp-action="RemoveLndSeed" asp-route-serviceName="@this.Context.GetRouteValue("serviceName")" asp-route-cryptoCode="@this.Context.GetRouteValue("cryptoCode")">
+                    <form method="get" asp-action="RemoveLndSeed" asp-route-serviceName="@this.Context.GetRouteValue("serviceName")" asp-route-bitcoinCode="@this.Context.GetRouteValue("bitcoinCode")">
                         <button id="delete" class="btn btn-primary" type="submit">Remove Seed from server</button>
                     </form>
                 </div>

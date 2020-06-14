@@ -75,7 +75,7 @@ namespace BTCPayServer.U2F
                 {
                     AppId = startedRegistration.AppId,
                     Challenge = startedRegistration.Challenge,
-                    Version = global::U2F.Core.Crypto.U2F.U2FVersion,
+                    Version = global::U2F.Core.bitcoin.U2F.U2FVersion,
                 }
             });
 
@@ -216,7 +216,7 @@ namespace BTCPayServer.U2F
                             AppId = appId,
                             Challenge = challenge.Challenge,
                             KeyHandle = registeredDevice.KeyHandle.ByteArrayToBase64String(),
-                            Version = global::U2F.Core.Crypto.U2F.U2FVersion
+                            Version = global::U2F.Core.bitcoin.U2F.U2FVersion
                         });
                 }
 
@@ -227,17 +227,17 @@ namespace BTCPayServer.U2F
 
         protected virtual StartedRegistration StartDeviceRegistrationCore(string appId)
         {
-            return global::U2F.Core.Crypto.U2F.StartRegistration(appId);
+            return global::U2F.Core.bitcoin.U2F.StartRegistration(appId);
         }
         
         protected virtual DeviceRegistration FinishRegistrationCore(StartedRegistration startedRegistration, RegisterResponse registerResponse)
         {
-            return global::U2F.Core.Crypto.U2F.FinishRegistration(startedRegistration, registerResponse);
+            return global::U2F.Core.bitcoin.U2F.FinishRegistration(startedRegistration, registerResponse);
         }
         
         protected virtual StartedAuthentication StartAuthenticationCore(string appId, U2FDevice registeredDevice)
         {
-            return global::U2F.Core.Crypto.U2F.StartAuthentication(appId,
+            return global::U2F.Core.bitcoin.U2F.StartAuthentication(appId,
                 new DeviceRegistration(registeredDevice.KeyHandle, registeredDevice.PublicKey,
                     registeredDevice.AttestationCert, (uint)registeredDevice.Counter));
         }
@@ -245,7 +245,7 @@ namespace BTCPayServer.U2F
         protected virtual void FinishAuthenticationCore(StartedAuthentication authentication,
             AuthenticateResponse authenticateResponse, DeviceRegistration registration)
         {
-            global::U2F.Core.Crypto.U2F.FinishAuthentication(authentication, authenticateResponse, registration);
+            global::U2F.Core.bitcoin.U2F.FinishAuthentication(authentication, authenticateResponse, registration);
         }
     }
 }

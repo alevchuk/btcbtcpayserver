@@ -255,7 +255,7 @@ addLoadEvent(function (ev) {
                     duration: 10000
                 } );
             });
-            eventAggregator.$on("payment-received", function (amount, cryptoCode, type) {
+            eventAggregator.$on("payment-received", function (amount, bitcoinCode, type) {
                 var onChain = type.toLowerCase() !== "lightninglike";
                 if(self.sound) {
                     playRandomSound();
@@ -265,13 +265,13 @@ addLoadEvent(function (ev) {
                 }
                 amount = parseFloat(amount).noExponents();
                 if(onChain){
-                    Vue.toasted.show('New payment of ' + amount+ " "+ cryptoCode + " " + (onChain? "On Chain": "LN "), {
+                    Vue.toasted.show('New payment of ' + amount+ " "+ bitcoinCode + " " + (onChain? "On Chain": "LN "), {
                         iconPack: "fontawesome",
                         icon: "plus",
                         duration: 10000
                     } );
                 }else{
-                    Vue.toasted.show('New payment of ' + amount+ " "+ cryptoCode + " " + (onChain? "On Chain": "LN "), {
+                    Vue.toasted.show('New payment of ' + amount+ " "+ bitcoinCode + " " + (onChain? "On Chain": "LN "), {
                         iconPack: "fontawesome",
                         icon: "bolt",
                         duration: 10000

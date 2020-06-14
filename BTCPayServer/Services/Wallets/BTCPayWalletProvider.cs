@@ -25,10 +25,10 @@ namespace BTCPayServer.Services.Wallets
 
             foreach(var network in networkProvider.GetAll().OfType<BTCPayNetwork>())
             {
-                var explorerClient = _Client.GetExplorerClient(network.CryptoCode);
+                var explorerClient = _Client.GetExplorerClient(network.bitcoinCode);
                 if (explorerClient == null)
                     continue;
-                _Wallets.Add(network.CryptoCode.ToUpperInvariant(), new BTCPayWallet(explorerClient, new MemoryCache(_Options), network, dbContextFactory));
+                _Wallets.Add(network.bitcoinCode.ToUpperInvariant(), new BTCPayWallet(explorerClient, new MemoryCache(_Options), network, dbContextFactory));
             }
         }
 
@@ -38,13 +38,13 @@ namespace BTCPayServer.Services.Wallets
         {
             if (network == null)
                 throw new ArgumentNullException(nameof(network));
-            return GetWallet(network.CryptoCode);
+            return GetWallet(network.bitcoinCode);
         }
-        public BTCPayWallet GetWallet(string cryptoCode)
+        public BTCPayWallet GetWallet(string bitcoinCode)
         {
-            if (cryptoCode == null)
-                throw new ArgumentNullException(nameof(cryptoCode));
-            _Wallets.TryGetValue(cryptoCode.ToUpperInvariant(), out var result);
+            if (bitcoinCode == null)
+                throw new ArgumentNullException(nameof(bitcoinCode));
+            _Wallets.TryGetValue(bitcoinCode.ToUpperInvariant(), out var result);
             return result;
         }
 

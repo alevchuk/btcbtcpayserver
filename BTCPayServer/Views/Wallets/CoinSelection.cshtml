@@ -6,8 +6,8 @@
             <h3>Coin selection</h3>
             <span class="text-muted text-right" >
                 <span>{{selectedItems.length}} selected</span>
-                <span v-show="selectedItems.length > 0" >&nbsp({{selectedAmount}} @Model.CryptoCode) </span><br/>
-                <span>{{items.length}} total UTXOs (@Model.CurrentBalance @Model.CryptoCode)</span>
+                <span v-show="selectedItems.length > 0" >&nbsp({{selectedAmount}} @Model.bitcoinCode) </span><br/>
+                <span>{{items.length}} total UTXOs (@Model.CurrentBalance @Model.bitcoinCode)</span>
             </span>
         </li>
         <li class="list-group-item">
@@ -186,7 +186,7 @@ $(function() {
         mounted: function() {
             var self = this;
             self.selectedInputs = $("#SelectedInputs").val();
-            $(".crypto-balance-link").text(this.selectedAmount);
+            $(".bitcoin-balance-link").text(this.selectedAmount);
             $("#SelectedInputs").on("input change", function() {
                 self.selectedInputs = $("#SelectedInputs").val();
             });
@@ -218,7 +218,7 @@ $(function() {
                 });
 
                 this.selectedInputs = res;
-                $(".crypto-balance-link").text(this.selectedAmount);
+                $(".bitcoin-balance-link").text(this.selectedAmount);
             }
         }
     });

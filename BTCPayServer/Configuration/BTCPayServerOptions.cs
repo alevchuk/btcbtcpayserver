@@ -15,7 +15,7 @@ namespace BTCPayServer.Configuration
 {
     public class NBXplorerConnectionSetting
     {
-        public string CryptoCode { get; internal set; }
+        public string bitcoinCode { get; internal set; }
         public Uri ExplorerUri { get; internal set; }
         public string CookieFile { get; internal set; }
     }
@@ -91,9 +91,9 @@ namespace BTCPayServer.Configuration
             var networkProvider = new BTCPayNetworkProvider(NetworkType);
             var filtered = networkProvider.Filter(supportedChains.ToArray());
             var elementsBased = filtered.GetAll().OfType<ElementsBTCPayNetwork>();
-            var parentChains = elementsBased.Select(network => network.NetworkCryptoCode.ToUpperInvariant()).Distinct();
+            var parentChains = elementsBased.Select(network => network.NetworkbitcoinCode.ToUpperInvariant()).Distinct();
             var allSubChains = networkProvider.GetAll().OfType<ElementsBTCPayNetwork>()
-                .Where(network => parentChains.Contains(network.NetworkCryptoCode)).Select(network => network.CryptoCode.ToUpperInvariant());
+                .Where(network => parentChains.Contains(network.NetworkbitcoinCode)).Select(network => network.bitcoinCode.ToUpperInvariant());
             supportedChains.AddRange(allSubChains);
             NetworkProvider = networkProvider.Filter(supportedChains.ToArray());
             foreach (var chain in supportedChains)
@@ -106,18 +106,18 @@ namespace BTCPayServer.Configuration
             foreach (var net in NetworkProvider.GetAll().OfType<BTCPayNetwork>())
             {
                 NBXplorerConnectionSetting setting = new NBXplorerConnectionSetting();
-                setting.CryptoCode = net.CryptoCode;
-                setting.ExplorerUri = conf.GetOrDefault<Uri>($"{net.CryptoCode}.explorer.url", net.NBXplorerNetwork.DefaultSettings.DefaultUrl);
-                setting.CookieFile = conf.GetOrDefault<string>($"{net.CryptoCode}.explorer.cookiefile", net.NBXplorerNetwork.DefaultSettings.DefaultCookieFile);
+                setting.bitcoinCode = net.bitcoinCode;
+                setting.ExplorerUri = conf.GetOrDefault<Uri>($"{net.bitcoinCode}.explorer.url", net.NBXplorerNetwork.DefaultSettings.DefaultUrl);
+                setting.CookieFile = conf.GetOrDefault<string>($"{net.bitcoinCode}.explorer.cookiefile", net.NBXplorerNetwork.DefaultSettings.DefaultCookieFile);
                 NBXplorerConnectionSettings.Add(setting);
 
                 {
-                    var lightning = conf.GetOrDefault<string>($"{net.CryptoCode}.lightning", string.Empty);
+                    var lightning = conf.GetOrDefault<string>($"{net.bitcoinCode}.lightning", string.Empty);
                     if (lightning.Length != 0)
                     {
                         if (!LightningConnectionString.TryParse(lightning, true, out var connectionString, out var error))
                         {
-                            Logs.Configuration.LogWarning($"Invalid setting {net.CryptoCode}.lightning, " + Environment.NewLine +
+                            Logs.Configuration.LogWarning($"Invalid setting {net.bitcoinCode}.lightning, " + Environment.NewLine +
                                 $"If you have a c-lightning server use: 'type=clightning;server=/root/.lightning/lightning-rpc', " + Environment.NewLine +
                                 $"If you have a lightning charge server: 'type=charge;server=https://charge.example.com;api-token=yourapitoken'" + Environment.NewLine +
                                 $"If you have a lnd server: 'type=lnd-rest;server=https://lnd:lnd@lnd.example.com;macaroon=abf239...;certthumbprint=2abdf302...'" + Environment.NewLine +
@@ -131,17 +131,17 @@ namespace BTCPayServer.Configuration
                         {
                             if (connectionString.IsLegacy)
                             {
-                                Logs.Configuration.LogWarning($"Setting {net.CryptoCode}.lightning is a deprecated format, it will work now, but please replace it for future versions with '{connectionString.ToString()}'");
+                                Logs.Configuration.LogWarning($"Setting {net.bitcoinCode}.lightning is a deprecated format, it will work now, but please replace it for future versions with '{connectionString.ToString()}'");
                             }
-                            InternalLightningByCryptoCode.Add(net.CryptoCode, connectionString);
+                            InternalLightningBybitcoinCode.Add(net.bitcoinCode, connectionString);
                         }
                     }
                 }
 
-                ExternalServices.Load(net.CryptoCode, conf);
+                ExternalServices.Load(net.bitcoinCode, conf);
             }
 
-            ExternalServices.LoadNonCryptoServices(conf);
+            ExternalServices.LoadNonbitcoinServices(conf);
             Logs.Configuration.LogInformation("Supported chains: " + String.Join(',', supportedChains.ToArray()));
 
             var services = conf.GetOrDefault<string>("externalservices", null);
@@ -269,7 +269,7 @@ namespace BTCPayServer.Configuration
         }
 
         public string RootPath { get; set; }
-        public Dictionary<string, LightningConnectionString> InternalLightningByCryptoCode { get; set; } = new Dictionary<string, LightningConnectionString>();
+        public Dictionary<string, LightningConnectionString> InternalLightningBybitcoinCode { get; set; } = new Dictionary<string, LightningConnectionString>();
 
         public Dictionary<string, Uri> OtherExternalServices { get; set; } = new Dictionary<string, Uri>();
         public ExternalServices ExternalServices { get; set; } = new ExternalServices();

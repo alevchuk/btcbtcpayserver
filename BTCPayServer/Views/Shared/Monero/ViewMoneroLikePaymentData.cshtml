@@ -8,8 +8,8 @@
     var onchainPayments = Model.Where(entity => entity.GetPaymentMethodId().PaymentType == MoneroPaymentType.Instance).Select(payment =>
     {
         var m = new MoneroPaymentViewModel();
-        var onChainPaymentData = payment.GetCryptoPaymentData() as MoneroLikePaymentData;
-        m.Crypto = payment.GetPaymentMethodId().CryptoCode;
+        var onChainPaymentData = payment.GetbitcoinPaymentData() as MoneroLikePaymentData;
+        m.bitcoin = payment.GetPaymentMethodId().bitcoinCode;
         m.DepositAddress = onChainPaymentData.GetDestination();
 
         var confirmationCount = onChainPaymentData.ConfirmationCount;
@@ -38,7 +38,7 @@
             <table class="table table-sm table-responsive-lg">
                 <thead class="thead-inverse">
                 <tr>
-                    <th>Crypto</th>
+                    <th>bitcoin</th>
                     <th>Deposit address</th>
                     <th>Transaction Id</th>
                     <th class="text-right">Confirmations</th>
@@ -48,7 +48,7 @@
                 @foreach (var payment in onchainPayments)
                 {
                     <tr >
-                        <td>@payment.Crypto</td>
+                        <td>@payment.bitcoin</td>
                         <td>@payment.DepositAddress</td>
                         <td>
                             <div class="wraptextAuto">

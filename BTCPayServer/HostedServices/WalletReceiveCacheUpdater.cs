@@ -30,7 +30,7 @@ namespace BTCPayServer.HostedServices
             _Leases.Add(_EventAggregator.Subscribe<NewOnChainTransactionEvent>(evt =>
             {
                 var matching = _WalletReceiveStateService
-                    .GetByDerivation(evt.CryptoCode, evt.NewTransactionEvent.DerivationStrategy).Where(pair =>
+                    .GetByDerivation(evt.bitcoinCode, evt.NewTransactionEvent.DerivationStrategy).Where(pair =>
                         evt.NewTransactionEvent.Outputs.Any(output => output.ScriptPubKey == pair.Value.ScriptPubKey));
 
                 foreach (var keyValuePair in matching)

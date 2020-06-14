@@ -64,8 +64,8 @@ namespace BTCPayServer.Services.Invoices.Export
                 // not accounted payments are payments which got double spent like RBfed
                 if (!payment.Accounted)
                     continue;
-                var cryptoCode = payment.GetPaymentMethodId().CryptoCode;
-                var pdata = payment.GetCryptoPaymentData();
+                var bitcoinCode = payment.GetPaymentMethodId().bitcoinCode;
+                var pdata = payment.GetbitcoinPaymentData();
 
                 var pmethod = invoice.GetPaymentMethod(payment.GetPaymentMethodId());
                 var paidAfterNetworkFees = pdata.GetValue() - payment.NetworkFee;
@@ -75,7 +75,7 @@ namespace BTCPayServer.Services.Invoices.Export
                 {
                     ReceivedDate = payment.ReceivedTime.UtcDateTime,
                     PaymentId = pdata.GetPaymentId(),
-                    CryptoCode = cryptoCode,
+                    bitcoinCode = bitcoinCode,
                     ConversionRate = pmethod.Rate,
                     PaymentType = payment.GetPaymentMethodId().PaymentType.ToPrettyString(),
                     Destination = pdata.GetDestination(),
@@ -127,7 +127,7 @@ namespace BTCPayServer.Services.Invoices.Export
         public string PaymentId { get; set; }
         public string Destination { get; set; }
         public string PaymentType { get; set; }
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
         public string Paid { get; set; }
         public string NetworkFee { get; set; }
         public decimal ConversionRate { get; set; }

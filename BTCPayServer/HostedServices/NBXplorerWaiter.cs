@@ -33,7 +33,7 @@ namespace BTCPayServer.HostedServices
         public void Publish(BTCPayNetworkBase network, NBXplorerState state, StatusResult status, string error)
         {
             var summary = new NBXplorerSummary() { Network = network, State = state, Status = status, Error = error };
-            _Summaries.AddOrUpdate(network.CryptoCode.ToUpperInvariant(), summary, (k, v) => summary);
+            _Summaries.AddOrUpdate(network.bitcoinCode.ToUpperInvariant(), summary, (k, v) => summary);
         }
 
         public bool IsFullySynched()
@@ -41,14 +41,14 @@ namespace BTCPayServer.HostedServices
             return _Summaries.All(s => s.Value.Status?.IsFullySynched is true);
         }
 
-        public bool IsFullySynched(string cryptoCode, out NBXplorerSummary summary)
+        public bool IsFullySynched(string bitcoinCode, out NBXplorerSummary summary)
         {
-            return _Summaries.TryGetValue(cryptoCode.ToUpperInvariant(), out summary) && 
+            return _Summaries.TryGetValue(bitcoinCode.ToUpperInvariant(), out summary) && 
                    summary.Status?.IsFullySynched is true;
         }
-        public NBXplorerSummary Get(string cryptoCode)
+        public NBXplorerSummary Get(string bitcoinCode)
         {
-            _Summaries.TryGetValue(cryptoCode.ToUpperInvariant(), out var summary);
+            _Summaries.TryGetValue(bitcoinCode.ToUpperInvariant(), out var summary);
             return summary;
         }
         public IEnumerable<NBXplorerSummary> GetAll()
@@ -106,7 +106,7 @@ namespace BTCPayServer.HostedServices
 
         private async Task StartLoop(CancellationToken cancellation)
         {
-            Logs.PayServer.LogInformation($"Starting listening NBXplorer ({_Network.CryptoCode})");
+            Logs.PayServer.LogInformation($"Starting listening NBXplorer ({_Network.bitcoinCode})");
             try
             {
                 while (!cancellation.IsCancellationRequested)
@@ -121,7 +121,7 @@ namespace BTCPayServer.HostedServices
                     }
                     catch (Exception ex) when (!cancellation.IsCancellationRequested)
                     {
-                        Logs.PayServer.LogError(ex, $"Unhandled exception in NBXplorerWaiter ({_Network.CryptoCode})");
+                        Logs.PayServer.LogError(ex, $"Unhandled exception in NBXplorerWaiter ({_Network.bitcoinCode})");
                         await Task.Delay(TimeSpan.FromSeconds(10), cancellation);
                     }
                 }
@@ -184,19 +184,19 @@ namespace BTCPayServer.HostedServices
 
 
             if(status == null && error == null)
-                error = $"{_Network.CryptoCode}: NBXplorer does not support this cryptocurrency";
+                error = $"{_Network.bitcoinCode}: NBXplorer does not support this bitcoin";
 
             if(status != null && error == null)
             {
                 if(status.NetworkType != _Network.NBitcoinNetwork.NetworkType)
-                    error = $"{_Network.CryptoCode}: NBXplorer is on a different ChainType (actual: {status.NetworkType}, expected: {_Network.NBitcoinNetwork.NetworkType})";
+                    error = $"{_Network.bitcoinCode}: NBXplorer is on a different ChainType (actual: {status.NetworkType}, expected: {_Network.NBitcoinNetwork.NetworkType})";
             }
 
             if (error != null)
             {
                 State = NBXplorerState.NotConnected;
                 status = null;
-                Logs.PayServer.LogError($"{_Network.CryptoCode}: NBXplorer error `{error}`");
+                Logs.PayServer.LogError($"{_Network.bitcoinCode}: NBXplorer error `{error}`");
             }
 
             _Dashboard.Publish(_Network, State, status, error);

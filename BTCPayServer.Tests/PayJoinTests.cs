@@ -319,17 +319,17 @@ namespace BTCPayServer.Tests
                         var originalPayment = payments[0];
                         var coinjoinPayment = payments[1];
                         Assert.Equal(-1,
-                            ((BitcoinLikePaymentData)originalPayment.GetCryptoPaymentData()).ConfirmationCount);
+                            ((BitcoinLikePaymentData)originalPayment.GetbitcoinPaymentData()).ConfirmationCount);
                         Assert.Equal(0,
-                            ((BitcoinLikePaymentData)coinjoinPayment.GetCryptoPaymentData()).ConfirmationCount);
+                            ((BitcoinLikePaymentData)coinjoinPayment.GetbitcoinPaymentData()).ConfirmationCount);
                         Assert.False(originalPayment.Accounted);
                         Assert.True(coinjoinPayment.Accounted);
-                        Assert.Equal(((BitcoinLikePaymentData)originalPayment.GetCryptoPaymentData()).Value,
-                            ((BitcoinLikePaymentData)coinjoinPayment.GetCryptoPaymentData()).Value);
-                        Assert.Equal(originalPayment.GetCryptoPaymentData()
+                        Assert.Equal(((BitcoinLikePaymentData)originalPayment.GetbitcoinPaymentData()).Value,
+                            ((BitcoinLikePaymentData)coinjoinPayment.GetbitcoinPaymentData()).Value);
+                        Assert.Equal(originalPayment.GetbitcoinPaymentData()
                                 .AssertType<BitcoinLikePaymentData>()
                                 .Value,
-                            coinjoinPayment.GetCryptoPaymentData()
+                            coinjoinPayment.GetbitcoinPaymentData()
                                 .AssertType<BitcoinLikePaymentData>()
                                 .Value);
                     });
@@ -458,7 +458,7 @@ namespace BTCPayServer.Tests
                 bob.ModifyStore(s => s.PayJoinEnabled = true);
                 var invoice = bob.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.1m, Currency = "BTC", FullNotifications = true });
-                var invoiceBIP21 = new BitcoinUrlBuilder(invoice.CryptoInfo.First().PaymentUrls.BIP21,
+                var invoiceBIP21 = new BitcoinUrlBuilder(invoice.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
                 psbt = (await nbx.CreatePSBTAsync(alice.DerivationScheme, new CreatePSBTRequest()
                 {
@@ -489,7 +489,7 @@ namespace BTCPayServer.Tests
                 Logs.Tester.LogInformation("Abusing minFeeRate should give not enough money error");
                 invoice = bob.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.1m, Currency = "BTC", FullNotifications = true });
-                invoiceBIP21 = new BitcoinUrlBuilder(invoice.CryptoInfo.First().PaymentUrls.BIP21,
+                invoiceBIP21 = new BitcoinUrlBuilder(invoice.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
                 psbt = (await nbx.CreatePSBTAsync(alice.DerivationScheme, new CreatePSBTRequest()
                 {
@@ -664,7 +664,7 @@ namespace BTCPayServer.Tests
                 Assert.Contains(proposedPSBT.Outputs, o => o.Value == Money.Satoshis(294));
                 proposedPSBT = await senderUser.Sign(proposedPSBT);
                 proposedPSBT = proposedPSBT.Finalize();
-                var explorerClient = tester.PayTester.GetService<ExplorerClientProvider>().GetExplorerClient(proposedPSBT.Network.NetworkSet.CryptoCode);
+                var explorerClient = tester.PayTester.GetService<ExplorerClientProvider>().GetExplorerClient(proposedPSBT.Network.NetworkSet.bitcoinCode);
                 var result = await explorerClient.BroadcastAsync(proposedPSBT.ExtractTransaction());
                 Assert.True(result.Success);
                 Logs.Tester.LogInformation($"We broadcasted the payjoin {proposedPSBT.ExtractTransaction().GetHash()}");
@@ -705,7 +705,7 @@ namespace BTCPayServer.Tests
                 Assert.Contains(proposedPSBT.Outputs, output => output.Value == Money.Satoshis(294));
                 proposedPSBT = await senderUser.Sign(proposedPSBT);
                 proposedPSBT = proposedPSBT.Finalize();
-                explorerClient = tester.PayTester.GetService<ExplorerClientProvider>().GetExplorerClient(proposedPSBT.Network.NetworkSet.CryptoCode);
+                explorerClient = tester.PayTester.GetService<ExplorerClientProvider>().GetExplorerClient(proposedPSBT.Network.NetworkSet.bitcoinCode);
                 result = await explorerClient.BroadcastAsync(proposedPSBT.ExtractTransaction(), true);
                 Assert.True(result.Success);
             }
@@ -732,7 +732,7 @@ namespace BTCPayServer.Tests
                 var invoice = senderUser.BitPay.CreateInvoice(
                     new Invoice() { Price = 100, Currency = "USD", FullNotifications = true });
                 //payjoin is not enabled by default.
-                Assert.DoesNotContain($"{PayjoinClient.BIP21EndpointKey}", invoice.CryptoInfo.First().PaymentUrls.BIP21);
+                Assert.DoesNotContain($"{PayjoinClient.BIP21EndpointKey}", invoice.bitcoinInfo.First().PaymentUrls.BIP21);
                 cashCow.SendToAddress(BitcoinAddress.Create(invoice.BitcoinAddress, cashCow.Network),
                     Money.Coins(0.06m));
 
@@ -775,12 +775,12 @@ namespace BTCPayServer.Tests
                 Assert.Equal("version-unsupported", error["errorCode"].Value<string>());
                 Assert.Equal(1, ((JArray)error["supported"]).Single().Value<int>());
 
-                var parsedBip21 = new BitcoinUrlBuilder(invoice.CryptoInfo.First().PaymentUrls.BIP21,
+                var parsedBip21 = new BitcoinUrlBuilder(invoice.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
 
                 var invoice2 = receiverUser.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.02m, Currency = "BTC", FullNotifications = true });
-                var secondInvoiceParsedBip21 = new BitcoinUrlBuilder(invoice2.CryptoInfo.First().PaymentUrls.BIP21,
+                var secondInvoiceParsedBip21 = new BitcoinUrlBuilder(invoice2.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
 
                 var senderStore = await tester.PayTester.StoreRepository.FindStore(senderUser.StoreId);
@@ -872,13 +872,13 @@ namespace BTCPayServer.Tests
 
                 var invoice3 = receiverUser.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.01m, Currency = "BTC", FullNotifications = true });
-                var invoice3ParsedBip21 = new BitcoinUrlBuilder(invoice3.CryptoInfo.First().PaymentUrls.BIP21,
+                var invoice3ParsedBip21 = new BitcoinUrlBuilder(invoice3.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
 
 
                 var invoice4 = receiverUser.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.01m, Currency = "BTC", FullNotifications = true });
-                var invoice4ParsedBip21 = new BitcoinUrlBuilder(invoice4.CryptoInfo.First().PaymentUrls.BIP21,
+                var invoice4ParsedBip21 = new BitcoinUrlBuilder(invoice4.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
 
 
@@ -899,7 +899,7 @@ namespace BTCPayServer.Tests
 
                 var invoice5 = receiverUser.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.01m, Currency = "BTC", FullNotifications = true });
-                var invoice5ParsedBip21 = new BitcoinUrlBuilder(invoice5.CryptoInfo.First().PaymentUrls.BIP21,
+                var invoice5ParsedBip21 = new BitcoinUrlBuilder(invoice5.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
 
                 var Invoice5Coin4TxBuilder = tester.ExplorerClient.Network.NBitcoinNetwork.CreateTransactionBuilder()
@@ -924,7 +924,7 @@ namespace BTCPayServer.Tests
 
                 var invoice6 = receiverUser.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.01m, Currency = "BTC", FullNotifications = true });
-                var invoice6ParsedBip21 = new BitcoinUrlBuilder(invoice6.CryptoInfo.First().PaymentUrls.BIP21,
+                var invoice6ParsedBip21 = new BitcoinUrlBuilder(invoice6.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
 
                 var invoice6Coin5TxBuilder = tester.ExplorerClient.Network.NBitcoinNetwork.CreateTransactionBuilder()
@@ -967,7 +967,7 @@ namespace BTCPayServer.Tests
 
                 var invoice7 = receiverUser.BitPay.CreateInvoice(
                     new Invoice() { Price = 0.01m, Currency = "BTC", FullNotifications = true });
-                var invoice7ParsedBip21 = new BitcoinUrlBuilder(invoice7.CryptoInfo.First().PaymentUrls.BIP21,
+                var invoice7ParsedBip21 = new BitcoinUrlBuilder(invoice7.bitcoinInfo.First().PaymentUrls.BIP21,
                     tester.ExplorerClient.Network.NBitcoinNetwork);
 
                 var txBuilder = tester.ExplorerClient.Network.NBitcoinNetwork.CreateTransactionBuilder();
@@ -1000,7 +1000,7 @@ namespace BTCPayServer.Tests
                     var invoiceEntity = await tester.PayTester.GetService<InvoiceRepository>().GetInvoice(invoice7.Id);
                     Assert.Equal(InvoiceStatus.Paid, invoiceEntity.Status);
                     Assert.Contains(invoiceEntity.GetPayments(), p => p.Accounted &&
-                                                                      ((BitcoinLikePaymentData)p.GetCryptoPaymentData()).PayjoinInformation is null);
+                                                                      ((BitcoinLikePaymentData)p.GetbitcoinPaymentData()).PayjoinInformation is null);
                 });
                 ////Assert.Contains(receiverWalletPayJoinState.GetRecords(), item => item.InvoiceId == invoice7.Id && item.TxSeen);
 

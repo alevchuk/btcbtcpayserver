@@ -23,7 +23,7 @@
             <table class="table table-sm table-responsive-md">
                 <thead>
                 <tr>
-                    <th>Crypto</th>
+                    <th>bitcoin</th>
                     <th>Account Index</th>
                     <th class="text-center">Enabled</th>
                     <th class="text-right">Actions</th>
@@ -33,7 +33,7 @@
                 @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td>@item.CryptoCode</td>
+                        <td>@item.bitcoinCode</td>
                         <td>@item.AccountIndex</td>
                         <td class="text-center">
                             @if (item.Enabled)
@@ -48,7 +48,7 @@
                         <td class="text-right">
                             <a id="Modify" asp-action="GetStoreMoneroLikePaymentMethod"
                                asp-route-storeId="@this.Context.GetRouteValue("storeId")"
-                               asp-route-cryptoCode="@item.CryptoCode">
+                               asp-route-bitcoinCode="@item.bitcoinCode">
                                 Modify
                             </a>
                         </td>

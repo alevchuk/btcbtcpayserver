@@ -124,9 +124,9 @@ namespace BTCPayServer.Tests
         }
         
 
-        public Mnemonic GenerateWallet(string cryptoCode = "BTC", string seed = "", bool importkeys = false, bool privkeys = false, ScriptPubKeyType format = ScriptPubKeyType.Segwit)
+        public Mnemonic GenerateWallet(string bitcoinCode = "BTC", string seed = "", bool importkeys = false, bool privkeys = false, ScriptPubKeyType format = ScriptPubKeyType.Segwit)
         {
-            Driver.FindElement(By.Id($"Modify{cryptoCode}")).ForceClick();
+            Driver.FindElement(By.Id($"Modify{bitcoinCode}")).ForceClick();
             Driver.FindElement(By.Id("import-from-btn")).ForceClick();
             Driver.FindElement(By.Id("nbxplorergeneratewalletbtn")).ForceClick();
             Driver.WaitForElement(By.Id("ExistingMnemonic")).SendKeys(seed);
@@ -144,16 +144,16 @@ namespace BTCPayServer.Tests
             return new Mnemonic(seed);
         }
 
-        public void AddDerivationScheme(string cryptoCode = "BTC", string derivationScheme = "xpub661MyMwAqRbcGABgHMUXDzPzH1tU7eZaAaJQXhDXsSxsqyQzQeU6kznNfSuAyqAK9UaWSaZaMFdNiY5BCF4zBPAzSnwfUAwUhwttuAKwfRX-[legacy]")
+        public void AddDerivationScheme(string bitcoinCode = "BTC", string derivationScheme = "xpub661MyMwAqRbcGABgHMUXDzPzH1tU7eZaAaJQXhDXsSxsqyQzQeU6kznNfSuAyqAK9UaWSaZaMFdNiY5BCF4zBPAzSnwfUAwUhwttuAKwfRX-[legacy]")
         {
-            Driver.FindElement(By.Id($"Modify{cryptoCode}")).ForceClick();
+            Driver.FindElement(By.Id($"Modify{bitcoinCode}")).ForceClick();
             Driver.FindElement(By.ClassName("store-derivation-scheme")).SendKeys(derivationScheme);
             Driver.FindElement(By.Id("Continue")).ForceClick();
             Driver.FindElement(By.Id("Confirm")).ForceClick();
             AssertHappyMessage();
         }
 
-        public void AddLightningNode(string cryptoCode, LightningConnectionType connectionType)
+        public void AddLightningNode(string bitcoinCode, LightningConnectionType connectionType)
         {
             string connectionString = null;
             if (connectionType == LightningConnectionType.Charge)
@@ -165,14 +165,14 @@ namespace BTCPayServer.Tests
             else
                 throw new NotSupportedException(connectionType.ToString());
 
-            Driver.FindElement(By.Id($"Modify-Lightning{cryptoCode}")).ForceClick();
+            Driver.FindElement(By.Id($"Modify-Lightning{bitcoinCode}")).ForceClick();
             Driver.FindElement(By.Name($"ConnectionString")).SendKeys(connectionString);
             Driver.FindElement(By.Id($"save")).ForceClick();
         }
 
-        public void AddInternalLightningNode(string cryptoCode)
+        public void AddInternalLightningNode(string bitcoinCode)
         {
-            Driver.FindElement(By.Id($"Modify-Lightning{cryptoCode}")).ForceClick();
+            Driver.FindElement(By.Id($"Modify-Lightning{bitcoinCode}")).ForceClick();
             Driver.FindElement(By.Id($"internal-ln-node-setter")).ForceClick();
             Driver.FindElement(By.Id($"save")).ForceClick();
         }
@@ -322,7 +322,7 @@ namespace BTCPayServer.Tests
             GoToWallet(walletId, WalletsNavPages.Receive);
             Driver.FindElement(By.Id("generateButton")).Click();
             var addressStr = Driver.FindElement(By.Id("vue-address")).GetProperty("value");
-            var address = BitcoinAddress.Create(addressStr, ((BTCPayNetwork)Server.NetworkProvider.GetNetwork(walletId.CryptoCode)).NBitcoinNetwork);
+            var address = BitcoinAddress.Create(addressStr, ((BTCPayNetwork)Server.NetworkProvider.GetNetwork(walletId.bitcoinCode)).NBitcoinNetwork);
             for (int i = 0; i < coins; i++)
             {
                 await Server.ExplorerNode.SendToAddressAsync(address, Money.Coins(denomination));

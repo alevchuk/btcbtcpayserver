@@ -6,7 +6,7 @@ using BTCPayServer.Services.Invoices;
 
 namespace BTCPayServer.Services.Altcoins.Monero.Payments
 {
-    public class MoneroLikePaymentData : CryptoPaymentData
+    public class MoneroLikePaymentData : bitcoinPaymentData
     {
         public long Amount { get; set; }
         public string Address { get; set; }

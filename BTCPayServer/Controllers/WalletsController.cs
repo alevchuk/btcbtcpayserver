@@ -231,15 +231,15 @@ namespace BTCPayServer.Controllers
             {
                 ListWalletsViewModel.WalletViewModel walletVm = new ListWalletsViewModel.WalletViewModel();
                 wallets.Wallets.Add(walletVm);
-                walletVm.Balance = await wallet.Balance + " " + wallet.Wallet.Network.CryptoCode;
+                walletVm.Balance = await wallet.Balance + " " + wallet.Wallet.Network.bitcoinCode;
                 walletVm.IsOwner = wallet.Store.Role == StoreRoles.Owner;
                 if (!walletVm.IsOwner)
                 {
                     walletVm.Balance = "";
                 }
-                walletVm.CryptoCode = wallet.Network.CryptoCode;
+                walletVm.bitcoinCode = wallet.Network.bitcoinCode;
                 walletVm.StoreId = wallet.Store.Id;
-                walletVm.Id = new WalletId(wallet.Store.Id, wallet.Network.CryptoCode);
+                walletVm.Id = new WalletId(wallet.Store.Id, wallet.Network.bitcoinCode);
                 walletVm.StoreName = wallet.Store.StoreName;
             }
 
@@ -322,16 +322,16 @@ namespace BTCPayServer.Controllers
             DerivationSchemeSettings paymentMethod = GetDerivationSchemeSettings(walletId);
             if (paymentMethod == null)
                 return NotFound();
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.CryptoCode);
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.bitcoinCode);
             if (network == null)
                 return NotFound();
 
             var address = _WalletReceiveStateService.Get(walletId)?.Address;
             return View(new WalletReceiveViewModel()
             {
-                CryptoCode = walletId.CryptoCode,
+                bitcoinCode = walletId.bitcoinCode,
                 Address = address?.ToString(),
-                CryptoImage = GetImage(paymentMethod.PaymentId, network)
+                bitcoinImage = GetImage(paymentMethod.PaymentId, network)
             });
         }
 
@@ -345,7 +345,7 @@ namespace BTCPayServer.Controllers
             DerivationSchemeSettings paymentMethod = GetDerivationSchemeSettings(walletId);
             if (paymentMethod == null)
                 return NotFound();
-            var network = this.NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.CryptoCode);
+            var network = this.NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.bitcoinCode);
             if (network == null)
                 return NotFound();
             var wallet = _walletProvider.GetWallet(network);
@@ -397,13 +397,13 @@ namespace BTCPayServer.Controllers
             DerivationSchemeSettings paymentMethod = GetDerivationSchemeSettings(walletId);
             if (paymentMethod == null)
                 return NotFound();
-            var network = this.NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.CryptoCode);
+            var network = this.NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.bitcoinCode);
             if (network == null || network.ReadonlyWallet)
                 return NotFound();
             var storeData = store.GetStoreBlob();
             var rateRules = store.GetStoreBlob().GetRateRules(NetworkProvider);
             rateRules.Spread = 0.0m;
-            var currencyPair = new Rating.CurrencyPair(paymentMethod.PaymentId.CryptoCode, GetCurrencyCode(storeData.DefaultLang) ?? "USD");
+            var currencyPair = new Rating.CurrencyPair(paymentMethod.PaymentId.bitcoinCode, GetCurrencyCode(storeData.DefaultLang) ?? "USD");
             double.TryParse(defaultAmount, out var amount);
             var model = new WalletSendModel()
             {
@@ -415,7 +415,7 @@ namespace BTCPayServer.Controllers
                         DestinationAddress = defaultDestination
                     }
                 },
-                CryptoCode = walletId.CryptoCode
+                bitcoinCode = walletId.bitcoinCode
             };
             if (!string.IsNullOrEmpty(bip21))
             {
@@ -487,7 +487,7 @@ namespace BTCPayServer.Controllers
             var store = await Repository.FindStore(walletId.StoreId, GetUserId());
             if (store == null)
                 return NotFound();
-            var network = this.NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.CryptoCode);
+            var network = this.NetworkProvider.GetNetwork<BTCPayNetwork>(walletId?.bitcoinCode);
             if (network == null || network.ReadonlyWallet)
                 return NotFound();
             vm.SupportRBF = network.SupportRBF;
@@ -626,7 +626,7 @@ namespace BTCPayServer.Controllers
                     vm.AddModelError(model => model.FeeSatoshiPerByte,
                             "The fee rate is absurdly high", this);
                 }
-                if (_dashboard.Get(network.CryptoCode).Status?.BitcoinStatus?.MinRelayTxFee?.SatoshiPerByte is decimal minFee)
+                if (_dashboard.Get(network.bitcoinCode).Status?.BitcoinStatus?.MinRelayTxFee?.SatoshiPerByte is decimal minFee)
                 {
                     if (vm.FeeSatoshiPerByte < minFee)
                         vm.AddModelError(model => model.FeeSatoshiPerByte,
@@ -821,9 +821,9 @@ namespace BTCPayServer.Controllers
             {
                 return View("SignWithSeed", viewModel);
             }
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.CryptoCode);
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.bitcoinCode);
             if (network == null)
-                throw new FormatException("Invalid value for crypto code");
+                throw new FormatException("Invalid value for bitcoin code");
 
             ExtKey extKey = viewModel.GetExtKey(network.NBitcoinNetwork);
 
@@ -899,12 +899,12 @@ namespace BTCPayServer.Controllers
 
         private string ValueToString(Money v, BTCPayNetworkBase network)
         {
-            return v.ToString() + " " + network.CryptoCode;
+            return v.ToString() + " " + network.bitcoinCode;
         }
 
         private IActionResult RedirectToWalletTransaction(WalletId walletId, Transaction transaction)
         {
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.CryptoCode);
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.bitcoinCode);
             if (transaction != null)
             {
                 var wallet = _walletProvider.GetWallet(network);
@@ -927,10 +927,10 @@ namespace BTCPayServer.Controllers
                 return NotFound();
 
             var vm = new RescanWalletModel();
-            vm.IsFullySync = _dashboard.IsFullySynched(walletId.CryptoCode, out var unused);
+            vm.IsFullySync = _dashboard.IsFullySynched(walletId.bitcoinCode, out var unused);
             vm.IsServerAdmin = (await _authorizationService.AuthorizeAsync(User, Policies.CanModifyServerSettings)).Succeeded;
-            vm.IsSupportedByCurrency = _dashboard.Get(walletId.CryptoCode)?.Status?.BitcoinStatus?.Capabilities?.CanScanTxoutSet == true;
-            var explorer = ExplorerClientProvider.GetExplorerClient(walletId.CryptoCode);
+            vm.IsSupportedByCurrency = _dashboard.Get(walletId.bitcoinCode)?.Status?.BitcoinStatus?.Capabilities?.CanScanTxoutSet == true;
+            var explorer = ExplorerClientProvider.GetExplorerClient(walletId.bitcoinCode);
             var scanProgress = await explorer.GetScanUTXOSetInformationAsync(paymentMethod.AccountDerivation);
             if (scanProgress != null)
             {
@@ -968,7 +968,7 @@ namespace BTCPayServer.Controllers
             DerivationSchemeSettings paymentMethod = GetDerivationSchemeSettings(walletId);
             if (paymentMethod == null)
                 return NotFound();
-            var explorer = ExplorerClientProvider.GetExplorerClient(walletId.CryptoCode);
+            var explorer = ExplorerClientProvider.GetExplorerClient(walletId.bitcoinCode);
             try
             {
                 await explorer.ScanUTXOSetAsync(paymentMethod.AccountDerivation, vm.BatchSize, vm.GapLimit, vm.StartingIndex);
@@ -1006,7 +1006,7 @@ namespace BTCPayServer.Controllers
             var paymentMethod = CurrentStore
                             .GetSupportedPaymentMethods(NetworkProvider)
                             .OfType<DerivationSchemeSettings>()
-                            .FirstOrDefault(p => p.PaymentId.PaymentType == Payments.PaymentTypes.BTCLike && p.PaymentId.CryptoCode == walletId.CryptoCode);
+                            .FirstOrDefault(p => p.PaymentId.PaymentType == Payments.PaymentTypes.BTCLike && p.PaymentId.bitcoinCode == walletId.bitcoinCode);
             return paymentMethod;
         }
 
@@ -1048,7 +1048,7 @@ namespace BTCPayServer.Controllers
                 DerivationScheme = derivationSchemeSettings.AccountDerivation.ToString(),
                 DerivationSchemeInput = derivationSchemeSettings.AccountOriginal,
                 SelectedSigningKey = derivationSchemeSettings.SigningKey.ToString(),
-                NBXSeedAvailable = await CanUseHotWallet() && !string.IsNullOrEmpty(await ExplorerClientProvider.GetExplorerClient(walletId.CryptoCode)
+                NBXSeedAvailable = await CanUseHotWallet() && !string.IsNullOrEmpty(await ExplorerClientProvider.GetExplorerClient(walletId.bitcoinCode)
                     .GetMetadataAsync<string>(GetDerivationSchemeSettings(walletId).AccountDerivation,
                         WellknownMetadataKeys.MasterHDKey))
             };
@@ -1101,7 +1101,7 @@ namespace BTCPayServer.Controllers
             }
             else if (command == "prune")
             {
-                var result = await ExplorerClientProvider.GetExplorerClient(walletId.CryptoCode)
+                var result = await ExplorerClientProvider.GetExplorerClient(walletId.bitcoinCode)
                     .PruneAsync(derivationScheme.AccountDerivation, new PruneRequest(), cancellationToken);
                 if (result.TotalPruned == 0)
                 {
@@ -1117,7 +1117,7 @@ namespace BTCPayServer.Controllers
             }
             else if (command == "view-seed" && await CanUseHotWallet())
             {
-                var seed = await ExplorerClientProvider.GetExplorerClient(walletId.CryptoCode)
+                var seed = await ExplorerClientProvider.GetExplorerClient(walletId.bitcoinCode)
                     .GetMetadataAsync<string>(derivationScheme.AccountDerivation,
                         WellknownMetadataKeys.Mnemonic, cancellationToken);
                 if (string.IsNullOrEmpty(seed))
@@ -1148,7 +1148,7 @@ namespace BTCPayServer.Controllers
         private string GetImage(PaymentMethodId paymentMethodId, BTCPayNetwork network)
         {
             var res = paymentMethodId.PaymentType == PaymentTypes.BTCLike
-                ? Url.Content(network.CryptoImagePath)
+                ? Url.Content(network.bitcoinImagePath)
                 : Url.Content(network.LightningImagePath);
             return "/" + res;
         }
@@ -1156,8 +1156,8 @@ namespace BTCPayServer.Controllers
 
     public class WalletReceiveViewModel
     {
-        public string CryptoImage { get; set; }
-        public string CryptoCode { get; set; }
+        public string bitcoinImage { get; set; }
+        public string bitcoinCode { get; set; }
         public string Address { get; set; }
     }
 

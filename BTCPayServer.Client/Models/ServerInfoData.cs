@@ -32,7 +32,7 @@ namespace BTCPayServer.Client.Models
 
     public class ServerInfoSyncStatusData
     {
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
         public int ChainHeight { get; set; }
         public int? SyncHeight { get; set; }
         public ServerInfoNodeData NodeInformation { get; set; }

@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="payment__scan">
-                <img v-bind:src="srvModel.cryptoImage" class="qr_currency_icon" v-if="scanDisplayQr"/>
+                <img v-bind:src="srvModel.bitcoinImage" class="qr_currency_icon" v-if="scanDisplayQr"/>
                 <qrcode v-bind:value="scanDisplayQr" :options="{ width: 256, margin: 1, color: {dark:'#000', light:'#f5f5f7'} }" tag="svg" v-if="scanDisplayQr"></qrcode>
                 <div class="payment__spinner qr_currency_icon" style="padding-right: 20px;">
                     <partial name="Checkout-Spinner"/>
@@ -45,7 +45,7 @@
                     <label>{{$t("BOLT 11 Invoice")}}</label>
                     <div class="inputWithIcon _copyInput">
                         <input type="text" class="checkoutTextbox" v-bind:value="srvModel.btcAddress" readonly="readonly"/>
-                        <img v-bind:src="srvModel.cryptoImage"/>
+                        <img v-bind:src="srvModel.bitcoinImage"/>
                     </div>
                 </div>
                 <div class="separatorGem"></div>
@@ -53,7 +53,7 @@
                     <label>{{$t("Node Info")}}</label>
                     <div class="inputWithIcon _copyInput">
                         <input type="text" class="checkoutTextbox" v-bind:value="srvModel.peerInfo" readonly="readonly"/>
-                        <img v-bind:src="srvModel.cryptoImage"/>
+                        <img v-bind:src="srvModel.bitcoinImage"/>
                     </div>
                 </div>
             </nav>
@@ -61,7 +61,7 @@
                 <div class="copySectionBox bottomBorder">
                     <label>{{$t("Amount")}}</label>
                     <div class="copyAmountText copy-cursor _copySpan">
-                        <span>{{srvModel.btcDue}}</span> {{ srvModel.cryptoCode }}
+                        <span>{{srvModel.btcDue}}</span> {{ srvModel.bitcoinCode }}
                     </div>
                 </div>
                 <div class="separatorGem"></div>
@@ -69,7 +69,7 @@
                     <label>{{$t("Address")}}</label>
                     <div class="inputWithIcon _copyInput">
                         <input type="text" class="checkoutTextbox" v-bind:value="srvModel.btcAddress" readonly="readonly"/>
-                        <img v-bind:src="srvModel.cryptoImage"/>
+                        <img v-bind:src="srvModel.bitcoinImage"/>
                     </div>
                 </div>
                 <div class="separatorGem"></div>
@@ -77,7 +77,7 @@
                     <label>{{$t("Payment link")}}</label>
                     <div class="inputWithIcon _copyInput">
                         <input type="text" class="checkoutTextbox" v-bind:value="srvModel.invoiceBitcoinUrl" readonly="readonly"/>
-                        <img v-bind:src="srvModel.cryptoImage" v-if="hasPayjoin"/>
+                        <img v-bind:src="srvModel.bitcoinImage" v-if="hasPayjoin"/>
                         <i class="fa fa-user-secret" v-else/>
                     </div>
                 </div>

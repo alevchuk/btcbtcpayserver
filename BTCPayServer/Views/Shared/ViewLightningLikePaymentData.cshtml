@@ -5,10 +5,10 @@
 @{
     var offchainPayments = Model.Where(entity => entity.GetPaymentMethodId().PaymentType == LightningPaymentType.Instance).Select(payment =>
     {
-        var offChainPaymentData = payment.GetCryptoPaymentData() as LightningLikePaymentData;
+        var offChainPaymentData = payment.GetbitcoinPaymentData() as LightningLikePaymentData;
         return new OffChainPaymentViewModel()
         {
-            Crypto = payment.Network.CryptoCode,
+            bitcoin = payment.Network.bitcoinCode,
             BOLT11 = offChainPaymentData.BOLT11
         };
     });
@@ -23,7 +23,7 @@
             <table class="table table-sm table-responsive-md">
                 <thead class="thead-inverse">
                     <tr>
-                        <th class="firstCol">Crypto</th>
+                        <th class="firstCol">bitcoin</th>
                         <th>BOLT11</th>
                     </tr>
                 </thead>
@@ -31,7 +31,7 @@
                     @foreach (var payment in offchainPayments)
                     {
                         <tr>
-                            <td>@payment.Crypto</td>
+                            <td>@payment.bitcoin</td>
                             <td><div class="wraptextAuto">@payment.BOLT11</div></td>
                         </tr>
                     }

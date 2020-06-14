@@ -87,7 +87,7 @@ namespace BTCPayServer.Controllers
                 }).ToArray();
 
             var details = InvoicePopulatePayments(invoice);
-            model.CryptoPayments = details.CryptoPayments;
+            model.bitcoinPayments = details.bitcoinPayments;
             model.Payments = details.Payments;
 
             return View(model);
@@ -101,17 +101,17 @@ namespace BTCPayServer.Controllers
             {
                 var accounting = data.Calculate();
                 var paymentMethodId = data.GetId();
-                var cryptoPayment = new InvoiceDetailsModel.CryptoPayment();
+                var bitcoinPayment = new InvoiceDetailsModel.bitcoinPayment();
                 
-                cryptoPayment.PaymentMethodId = paymentMethodId;
-                cryptoPayment.PaymentMethod = paymentMethodId.ToPrettyString();
-                cryptoPayment.Due = _CurrencyNameTable.DisplayFormatCurrency(accounting.Due.ToDecimal(MoneyUnit.BTC), paymentMethodId.CryptoCode);
-                cryptoPayment.Paid = _CurrencyNameTable.DisplayFormatCurrency(accounting.CryptoPaid.ToDecimal(MoneyUnit.BTC), paymentMethodId.CryptoCode);
-                cryptoPayment.Overpaid = _CurrencyNameTable.DisplayFormatCurrency(accounting.OverpaidHelper.ToDecimal(MoneyUnit.BTC), paymentMethodId.CryptoCode);
+                bitcoinPayment.PaymentMethodId = paymentMethodId;
+                bitcoinPayment.PaymentMethod = paymentMethodId.ToPrettyString();
+                bitcoinPayment.Due = _CurrencyNameTable.DisplayFormatCurrency(accounting.Due.ToDecimal(MoneyUnit.BTC), paymentMethodId.bitcoinCode);
+                bitcoinPayment.Paid = _CurrencyNameTable.DisplayFormatCurrency(accounting.bitcoinPaid.ToDecimal(MoneyUnit.BTC), paymentMethodId.bitcoinCode);
+                bitcoinPayment.Overpaid = _CurrencyNameTable.DisplayFormatCurrency(accounting.OverpaidHelper.ToDecimal(MoneyUnit.BTC), paymentMethodId.bitcoinCode);
                 var paymentMethodDetails = data.GetPaymentMethodDetails();
-                cryptoPayment.Address = paymentMethodDetails.GetPaymentDestination();
-                cryptoPayment.Rate = ExchangeRate(data);
-                model.CryptoPayments.Add(cryptoPayment);
+                bitcoinPayment.Address = paymentMethodDetails.GetPaymentDestination();
+                bitcoinPayment.Rate = ExchangeRate(data);
+                model.bitcoinPayments.Add(bitcoinPayment);
             }
             return model;
         }
@@ -202,12 +202,12 @@ namespace BTCPayServer.Controllers
                 paymentMethodId = store.GetDefaultPaymentId(_NetworkProvider);
                 isDefaultPaymentId = true;
             }
-            BTCPayNetworkBase network = _NetworkProvider.GetNetwork<BTCPayNetworkBase>(paymentMethodId.CryptoCode);
+            BTCPayNetworkBase network = _NetworkProvider.GetNetwork<BTCPayNetworkBase>(paymentMethodId.bitcoinCode);
             if (network == null && isDefaultPaymentId)
             {
                 //TODO: need to look into a better way for this as it does not scale
                 network = _NetworkProvider.GetAll().OfType<BTCPayNetwork>().FirstOrDefault();
-                paymentMethodId = new PaymentMethodId(network.CryptoCode, PaymentTypes.BTCLike);
+                paymentMethodId = new PaymentMethodId(network.bitcoinCode, PaymentTypes.BTCLike);
             }
             if (invoice == null || network == null)
                 return null;
@@ -216,7 +216,7 @@ namespace BTCPayServer.Controllers
                 if (!isDefaultPaymentId)
                     return null;
                 var paymentMethodTemp = invoice.GetPaymentMethods()
-                                               .Where(c => paymentMethodId.CryptoCode == c.GetId().CryptoCode)
+                                               .Where(c => paymentMethodId.bitcoinCode == c.GetId().bitcoinCode)
                                                .FirstOrDefault();
                 if (paymentMethodTemp == null)
                     paymentMethodTemp = invoice.GetPaymentMethods().First();
@@ -227,7 +227,7 @@ namespace BTCPayServer.Controllers
             var paymentMethod = invoice.GetPaymentMethod(paymentMethodId);
             var paymentMethodDetails = paymentMethod.GetPaymentMethodDetails();
             var dto = invoice.EntityToDTO();
-            var cryptoInfo = dto.CryptoInfo.First(o => o.GetpaymentMethodId() == paymentMethodId);
+            var bitcoinInfo = dto.bitcoinInfo.First(o => o.GetpaymentMethodId() == paymentMethodId);
             var storeBlob = store.GetStoreBlob();
             var currency = invoice.ProductInformation.Currency;
             var accounting = paymentMethod.Calculate();
@@ -250,11 +250,11 @@ namespace BTCPayServer.Controllers
 
             var paymentMethodHandler = _paymentMethodHandlerDictionary[paymentMethodId];
             
-            var divisibility = _CurrencyNameTable.GetNumberFormatInfo(paymentMethod.GetId().CryptoCode, false)?.CurrencyDecimalDigits;
+            var divisibility = _CurrencyNameTable.GetNumberFormatInfo(paymentMethod.GetId().bitcoinCode, false)?.CurrencyDecimalDigits;
 
             var model = new PaymentModel()
             {
-                CryptoCode = network.CryptoCode,
+                bitcoinCode = network.bitcoinCode,
                 RootPath = this.Request.PathBase.Value.WithTrailingSlash(),
                 OrderId = invoice.OrderId,
                 InvoiceId = invoice.Id,
@@ -262,11 +262,11 @@ namespace BTCPayServer.Controllers
                 CustomCSSLink = storeBlob.CustomCSS,
                 CustomLogoLink = storeBlob.CustomLogo,
                 HtmlTitle = storeBlob.HtmlTitle ?? "BTCPay Invoice",
-                CryptoImage = Request.GetRelativePathOrAbsolute(paymentMethodHandler.GetCryptoImage(paymentMethodId)),
+                bitcoinImage = Request.GetRelativePathOrAbsolute(paymentMethodHandler.GetbitcoinImage(paymentMethodId)),
                 BtcAddress = paymentMethodDetails.GetPaymentDestination(),
                 BtcDue = accounting.Due.ShowMoney(divisibility),
                 OrderAmount = (accounting.TotalDue - accounting.NetworkFee).ShowMoney(divisibility),
-                OrderAmountFiat = OrderAmountFromInvoice(network.CryptoCode, invoice.ProductInformation),
+                OrderAmountFiat = OrderAmountFromInvoice(network.bitcoinCode, invoice.ProductInformation),
                 CustomerEmail = invoice.RefundMail,
                 RequiresRefundEmail = storeBlob.RequiresRefundEmail,
                 ShowRecommendedFee = storeBlob.ShowRecommendedFee,
@@ -295,20 +295,20 @@ namespace BTCPayServer.Controllers
                 CoinSwitchMerchantId = coinswitch?.MerchantId,
                 CoinSwitchMode = coinswitch?.Mode,
                 StoreId = store.Id,
-                AvailableCryptos = invoice.GetPaymentMethods()
+                Availablebitcoins = invoice.GetPaymentMethods()
                                           .Where(i => i.Network != null)
                                           .Select(kv =>
                                           {
-                                              var availableCryptoPaymentMethodId = kv.GetId();
-                                              var availableCryptoHandler = _paymentMethodHandlerDictionary[availableCryptoPaymentMethodId];
-                                              return new PaymentModel.AvailableCrypto()
+                                              var availablebitcoinPaymentMethodId = kv.GetId();
+                                              var availablebitcoinHandler = _paymentMethodHandlerDictionary[availablebitcoinPaymentMethodId];
+                                              return new PaymentModel.Availablebitcoin()
                                               {
                                                   PaymentMethodId = kv.GetId().ToString(),
-                                                  CryptoCode = kv.Network?.CryptoCode ?? kv.GetId().CryptoCode,
-                                                  PaymentMethodName = availableCryptoHandler.GetPaymentMethodName(availableCryptoPaymentMethodId),
+                                                  bitcoinCode = kv.Network?.bitcoinCode ?? kv.GetId().bitcoinCode,
+                                                  PaymentMethodName = availablebitcoinHandler.GetPaymentMethodName(availablebitcoinPaymentMethodId),
                                                   IsLightning =
                                                       kv.GetId().PaymentType == PaymentTypes.LightningLike,
-                                                  CryptoImage = Request.GetRelativePathOrAbsolute(availableCryptoHandler.GetCryptoImage(availableCryptoPaymentMethodId)),
+                                                  bitcoinImage = Request.GetRelativePathOrAbsolute(availablebitcoinHandler.GetbitcoinImage(availablebitcoinPaymentMethodId)),
                                                   Link = Url.Action(nameof(Checkout),
                                                       new
                                                       {
@@ -316,13 +316,13 @@ namespace BTCPayServer.Controllers
                                                           paymentMethodId = kv.GetId().ToString()
                                                       })
                                               };
-                                          }).Where(c => c.CryptoImage != "/")
-                                          .OrderByDescending(a => a.CryptoCode == "BTC").ThenBy(a => a.PaymentMethodName).ThenBy(a => a.IsLightning ? 1 : 0)
+                                          }).Where(c => c.bitcoinImage != "/")
+                                          .OrderByDescending(a => a.bitcoinCode == "BTC").ThenBy(a => a.PaymentMethodName).ThenBy(a => a.IsLightning ? 1 : 0)
                                           .ToList()
             };
 
             paymentMethodHandler.PreparePaymentModel(model, dto, storeBlob);
-            if (model.IsLightning && storeBlob.LightningAmountInSatoshi && model.CryptoCode == "Sats")
+            if (model.IsLightning && storeBlob.LightningAmountInSatoshi && model.bitcoinCode == "Sats")
             {
                 model.Rate = _CurrencyNameTable.DisplayFormatCurrency(paymentMethod.Rate / 100_000_000, paymentMethod.ParentEntity.ProductInformation.Currency);
             }
@@ -333,10 +333,10 @@ namespace BTCPayServer.Controllers
             return model;
         }
 
-        private string OrderAmountFromInvoice(string cryptoCode, ProductInformation productInformation)
+        private string OrderAmountFromInvoice(string bitcoinCode, ProductInformation productInformation)
         {
             // if invoice source currency is the same as currently display currency, no need for "order amount from invoice"
-            if (cryptoCode == productInformation.Currency)
+            if (bitcoinCode == productInformation.Currency)
                 return null;
 
             return _CurrencyNameTable.DisplayFormatCurrency(productInformation.Price, productInformation.Currency);

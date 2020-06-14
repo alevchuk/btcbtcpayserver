@@ -10,7 +10,7 @@ namespace BTCPayServer.Models.StoreViewModels
     {
         public class DerivationScheme
         {
-            public string Crypto { get; set; }
+            public string bitcoin { get; set; }
             public string Value { get; set; }
             public WalletId WalletId { get; set; }
             public bool WalletSupported { get; set; }
@@ -93,7 +93,7 @@ namespace BTCPayServer.Models.StoreViewModels
 
         public class LightningNode
         {
-            public string CryptoCode { get; set; }
+            public string bitcoinCode { get; set; }
             public string Address { get; set; }
             public bool Enabled { get; set; }
         }

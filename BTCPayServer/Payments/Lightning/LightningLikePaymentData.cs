@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace BTCPayServer.Payments.Lightning
 {
-    public class LightningLikePaymentData : CryptoPaymentData
+    public class LightningLikePaymentData : bitcoinPaymentData
     {
         [JsonIgnore]
         public BTCPayNetworkBase Network { get; set; }

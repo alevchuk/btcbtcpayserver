@@ -16,7 +16,7 @@
             </p>
             @foreach (var line in dashboard.GetAll().Where(summary => summary.Network.ShowSyncSummary))
             {
-                <h4>@line.Network.CryptoCode</h4>
+                <h4>@line.Network.bitcoinCode</h4>
                 @if (line.Status == null)
                 {
                     <ul>

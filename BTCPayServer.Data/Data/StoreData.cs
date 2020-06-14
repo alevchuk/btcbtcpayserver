@@ -36,7 +36,7 @@ namespace BTCPayServer.Data
         public byte[] StoreBlob { get; set; }
 
         [Obsolete("Use GetDefaultPaymentId instead")]
-        public string DefaultCrypto { get; set; }
+        public string Defaultbitcoin { get; set; }
 
         public List<PairedSINData> PairedSINs { get; set; }
         public IEnumerable<APIKeyData> APIKeys { get; set; }

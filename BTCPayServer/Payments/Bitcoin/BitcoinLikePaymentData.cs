@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace BTCPayServer.Payments.Bitcoin
 {
 
-    public class BitcoinLikePaymentData : CryptoPaymentData
+    public class BitcoinLikePaymentData : bitcoinPaymentData
     {
         public PaymentType GetPaymentType()
         {
@@ -54,7 +54,7 @@ namespace BTCPayServer.Payments.Bitcoin
         }
         
         /// <summary>
-        /// This is set to true if the payment was created before CryptoPaymentData existed in BTCPayServer
+        /// This is set to true if the payment was created before bitcoinPaymentData existed in BTCPayServer
         /// </summary>
         public bool Legacy { get; set; }
 
@@ -104,7 +104,7 @@ namespace BTCPayServer.Payments.Bitcoin
             return Address?? Output.ScriptPubKey.GetDestinationAddress(((BTCPayNetwork)Network).NBitcoinNetwork);
         }
 
-        string CryptoPaymentData.GetDestination()
+        string bitcoinPaymentData.GetDestination()
         {
             return GetDestination().ToString();
         }

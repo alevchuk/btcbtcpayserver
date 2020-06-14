@@ -24,7 +24,7 @@ namespace BTCPayServer.Services
                 throw new ArgumentNullException(nameof(network));
             return new Lightning.LightningClientFactory(network.NBitcoinNetwork)
             {
-                HttpClient = _httpClientFactory.CreateClient($"{network.CryptoCode}: Lightning client")
+                HttpClient = _httpClientFactory.CreateClient($"{network.bitcoinCode}: Lightning client")
             }.Create(lightningConnectionString);
         }
     }

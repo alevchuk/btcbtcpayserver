@@ -8,8 +8,8 @@ namespace BTCPayServer.Data
     public class AddressInvoiceData
     {
         /// <summary>
-        /// Some crypto currencies share same address prefix
-        /// For not having exceptions thrown by two address on different network, we suffix by "#CRYPTOCODE" 
+        /// Some bitcoin currencies share same address prefix
+        /// For not having exceptions thrown by two address on different network, we suffix by "#bitcoinCODE" 
         /// </summary>
         [Obsolete("Use GetHash instead")]
         public string Address

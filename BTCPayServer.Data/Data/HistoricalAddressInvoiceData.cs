@@ -18,18 +18,18 @@ namespace BTCPayServer.Data
         }
 
         /// <summary>
-        /// Some crypto currencies share same address prefix
-        /// For not having exceptions thrown by two address on different network, we suffix by "#CRYPTOCODE" 
+        /// Some bitcoin currencies share same address prefix
+        /// For not having exceptions thrown by two address on different network, we suffix by "#bitcoinCODE" 
         /// </summary>
-        [Obsolete("Use GetCryptoCode instead")]
+        [Obsolete("Use GetbitcoinCode instead")]
         public string Address
         {
             get; set;
         }
 
 
-        [Obsolete("Use GetCryptoCode instead")]
-        public string CryptoCode { get; set; }
+        [Obsolete("Use GetbitcoinCode instead")]
+        public string bitcoinCode { get; set; }
 
         public DateTimeOffset Assigned
         {

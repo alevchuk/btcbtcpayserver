@@ -1,7 +1,7 @@
 @model DerivationSchemeViewModel
 @{
     Layout = "../Shared/_NavLayout.cshtml";
-    ViewData.SetActivePageAndTitle(StoreNavPages.Index, $"{Model.CryptoCode} Derivation scheme");
+    ViewData.SetActivePageAndTitle(StoreNavPages.Index, $"{Model.bitcoinCode} Derivation scheme");
 }
 
 @section HeadScripts {
@@ -25,7 +25,7 @@
 <partial name="VaultElements" />
 <div class="row">
     <div class="col-md-8">
-        <div id="WebsocketPath" style="display:none;">@Url.Action("VaultBridgeConnection", "Vault", new { cryptoCode = Model.CryptoCode })</div>
+        <div id="WebsocketPath" style="display:none;">@Url.Action("VaultBridgeConnection", "Vault", new { bitcoinCode = Model.bitcoinCode })</div>
         @if (!Model.Confirmation)
         {
             <partial name="AddDerivationSchemes_HardwareWalletDialogs" model="@Model" />
@@ -56,14 +56,14 @@
             </template>
         }
         <form method="post" asp-action="AddDerivationScheme" 
-              asp-route-cryptoCode="@Model.CryptoCode"
+              asp-route-bitcoinCode="@Model.bitcoinCode"
               asp-route-storeId="@this.Context.GetRouteValue("storeId")">
 
             <input id="Config" asp-for="Config" type="hidden" />
 
             @if (!Model.Confirmation)
             {
-                <input id="CryptoCurrency" asp-for="CryptoCode" type="hidden" />
+                <input id="bitcoin" asp-for="bitcoinCode" type="hidden" />
                 <input id="DerivationSchemeFormat" asp-for="DerivationSchemeFormat" type="hidden" />
                 <input id="AccountKey" asp-for="AccountKey" type="hidden" />
                 <div class="form-group">
@@ -81,7 +81,7 @@
                                 Import from...
                             </button>
                             <div class="dropdown-menu  dropdown-menu-right">
-                                @if (Model.CryptoCode == "BTC")
+                                @if (Model.bitcoinCode == "BTC")
                                 {
                                     <button class="dropdown-item check-for-vault" type="button">... a hardware wallet</button>
                                 }
@@ -158,8 +158,8 @@
             else
             {
                 <div class="form-group">
-                    <h5>Confirm the addresses (@Model.CryptoCode)</h5>
-                    <span>Please check that your @Model.CryptoCode wallet is generating the same addresses as below.</span>
+                    <h5>Confirm the addresses (@Model.bitcoinCode)</h5>
+                    <span>Please check that your @Model.bitcoinCode wallet is generating the same addresses as below.</span>
                 </div>
                 <input asp-for="Confirmation" type="hidden" />
                 <input type="hidden" asp-for="DerivationScheme" />

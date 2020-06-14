@@ -11,10 +11,10 @@ namespace BTCPayServer
     {
         public void InitBitcore()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("BTX");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("BTX");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Bitcore",
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://insight.bitcore.cc/tx/{0}" : "https://insight.bitcore.cc/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
@@ -24,7 +24,7 @@ namespace BTCPayServer
                                 "BTX_X = BTX_BTC * BTC_X",
                                 "BTX_BTC = hitbtc(BTX_BTC)"
                 },
-                CryptoImagePath = "imlegacy/bitcore.svg",
+                bitcoinImagePath = "imlegacy/bitcore.svg",
                 LightningImagePath = "imlegacy/bitcore-lightning.svg",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("160'") : new KeyPath("1'")

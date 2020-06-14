@@ -116,9 +116,9 @@ namespace BTCPayServer
             });
         }
 
-        public virtual string GenerateBIP21(string cryptoInfoAddress, Money cryptoInfoDue)
+        public virtual string GenerateBIP21(string bitcoinInfoAddress, Money bitcoinInfoDue)
         {
-            return $"{UriScheme}:{cryptoInfoAddress}?amount={cryptoInfoDue.ToString(false, true)}";
+            return $"{UriScheme}:{bitcoinInfoAddress}?amount={bitcoinInfoDue.ToString(false, true)}";
         }
 
         public virtual GetTransactionsResponse FilterValidTransactions(GetTransactionsResponse response)
@@ -130,7 +130,7 @@ namespace BTCPayServer
     public abstract class BTCPayNetworkBase
     {
         public bool ShowSyncSummary { get; set; } = true;
-        public string CryptoCode { get; internal set; }
+        public string bitcoinCode { get; internal set; }
         public string BlockExplorerLink { get; internal set; }
         public string DisplayName { get; set; }
         public int Divisibility { get; set; } = 8;
@@ -139,15 +139,15 @@ namespace BTCPayServer
         {
             get
             {
-                return CryptoCode == "BTC";
+                return bitcoinCode == "BTC";
             }
         }
 
-        public string CryptoImagePath { get; set; }
+        public string bitcoinImagePath { get; set; }
         public string[] DefaultRateRules { get; internal set; } = Array.Empty<string>();
         public override string ToString()
         {
-            return CryptoCode;
+            return bitcoinCode;
         }
 
         public virtual T ToObject<T>(string json)

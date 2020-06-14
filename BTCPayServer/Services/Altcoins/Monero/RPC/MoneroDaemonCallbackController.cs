@@ -14,22 +14,22 @@ namespace BTCPayServer.Services.Altcoins.Monero.RPC
             _eventAggregator = eventAggregator;
         }
         [HttpGet("block")]
-        public IActionResult OnBlockNotify(string hash, string cryptoCode)
+        public IActionResult OnBlockNotify(string hash, string bitcoinCode)
         {
             _eventAggregator.Publish(new MoneroEvent()
             {
                 BlockHash = hash,
-                CryptoCode = cryptoCode.ToUpperInvariant()
+                bitcoinCode = bitcoinCode.ToUpperInvariant()
             });
             return Ok();
         }
         [HttpGet("tx")]
-        public IActionResult OnTransactionNotify(string hash, string cryptoCode)
+        public IActionResult OnTransactionNotify(string hash, string bitcoinCode)
         {
             _eventAggregator.Publish(new MoneroEvent()
             {
                 TransactionHash = hash,
-                CryptoCode = cryptoCode.ToUpperInvariant()
+                bitcoinCode = bitcoinCode.ToUpperInvariant()
             });
             return Ok();
         }

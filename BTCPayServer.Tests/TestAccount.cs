@@ -170,12 +170,12 @@ namespace BTCPayServer.Tests
             return RegisterDerivationSchemeAsync(crytoCode, segwit, importKeysToNBX).GetAwaiter().GetResult();
         }
 
-        public async Task<WalletId> RegisterDerivationSchemeAsync(string cryptoCode, ScriptPubKeyType segwit = ScriptPubKeyType.Legacy,
+        public async Task<WalletId> RegisterDerivationSchemeAsync(string bitcoinCode, ScriptPubKeyType segwit = ScriptPubKeyType.Legacy,
             bool importKeysToNBX = false)
         {
             if (StoreId is null)
                 await CreateStoreAsync();
-            SupportedNetwork = parent.NetworkProvider.GetNetwork<BTCPayNetwork>(cryptoCode);
+            SupportedNetwork = parent.NetworkProvider.GetNetwork<BTCPayNetwork>(bitcoinCode);
             var store = parent.PayTester.GetController<StoresController>(UserId, StoreId);
             GenerateWalletResponseV = await parent.ExplorerClient.GenerateWalletAsync(new GenerateWalletRequest()
             {
@@ -186,7 +186,7 @@ namespace BTCPayServer.Tests
                 new DerivationSchemeViewModel()
                 {
                     Enabled = true,
-                    CryptoCode = cryptoCode,
+                    bitcoinCode = bitcoinCode,
                     Network = SupportedNetwork,
                     RootFingerprint = GenerateWalletResponseV.AccountKeyPath.MasterFingerprint.ToString(),
                     RootKeyPath = SupportedNetwork.GetRootKeyPath(),
@@ -196,8 +196,8 @@ namespace BTCPayServer.Tests
                     KeyPath = GenerateWalletResponseV.AccountKeyPath.KeyPath.ToString(),
                     DerivationScheme = DerivationScheme.ToString(),
                     Confirmation = true
-                }, cryptoCode);
-            return new WalletId(StoreId, cryptoCode);
+                }, bitcoinCode);
+            return new WalletId(StoreId, bitcoinCode);
         }
 
         public Task EnablePayJoin()
@@ -252,12 +252,12 @@ namespace BTCPayServer.Tests
 
         public bool IsAdmin { get; internal set; }
 
-        public void RegisterLightningNode(string cryptoCode, LightningConnectionType connectionType, bool isMerchant = true)
+        public void RegisterLightningNode(string bitcoinCode, LightningConnectionType connectionType, bool isMerchant = true)
         {
-            RegisterLightningNodeAsync(cryptoCode, connectionType, isMerchant).GetAwaiter().GetResult();
+            RegisterLightningNodeAsync(bitcoinCode, connectionType, isMerchant).GetAwaiter().GetResult();
         }
 
-        public async Task RegisterLightningNodeAsync(string cryptoCode, LightningConnectionType connectionType, bool isMerchant = true)
+        public async Task RegisterLightningNodeAsync(string bitcoinCode, LightningConnectionType connectionType, bool isMerchant = true)
         {
             var storeController = this.GetController<StoresController>();
 
@@ -331,9 +331,9 @@ namespace BTCPayServer.Tests
         public async Task<PSBT> Sign(PSBT psbt)
         {
             var btcPayWallet = parent.PayTester.GetService<BTCPayWalletProvider>()
-                .GetWallet(psbt.Network.NetworkSet.CryptoCode);
+                .GetWallet(psbt.Network.NetworkSet.bitcoinCode);
             var explorerClient = parent.PayTester.GetService<ExplorerClientProvider>()
-                .GetExplorerClient(psbt.Network.NetworkSet.CryptoCode);
+                .GetExplorerClient(psbt.Network.NetworkSet.bitcoinCode);
             psbt = (await explorerClient.UpdatePSBTAsync(new UpdatePSBTRequest()
             {
                 DerivationScheme = DerivationScheme, PSBT = psbt
@@ -424,7 +424,7 @@ namespace BTCPayServer.Tests
         public static Uri GetPayjoinEndpoint(Invoice invoice, Network network)
         {
             var parsedBip21 = new BitcoinUrlBuilder(
-                invoice.CryptoInfo.First(c => c.CryptoCode == network.NetworkSet.CryptoCode).PaymentUrls.BIP21,
+                invoice.bitcoinInfo.First(c => c.bitcoinCode == network.NetworkSet.bitcoinCode).PaymentUrls.BIP21,
                 network);
             return parsedBip21.UnknowParameters.TryGetValue($"{PayjoinClient.BIP21EndpointKey}", out var uri) ? new Uri(uri, UriKind.Absolute) : null;
         }

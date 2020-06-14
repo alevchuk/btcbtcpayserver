@@ -36,10 +36,10 @@ namespace BTCPayServer.Services.Altcoins.Monero.Services
                     pair => new JsonRpcClient(pair.Value.InternalWalletRpcUri, "", "", httpClientFactory.CreateClient()));
         }
 
-        public bool IsAvailable(string cryptoCode)
+        public bool IsAvailable(string bitcoinCode)
         {
-            cryptoCode = cryptoCode.ToUpperInvariant();
-            return _summaries.ContainsKey(cryptoCode) && IsAvailable(_summaries[cryptoCode]);
+            bitcoinCode = bitcoinCode.ToUpperInvariant();
+            return _summaries.ContainsKey(bitcoinCode) && IsAvailable(_summaries[bitcoinCode]);
         }
 
         private bool IsAvailable(MoneroLikeSummary summary)
@@ -48,10 +48,10 @@ namespace BTCPayServer.Services.Altcoins.Monero.Services
                    summary.WalletAvailable;
         }
 
-        public async Task<MoneroLikeSummary> UpdateSummary(string cryptoCode)
+        public async Task<MoneroLikeSummary> UpdateSummary(string bitcoinCode)
         {
-            if (!DaemonRpcClients.TryGetValue(cryptoCode.ToUpperInvariant(), out var daemonRpcClient) ||
-                !WalletRpcClients.TryGetValue(cryptoCode.ToUpperInvariant(), out var walletRpcClient))
+            if (!DaemonRpcClients.TryGetValue(bitcoinCode.ToUpperInvariant(), out var daemonRpcClient) ||
+                !WalletRpcClients.TryGetValue(bitcoinCode.ToUpperInvariant(), out var walletRpcClient))
             {
                 return null;
             }
@@ -87,12 +87,12 @@ namespace BTCPayServer.Services.Altcoins.Monero.Services
                 summary.WalletAvailable = false;
             }
 
-            var changed = !_summaries.ContainsKey(cryptoCode) || IsAvailable(cryptoCode) != IsAvailable(summary);
+            var changed = !_summaries.ContainsKey(bitcoinCode) || IsAvailable(bitcoinCode) != IsAvailable(summary);
 
-            _summaries.AddOrReplace(cryptoCode, summary);
+            _summaries.AddOrReplace(bitcoinCode, summary);
             if (changed)
             {
-                _eventAggregator.Publish(new MoneroDaemonStateChange() {Summary = summary, CryptoCode = cryptoCode});
+                _eventAggregator.Publish(new MoneroDaemonStateChange() {Summary = summary, bitcoinCode = bitcoinCode});
             }
 
             return summary;
@@ -101,7 +101,7 @@ namespace BTCPayServer.Services.Altcoins.Monero.Services
 
         public class MoneroDaemonStateChange
         {
-            public string CryptoCode { get; set; }
+            public string bitcoinCode { get; set; }
             public MoneroLikeSummary Summary { get; set; }
         }
 

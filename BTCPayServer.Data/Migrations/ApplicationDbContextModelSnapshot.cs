@@ -174,7 +174,7 @@ namespace BTCPayServer.Migrations
                     b.Property<DateTimeOffset>("Assigned")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CryptoCode")
+                    b.Property<string>("bitcoinCode")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("UnAssigned")
@@ -440,7 +440,7 @@ namespace BTCPayServer.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("DefaultCrypto")
+                    b.Property<string>("Defaultbitcoin")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DerivationStrategies")

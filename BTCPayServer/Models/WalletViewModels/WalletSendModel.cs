@@ -36,7 +36,7 @@ namespace BTCPayServer.Models.WalletViewModels
         }
         public decimal CurrentBalance { get; set; }
 
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
        
         public List<FeeRateOption> RecommendedSatoshiPerByte { get; set; }
 

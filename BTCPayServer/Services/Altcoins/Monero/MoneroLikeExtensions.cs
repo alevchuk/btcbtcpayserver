@@ -43,20 +43,20 @@ namespace BTCPayServer.Services.Altcoins.Monero
             foreach (var moneroLikeSpecificBtcPayNetwork in supportedNetworks)
             {
                 var daemonUri =
-                    configuration.GetOrDefault<Uri>($"{moneroLikeSpecificBtcPayNetwork.CryptoCode}_daemon_uri",
+                    configuration.GetOrDefault<Uri>($"{moneroLikeSpecificBtcPayNetwork.bitcoinCode}_daemon_uri",
                         null);
                 var walletDaemonUri =
                     configuration.GetOrDefault<Uri>(
-                        $"{moneroLikeSpecificBtcPayNetwork.CryptoCode}_wallet_daemon_uri", null);
+                        $"{moneroLikeSpecificBtcPayNetwork.bitcoinCode}_wallet_daemon_uri", null);
                 var walletDaemonWalletDirectory =
                     configuration.GetOrDefault<string>(
-                        $"{moneroLikeSpecificBtcPayNetwork.CryptoCode}_wallet_daemon_walletdir", null);
+                        $"{moneroLikeSpecificBtcPayNetwork.bitcoinCode}_wallet_daemon_walletdir", null);
                 if (daemonUri == null || walletDaemonUri == null )
                 {
-                    throw new ConfigException($"{moneroLikeSpecificBtcPayNetwork.CryptoCode} is misconfigured");
+                    throw new ConfigException($"{moneroLikeSpecificBtcPayNetwork.bitcoinCode} is misconfigured");
                 }
                 
-                result.MoneroLikeConfigurationItems.Add(moneroLikeSpecificBtcPayNetwork.CryptoCode, new MoneroLikeConfigurationItem()
+                result.MoneroLikeConfigurationItems.Add(moneroLikeSpecificBtcPayNetwork.bitcoinCode, new MoneroLikeConfigurationItem()
                 {
                     DaemonRpcUri = daemonUri,
                     InternalWalletRpcUri = walletDaemonUri,

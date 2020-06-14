@@ -11,10 +11,10 @@ namespace BTCPayServer
     {
         public void InitFeathercoin()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("FTC");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("FTC");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Feathercoin",
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://explorer.feathercoin.com/tx/{0}" : "https://explorer.feathercoin.com/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
@@ -24,7 +24,7 @@ namespace BTCPayServer
                                 "FTC_X = FTC_BTC * BTC_X",
                                 "FTC_BTC = bittrex(FTC_BTC)"
                 },
-                CryptoImagePath = "imlegacy/feathercoin.png",
+                bitcoinImagePath = "imlegacy/feathercoin.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("8'") : new KeyPath("1'")
             });

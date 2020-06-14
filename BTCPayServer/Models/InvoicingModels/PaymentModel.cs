@@ -15,24 +15,24 @@ namespace BTCPayServer.Models.InvoicingModels
     public class PaymentModel
     {
         public CheckoutUIPaymentMethodSettings UISettings;
-        public class AvailableCrypto
+        public class Availablebitcoin
         {
             public string PaymentMethodId { get; set; }
-            public string CryptoImage { get; set; }
+            public string bitcoinImage { get; set; }
             public string Link { get; set; }
             public string PaymentMethodName { get; set; }
             public bool IsLightning { get; set; }
-            public string CryptoCode { get; set; }
+            public string bitcoinCode { get; set; }
         }
         public string CustomCSSLink { get; set; }
         public string CustomLogoLink { get; set; }
         public string HtmlTitle { get; set; }
         public string DefaultLang { get; set; }
         public bool LightningAmountInSatoshi { get; set; }
-        public List<AvailableCrypto> AvailableCryptos { get; set; } = new List<AvailableCrypto>();
+        public List<Availablebitcoin> Availablebitcoins { get; set; } = new List<Availablebitcoin>();
         public bool IsModal { get; set; }
         public bool IsLightning { get; set; }
-        public string CryptoCode { get; set; }
+        public string bitcoinCode { get; set; }
         public string InvoiceId { get; set; }
         public string BtcAddress { get; set; }
         public string BtcDue { get; set; }
@@ -64,7 +64,7 @@ namespace BTCPayServer.Models.InvoicingModels
         public string PaymentType { get; set; }
         public string PaymentMethodId { get; set; }
         public string PaymentMethodName { get; set; }
-        public string CryptoImage { get; set; }
+        public string bitcoinImage { get; set; }
 
         public bool ChangellyEnabled { get; set; }
         public string StoreId { get; set; }

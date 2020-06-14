@@ -11,10 +11,10 @@ namespace BTCPayServer
     {
         public void InitDogecoin()
         {
-            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFromCryptoCode("DOGE");
+            var nbxplorerNetwork = NBXplorerNetworkProvider.GetFrombitcoinCode("DOGE");
             Add(new BTCPayNetwork()
             {
-                CryptoCode = nbxplorerNetwork.CryptoCode,
+                bitcoinCode = nbxplorerNetwork.bitcoinCode,
                 DisplayName = "Dogecoin",
                 BlockExplorerLink = NetworkType == NetworkType.Mainnet ? "https://dogechain.info/tx/{0}" : "https://dogechain.info/tx/{0}",
                 NBXplorerNetwork = nbxplorerNetwork,
@@ -24,7 +24,7 @@ namespace BTCPayServer
                                 "DOGE_X = DOGE_BTC * BTC_X",
                                 "DOGE_BTC = bittrex(DOGE_BTC)"
                 },
-                CryptoImagePath = "imlegacy/dogecoin.png",
+                bitcoinImagePath = "imlegacy/dogecoin.png",
                 DefaultSettings = BTCPayDefaultSettings.GetDefaultSettings(NetworkType),
                 CoinType = NetworkType == NetworkType.Mainnet ? new KeyPath("3'") : new KeyPath("1'")
             });

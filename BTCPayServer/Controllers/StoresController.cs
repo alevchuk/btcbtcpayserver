@@ -372,7 +372,7 @@ namespace BTCPayServer.Controllers
         {
             var storeBlob = CurrentStore.GetStoreBlob();
             var vm = new CheckoutExperienceViewModel();
-            SetCryptoCurrencies(vm, CurrentStore);
+            SetbitcoinCurrencies(vm, CurrentStore);
             vm.CustomCSS = storeBlob.CustomCSS;
             vm.CustomLogo = storeBlob.CustomLogo;
             vm.HtmlTitle = storeBlob.HtmlTitle;
@@ -387,14 +387,14 @@ namespace BTCPayServer.Controllers
             vm.RedirectAutomatically = storeBlob.RedirectAutomatically;
             return View(vm);
         }
-        void SetCryptoCurrencies(CheckoutExperienceViewModel vm, Data.StoreData storeData)
+        void SetbitcoinCurrencies(CheckoutExperienceViewModel vm, Data.StoreData storeData)
         {
             var choices = storeData.GetEnabledPaymentIds(_NetworkProvider)
                                       .Select(o => new CheckoutExperienceViewModel.Format() { Name = o.ToPrettyString(), Value = o.ToString(), PaymentId = o }).ToArray();
 
             var defaultPaymentId = storeData.GetDefaultPaymentId(_NetworkProvider);
             var chosen = choices.FirstOrDefault(c => c.PaymentId == defaultPaymentId);
-            vm.CryptoCurrencies = new SelectList(choices, nameof(chosen.Value), nameof(chosen.Name), chosen?.Value);
+            vm.bitcoinCurrencies = new SelectList(choices, nameof(chosen.Value), nameof(chosen.Name), chosen?.Value);
             vm.DefaultPaymentMethod = chosen?.Value;
         }
 
@@ -427,7 +427,7 @@ namespace BTCPayServer.Controllers
                 needUpdate = true;
                 CurrentStore.SetDefaultPaymentId(defaultPaymentMethodId);
             }
-            SetCryptoCurrencies(model, CurrentStore);
+            SetbitcoinCurrencies(model, CurrentStore);
             model.SetLanguages(_LangService, model.DefaultLang);
 
             if (!ModelState.IsValid)
@@ -492,41 +492,41 @@ namespace BTCPayServer.Controllers
         private void AddPaymentMethods(StoreData store, StoreBlob storeBlob, StoreViewModel vm)
         {
             var excludeFilters = storeBlob.GetExcludedPaymentMethods();
-            var derivationByCryptoCode =
+            var derivationBybitcoinCode =
                 store
                 .GetSupportedPaymentMethods(_NetworkProvider)
                 .OfType<DerivationSchemeSettings>()
-                .ToDictionary(c => c.Network.CryptoCode.ToUpperInvariant());
+                .ToDictionary(c => c.Network.bitcoinCode.ToUpperInvariant());
 
-            var lightningByCryptoCode = store
+            var lightningBybitcoinCode = store
                 .GetSupportedPaymentMethods(_NetworkProvider)
                 .OfType<LightningSupportedPaymentMethod>()
-                .ToDictionary(c => c.CryptoCode.ToUpperInvariant());
+                .ToDictionary(c => c.bitcoinCode.ToUpperInvariant());
 
             foreach (var paymentMethodId in _paymentMethodHandlerDictionary.Distinct().SelectMany(handler => handler.GetSupportedPaymentMethods()))
             {
                  switch (paymentMethodId.PaymentType)
                 {
                     case BitcoinPaymentType _:
-                        var strategy = derivationByCryptoCode.TryGet(paymentMethodId.CryptoCode);
-                        var network = _NetworkProvider.GetNetwork<BTCPayNetwork>(paymentMethodId.CryptoCode);
+                        var strategy = derivationBybitcoinCode.TryGet(paymentMethodId.bitcoinCode);
+                        var network = _NetworkProvider.GetNetwork<BTCPayNetwork>(paymentMethodId.bitcoinCode);
                         var value = strategy?.ToPrettyString() ?? string.Empty;
                         
                         vm.DerivationSchemes.Add(new StoreViewModel.DerivationScheme()
                         {
-                            Crypto = paymentMethodId.CryptoCode,
+                            bitcoin = paymentMethodId.bitcoinCode,
                             WalletSupported = network.WalletSupported,
                             Value = value,
-                            WalletId = new WalletId(store.Id, paymentMethodId.CryptoCode),
+                            WalletId = new WalletId(store.Id, paymentMethodId.bitcoinCode),
                             Enabled = !excludeFilters.Match(paymentMethodId) && strategy != null,
-                            Collapsed = network is ElementsBTCPayNetwork elementsBTCPayNetwork && elementsBTCPayNetwork.NetworkCryptoCode != elementsBTCPayNetwork.CryptoCode && string.IsNullOrEmpty(value)
+                            Collapsed = network is ElementsBTCPayNetwork elementsBTCPayNetwork && elementsBTCPayNetwork.NetworkbitcoinCode != elementsBTCPayNetwork.bitcoinCode && string.IsNullOrEmpty(value)
                         });
                         break;
                     case LightningPaymentType _:
-                        var lightning = lightningByCryptoCode.TryGet(paymentMethodId.CryptoCode);
+                        var lightning = lightningBybitcoinCode.TryGet(paymentMethodId.bitcoinCode);
                         vm.LightningNodes.Add(new StoreViewModel.LightningNode()
                         {
-                            CryptoCode = paymentMethodId.CryptoCode,
+                            bitcoinCode = paymentMethodId.bitcoinCode,
                             Address = lightning?.GetLightningUrl()?.BaseUri.AbsoluteUri ?? string.Empty,
                             Enabled = !excludeFilters.Match(paymentMethodId) && lightning?.GetLightningUrl() != null
                         });
@@ -602,7 +602,7 @@ namespace BTCPayServer.Controllers
                             string.IsNullOrEmpty(_ExplorerProvider.GetExplorerClient(settings.Network)
                                 .GetMetadata<string>(settings.AccountDerivation,
                                     WellknownMetadataKeys.Mnemonic)))
-                        .Select(settings => settings.PaymentId.CryptoCode)
+                        .Select(settings => settings.PaymentId.bitcoinCode)
                         .ToArray();
 
                     if (problematicPayjoinEnabledMethods.Any())

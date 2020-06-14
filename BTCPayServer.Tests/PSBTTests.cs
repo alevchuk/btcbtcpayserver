@@ -42,7 +42,7 @@ namespace BTCPayServer.Tests
                     FullNotifications = true
                 }, Facade.Merchant);
                 var cashCow = tester.ExplorerNode;
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, cashCow.Network);
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, cashCow.Network);
                 cashCow.SendToAddress(invoiceAddress, Money.Coins(1.5m));
                 TestUtils.Eventually(() =>
                 {

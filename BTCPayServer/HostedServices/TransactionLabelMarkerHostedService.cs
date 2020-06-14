@@ -34,17 +34,17 @@ namespace BTCPayServer.HostedServices
         {
             if (evt is InvoiceEvent invoiceEvent && invoiceEvent.Name == InvoiceEvent.ReceivedPayment &&
                 invoiceEvent.Payment.GetPaymentMethodId().PaymentType == BitcoinPaymentType.Instance &&
-                invoiceEvent.Payment.GetCryptoPaymentData() is BitcoinLikePaymentData bitcoinLikePaymentData)
+                invoiceEvent.Payment.GetbitcoinPaymentData() is BitcoinLikePaymentData bitcoinLikePaymentData)
             {
-                var walletId = new WalletId(invoiceEvent.Invoice.StoreId, invoiceEvent.Payment.GetCryptoCode());
+                var walletId = new WalletId(invoiceEvent.Invoice.StoreId, invoiceEvent.Payment.GetbitcoinCode());
                 var transactionId = bitcoinLikePaymentData.Outpoint.Hash;
                 var labels = new List<(string color, string label)>
                 {
                     UpdateTransactionLabel.InvoiceLabelTemplate(invoiceEvent.Invoice.Id)
                 };
 
-                if (invoiceEvent.Invoice.GetPayments(invoiceEvent.Payment.GetCryptoCode()).Any(entity =>
-                    entity.GetCryptoPaymentData() is BitcoinLikePaymentData pData &&
+                if (invoiceEvent.Invoice.GetPayments(invoiceEvent.Payment.GetbitcoinCode()).Any(entity =>
+                    entity.GetbitcoinPaymentData() is BitcoinLikePaymentData pData &&
                     pData.PayjoinInformation?.CoinjoinTransactionHash == transactionId))
                 {
                     labels.Add(UpdateTransactionLabel.PayjoinLabelTemplate());

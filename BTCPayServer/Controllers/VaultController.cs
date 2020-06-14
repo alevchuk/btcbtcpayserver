@@ -40,19 +40,19 @@ namespace BTCPayServer.Controllers
         public BTCPayNetworkProvider Networks { get; }
 
         [HttpGet]
-        [Route("{cryptoCode}/xpub")]
+        [Route("{bitcoinCode}/xpub")]
         [Route("wallets/{walletId}/xpub")]
-        public async Task<IActionResult> VaultBridgeConnection(string cryptoCode = null,
+        public async Task<IActionResult> VaultBridgeConnection(string bitcoinCode = null,
             [ModelBinder(typeof(WalletIdModelBinder))]
             WalletId walletId = null)
         {
             if (!HttpContext.WebSockets.IsWebSocketRequest)
                 return NotFound();
-            cryptoCode = cryptoCode ?? walletId.CryptoCode;
+            bitcoinCode = bitcoinCode ?? walletId.bitcoinCode;
             using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10)))
             {
                 var cancellationToken = cts.Token;
-                var network = Networks.GetNetwork<BTCPayNetwork>(cryptoCode);
+                var network = Networks.GetNetwork<BTCPayNetwork>(bitcoinCode);
                 if (network == null)
                     return NotFound();
                 var websocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
@@ -378,7 +378,7 @@ askdevice:
             var paymentMethod = CurrentStore
                             .GetSupportedPaymentMethods(Networks)
                             .OfType<DerivationSchemeSettings>()
-                            .FirstOrDefault(p => p.PaymentId.PaymentType == Payments.PaymentTypes.BTCLike && p.PaymentId.CryptoCode == walletId.CryptoCode);
+                            .FirstOrDefault(p => p.PaymentId.PaymentType == Payments.PaymentTypes.BTCLike && p.PaymentId.bitcoinCode == walletId.bitcoinCode);
             return paymentMethod;
         }
     }

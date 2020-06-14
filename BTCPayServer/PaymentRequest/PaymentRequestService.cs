@@ -109,7 +109,7 @@ namespace BTCPayServer.PaymentRequest
                     Status = entity.GetInvoiceState().ToString(),
                     Payments = entity.GetPayments().Select(paymentEntity =>
                     {
-                        var paymentData = paymentEntity.GetCryptoPaymentData();
+                        var paymentData = paymentEntity.GetbitcoinPaymentData();
                         var paymentMethodId = paymentEntity.GetPaymentMethodId();
 
                         string txId = paymentData.GetPaymentId();
@@ -128,7 +128,7 @@ namespace BTCPayServer.PaymentRequest
 
         private string GetTransactionLink(PaymentMethodId paymentMethodId, string txId)
         {
-            var network = _BtcPayNetworkProvider.GetNetwork(paymentMethodId.CryptoCode);
+            var network = _BtcPayNetworkProvider.GetNetwork(paymentMethodId.bitcoinCode);
             if (network == null)
                 return null;
             return paymentMethodId.PaymentType.GetTransactionLink(network, txId);

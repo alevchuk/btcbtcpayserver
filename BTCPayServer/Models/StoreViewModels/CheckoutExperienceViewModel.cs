@@ -18,7 +18,7 @@ namespace BTCPayServer.Models.StoreViewModels
             public string Value { get; set; }
             public PaymentMethodId PaymentId { get; set; }
         }
-        public SelectList CryptoCurrencies { get; set; }
+        public SelectList bitcoinCurrencies { get; set; }
 
         public void SetLanguages(LanguageService langService, string defaultLang)
         {

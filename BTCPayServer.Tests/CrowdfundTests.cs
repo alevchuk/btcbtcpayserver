@@ -237,7 +237,7 @@ namespace BTCPayServer.Tests
                 Assert.Equal(1m, model.Info.PendingProgressPercentage);
 
                 Logs.Tester.LogInformation("Let's check current amount change once payment is confirmed");
-                var invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, tester.ExplorerNode.Network);
+                var invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, tester.ExplorerNode.Network);
                 tester.ExplorerNode.SendToAddress(invoiceAddress, invoice.BtcDue);
                 tester.ExplorerNode.Generate(1); // By default invoice confirmed at 1 block
                 TestUtils.Eventually(() =>
@@ -285,7 +285,7 @@ namespace BTCPayServer.Tests
                     FullNotifications = true
                 }, Facade.Merchant);
                 Assert.Equal(0m, model.Info.CurrentPendingAmount);
-                invoiceAddress = BitcoinAddress.Create(invoice.CryptoInfo[0].Address, tester.ExplorerNode.Network);
+                invoiceAddress = BitcoinAddress.Create(invoice.bitcoinInfo[0].Address, tester.ExplorerNode.Network);
                 tester.ExplorerNode.SendToAddress(invoiceAddress, Money.Coins(0.5m));
                 tester.ExplorerNode.SendToAddress(invoiceAddress, Money.Coins(0.2m));
                 TestUtils.Eventually(() =>

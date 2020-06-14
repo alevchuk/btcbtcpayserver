@@ -7,18 +7,18 @@ namespace BTCPayServer.Payments
 {
 
     /// <summary>
-    /// A value object which represent a crypto currency with his payment type (ie, onchain or offchain)
+    /// A value object which represent a bitcoin currency with his payment type (ie, onchain or offchain)
     /// </summary>
     public class PaymentMethodId
     {
-        public PaymentMethodId(string cryptoCode, PaymentType paymentType)
+        public PaymentMethodId(string bitcoinCode, PaymentType paymentType)
         {
-            if (cryptoCode == null)
-                throw new ArgumentNullException(nameof(cryptoCode));
+            if (bitcoinCode == null)
+                throw new ArgumentNullException(nameof(bitcoinCode));
             if (paymentType == null)
                 throw new ArgumentNullException(nameof(paymentType));
             PaymentType = paymentType;
-            CryptoCode = cryptoCode.ToUpperInvariant();
+            bitcoinCode = bitcoinCode.ToUpperInvariant();
         }
 
         [Obsolete("Should only be used for legacy stuff")]
@@ -26,11 +26,11 @@ namespace BTCPayServer.Payments
         {
             get
             {
-                return CryptoCode == "BTC" && PaymentType == PaymentTypes.BTCLike;
+                return bitcoinCode == "BTC" && PaymentType == PaymentTypes.BTCLike;
             }
         }
 
-        public string CryptoCode { get; private set; }
+        public string bitcoinCode { get; private set; }
         public PaymentType PaymentType { get; private set; }
 
 
@@ -65,12 +65,12 @@ namespace BTCPayServer.Payments
         public override string ToString()
         {
             //BTCLike case is special because it is in legacy mode.
-            return PaymentType == PaymentTypes.BTCLike ? CryptoCode : $"{CryptoCode}_{PaymentType}";
+            return PaymentType == PaymentTypes.BTCLike ? bitcoinCode : $"{bitcoinCode}_{PaymentType}";
         }
 
         public string ToPrettyString()
         {
-            return $"{CryptoCode} ({PaymentType.ToPrettyString()})";
+            return $"{bitcoinCode} ({PaymentType.ToPrettyString()})";
         }
 
         public static bool TryParse(string str, out PaymentMethodId paymentMethodId)

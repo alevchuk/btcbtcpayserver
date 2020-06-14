@@ -72,8 +72,8 @@ namespace BTCPayServer.Controllers
         public async Task<IActionResult> WalletPSBT([ModelBinder(typeof(WalletIdModelBinder))]
             WalletId walletId, WalletPSBTViewModel vm)
         {
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.CryptoCode);
-            vm.CryptoCode = network.CryptoCode;
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.bitcoinCode);
+            vm.bitcoinCode = network.bitcoinCode;
             vm.NBXSeedAvailable = await CanUseHotWallet() && !string.IsNullOrEmpty(await ExplorerClientProvider.GetExplorerClient(network)
                 .GetMetadataAsync<string>(GetDerivationSchemeSettings(walletId).AccountDerivation,
                     WellknownMetadataKeys.Mnemonic));
@@ -83,7 +83,7 @@ namespace BTCPayServer.Controllers
                 vm.PSBT = psbt.ToBase64();
             }
             
-            return View(nameof(WalletPSBT), vm ?? new WalletPSBTViewModel() { CryptoCode = walletId.CryptoCode });
+            return View(nameof(WalletPSBT), vm ?? new WalletPSBTViewModel() { bitcoinCode = walletId.bitcoinCode });
         }
         [HttpPost]
         [Route("{walletId}/psbt")]
@@ -94,8 +94,8 @@ namespace BTCPayServer.Controllers
         {
             if (command == null)
                 return await WalletPSBT(walletId, vm);
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.CryptoCode);
-            vm.CryptoCode = network.CryptoCode;
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.bitcoinCode);
+            vm.bitcoinCode = network.bitcoinCode;
             vm.NBXSeedAvailable = await CanUseHotWallet() && !string.IsNullOrEmpty(await ExplorerClientProvider.GetExplorerClient(network)
                 .GetMetadataAsync<string>(GetDerivationSchemeSettings(walletId).AccountDerivation,
                     WellknownMetadataKeys.Mnemonic));
@@ -172,7 +172,7 @@ namespace BTCPayServer.Controllers
         {
             if (vm is null)
                 return NotFound();
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.CryptoCode);
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.bitcoinCode);
             var derivationSchemeSettings = GetDerivationSchemeSettings(walletId);
             if (derivationSchemeSettings == null)
                 return NotFound();
@@ -295,7 +295,7 @@ namespace BTCPayServer.Controllers
             if (command == null)
                 return await WalletPSBTReady(walletId, vm);
             PSBT psbt = null;
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.CryptoCode);
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.bitcoinCode);
             DerivationSchemeSettings derivationSchemeSettings = null;
             try
             {
@@ -442,7 +442,7 @@ namespace BTCPayServer.Controllers
         public async Task<IActionResult> WalletPSBTCombine([ModelBinder(typeof(WalletIdModelBinder))]
             WalletId walletId, WalletPSBTCombineViewModel vm)
         {
-            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.CryptoCode);
+            var network = NetworkProvider.GetNetwork<BTCPayNetwork>(walletId.bitcoinCode);
             var psbt = await vm.GetPSBT(network.NBitcoinNetwork);
             if (psbt == null)
             {
@@ -479,7 +479,7 @@ namespace BTCPayServer.Controllers
                         var derivationScheme = GetDerivationSchemeSettings(walletId);
                         if (derivationScheme.IsHotWallet)
                         {
-                            var extKey = await ExplorerClientProvider.GetExplorerClient(walletId.CryptoCode)
+                            var extKey = await ExplorerClientProvider.GetExplorerClient(walletId.bitcoinCode)
                                 .GetMetadataAsync<string>(derivationScheme.AccountDerivation,
                                     WellknownMetadataKeys.MasterHDKey);
                             return SignWithSeed(walletId,

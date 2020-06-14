@@ -6,7 +6,7 @@
     Layout = "../Shared/_NavLayout.cshtml";
 
     ViewData["NavPartialName"] = "../Stores/_Nav";
-    ViewData.SetActivePageAndTitle(StoreNavPages.ActivePage, $"{Model.CryptoCode} Settings");
+    ViewData.SetActivePageAndTitle(StoreNavPages.ActivePage, $"{Model.bitcoinCode} Settings");
 }
 
 
@@ -35,7 +35,7 @@
         {
             <form method="post" asp-action="GetStoreMoneroLikePaymentMethod" 
                   asp-route-storeId="@this.Context.GetRouteValue("storeId")"
-                  asp-route-cryptoCode="@this.Context.GetRouteValue("cryptoCode")" 
+                  asp-route-bitcoinCode="@this.Context.GetRouteValue("bitcoinCode")" 
                   class="mt-4" enctype="multipart/form-data">
 
                 <div class="card my-2">
@@ -63,10 +63,10 @@
         }
         <form method="post" asp-action="GetStoreMoneroLikePaymentMethod"
               asp-route-storeId="@this.Context.GetRouteValue("storeId")"
-              asp-route-cryptoCode="@this.Context.GetRouteValue("cryptoCode")" 
+              asp-route-bitcoinCode="@this.Context.GetRouteValue("bitcoinCode")" 
               class="mt-4" enctype="multipart/form-data">
 
-            <input type="hidden" asp-for="CryptoCode"/>
+            <input type="hidden" asp-for="bitcoinCode"/>
             @if (!Model.WalletFileFound || Model.Summary.WalletHeight == default(long))
             {
                 <input type="hidden" asp-for="AccountIndex"/>
@@ -109,7 +109,7 @@
                 <a class="btn btn-secondary" asp-action="GetStoreMoneroLikePaymentMethods"
 
                    asp-route-storeId="@this.Context.GetRouteValue("storeId")"
-                   asp-route-cryptoCode="@this.Context.GetRouteValue("cryptoCode")"
+                   asp-route-bitcoinCode="@this.Context.GetRouteValue("bitcoinCode")"
                    asp-controller="MoneroLikeStore">
                     Back to list
                 </a>

@@ -87,9 +87,9 @@
                 "type": "object",
                 "description": "Detailed sync status",
                 "properties": {
-                    "cryptoCode": {
+                    "bitcoinCode": {
                         "type": "string",
-                        "description": "The CryptoCode of the crypto currency (eg. BTC)"
+                        "description": "The bitcoinCode of the bitcoin currency (eg. BTC)"
                     },
                     "nodeInformation": {
                         "$ref": "#/components/schemas/ApplicationServerInfoNodeStatusData"

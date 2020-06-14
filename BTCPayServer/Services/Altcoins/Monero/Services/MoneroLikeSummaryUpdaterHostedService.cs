@@ -28,17 +28,17 @@ namespace BTCPayServer.Services.Altcoins.Monero.Services
             return Task.CompletedTask;
         }
         
-        private async Task StartLoop(CancellationToken cancellation, string cryptoCode)
+        private async Task StartLoop(CancellationToken cancellation, string bitcoinCode)
         {
-            Logs.PayServer.LogInformation($"Starting listening Monero-like daemons ({cryptoCode})");
+            Logs.PayServer.LogInformation($"Starting listening Monero-like daemons ({bitcoinCode})");
             try
             {
                 while (!cancellation.IsCancellationRequested)
                 {
                     try
                     {
-                        await _MoneroRpcProvider.UpdateSummary(cryptoCode);
-                        if (_MoneroRpcProvider.IsAvailable(cryptoCode))
+                        await _MoneroRpcProvider.UpdateSummary(bitcoinCode);
+                        if (_MoneroRpcProvider.IsAvailable(bitcoinCode))
                         {
                             await Task.Delay(TimeSpan.FromMinutes(1), cancellation);
                         }
@@ -49,7 +49,7 @@ namespace BTCPayServer.Services.Altcoins.Monero.Services
                     }
                     catch (Exception ex) when (!cancellation.IsCancellationRequested)
                     {
-                        Logs.PayServer.LogError(ex, $"Unhandled exception in Summary updater ({cryptoCode})");
+                        Logs.PayServer.LogError(ex, $"Unhandled exception in Summary updater ({bitcoinCode})");
                         await Task.Delay(TimeSpan.FromSeconds(10), cancellation);
                     }
                 }
